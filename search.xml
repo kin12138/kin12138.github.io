@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<search>
+  <% posts.forEach(function(post){ %>
+    <post>
+      <title><![CDATA[<%= post.title %>]]></title>
+      <url><%= config.url + post.path %></url>
+      <excerpt><![CDATA[<%= post.excerpt || post.content.replace(/<[^>]+>/g, '').substring(0, 100) %>]]></excerpt>
+    </post>
+  <% }); %>
+</search>
