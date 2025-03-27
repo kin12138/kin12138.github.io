@@ -8,7 +8,7 @@
 	</script>
 	<head>
 		
-<title>关于 | The technology-sea for kin12138</title>
+<title>主页 | The technology-sea for kin12138</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -222,7 +222,7 @@
 	
 
 	<script>
-		const name = 'about';
+		const name = 'home';
 		const ul = document.querySelectorAll('.nav-right ul')[0];
 		const lis = ul.querySelectorAll('li');
 
@@ -283,53 +283,121 @@
 </header>
 
 <div class="main-wrapper">
-    <main class="about">
-        <header class="main-header">
+	<main class="home">
+		<header class="main-header">
 	
 		
 			
 				
-			
-				
-			
-				
-			
-				
-			
-				
-			
-				
-			
-				
 					<div class="header-background-content">
 						<span>
-							<img no-lazy src="/images/headers_icon/about.svg" alt="Quieter">
+							<img no-lazy src="/images/headers_icon/logo_white.webp" alt="Quieter">
 						</span>
-						<h1>关于我</h1>
+						<h1>居然被你找到了这里！</h1>
 					</div>
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
 				
 			
 		
 	
 </header>
-        <div class="article-container about-content">
-            <article class="about-content-info">
-                <h2 id="关于"><a href="#关于" class="headerlink" title="关于"></a>关于</h2><p>这里是一个不想搞技术的技术怪！</p>
-
-            </article>
-            
-	<aside class="rightside">
-	
-		<div class="rightside-button not-toc-button" id="js-aside">
-			<span>
-				<img no-lazy src="/images/icon/aside.png" class="rightside-button-icon" alt="Icon">
-			</span>
+		<div class="post-card-container">
+			<div class="post-card">
+				
+					<div class="post-card-display">
+						<a class="post-card-display-item" href="/2025/03/20/hello-world/">
+							<div class="post-card-top">
+								<h1 class="post-card-top-title">Hello World</h1>
+								
+							</div>
+							<div class="img-container">
+								<img style="" src="/images/random_top_img/01.webp" alt="Cover">
+							</div>
+						</a>
+						<span class="post-card-description">
+							
+						</span>
+						<div class="post-card-meat">
+							<div class="meat-info">
+								<a class="info-category" href="/">
+									kin12138
+								</a>
+								<time class="info-date">
+									<a href="/archives/2025">2025</a>/<a href="/archives/2025/03">03</a>/20
+								</time>
+							</div>
+							<img no-lazy src="/images/icon/normal.png" class="meat-type" alt="Icon">
+						</div>
+					</div>
+				
+			</div>
 		</div>
-		<script>
-			$("#js-aside").click(function () {
-				onShowAsideButton();
-			});
-		</script>
+		<div class="change-page">
+			<div class="change-page-item">
+				
+					<a href="/">&#60;</a>
+				
+				
+				
+				
+					
+				
+					
+				
+					
+						
+							<a href="/">1</a>
+						
+					
+				
+					
+						
+							<div class="select-container">
+								<select aria-label="pagination_select" id="pagination_select" ></select>
+							</div>
+							<script>
+								var select = document.getElementById("pagination_select");
+								for(var i = 1; i < 2 + 1; i++)
+								{
+									var option = document.createElement("option");
+									option.value = i == 1 ? "/" : "/page/" + i.toString();
+									option.text = i;
+									select.add(option);		
+								}
+								select.selectedIndex = 2 - 1;
+								select.onchange = function() {
+									window.location.href = select.value;
+								};
+							</script>
+						
+					
+				
+					
+				
+					
+				
+					
+				
+				<!--
+					
+				-->
+				
+			</div>
+		</div>
+		
+		
+	<aside class="rightside">
 	
 	<div class="rightside-button" id="js-toggle_theme">
 		<span>
@@ -374,74 +442,8 @@
     
     
     
-        
-    
 </div>
-        </div>
-    </main>
-    
-        <aside class="main-aside">
-    
-<script src="/js/widgets/aside.js"></script>
-
-    <script>
-        showAside();
-    </script>
-
-    <div class="aside-top">
-        <div class="aside-top-about aside-card">
-            <a href="/about" class="aside-top-about-portrait">
-                <img no-lazy src="/images/about_icon/about_icon.webp" alt="Q">
-            </a>
-            <div class="aside-top-about-info">
-                <span class="author"> kin12138</span>
-                <span class="description">This is life, it's suck, but i love it</span>
-            </div>              
-            <div class="aside-top-about-site">
-                <a href="/categories" class="aside-top-about-site-item">
-                    <span class="title">类别</span>
-                    <span class="count">4</span>
-                </a>
-                <a href="/tags" class="aside-top-about-site-item">
-                    <span class="title">标签</span>
-                    <span class="count">3</span>
-                </a>
-                <a href="/archives" class="aside-top-about-site-item">
-                    <span class="title">归档</span>
-                    <span class="count">10</span>
-                </a>
-            </div>
-            <div class="aside-top-about-contact">
-                
-                    
-                        <a href="">
-                            <img no-lazy src="/images/bottom_icon/Weibo.webp" alt="Quieter">
-                        </a>
-                    
-                        <a href="">
-                            <img no-lazy src="/images/bottom_icon/Tieba.webp" alt="Quieter">
-                        </a>
-                    
-                        <a href="">
-                            <img no-lazy src="/images/bottom_icon/Bilibili.webp" alt="Quieter">
-                        </a>
-                    
-                        <a href="">
-                            <img no-lazy src="/images/bottom_icon/github.webp" alt="Quieter">
-                        </a>
-                    
-                
-            </div>
-        </div> 
-
-        
-    </div>
-
-    <div class="aside-bottom">
-        
-    </div>
-</aside>
-    
+	</main>
 </div>
 		<footer>
 	<div class="content">

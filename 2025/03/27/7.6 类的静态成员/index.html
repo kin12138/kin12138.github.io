@@ -8,7 +8,7 @@
 	</script>
 	<head>
 		
-<title>关于 | The technology-sea for kin12138</title>
+<title>7.6 类的静态成员 | The technology-sea for kin12138</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -18,8 +18,9 @@
 <link rel="stylesheet" href="/css/index.css">
 
 
-    <meta name="keywords" content="c++ 学习, 技术分享交流">
-    <meta name="description" content="🍓A technology-commication platform of engineer.">
+
+<meta name="keywords" content="c++,">
+<meta name="description" content="">
 
 
 
@@ -222,7 +223,7 @@
 	
 
 	<script>
-		const name = 'about';
+		const name = 'post';
 		const ul = document.querySelectorAll('.nav-right ul')[0];
 		const lis = ul.querySelectorAll('li');
 
@@ -277,44 +278,145 @@
 			menus_title.push({about: '关于'});
 		
 		
-			customBreadcrumb(document.getElementById('breadcrumb'), menus_title);
+			
+				postsBreadcrumb(
+					document.getElementById('breadcrumb'),
+					"类别",
+					"/categories",
+					"c++",
+					"/categories/c++"
+				);
+			
+				postsBreadcrumb(
+					document.getElementById('breadcrumb'),
+					"类别",
+					"/categories",
+					"c++ primer",
+					"/categories/c++ primer"
+				);
+			
 		
 	</script>
 </header>
 
 <div class="main-wrapper">
-    <main class="about">
+    <main class="post">
         <header class="main-header">
 	
 		
 			
 				
-			
+<link rel="stylesheet" href="/css/plugins/fancybox.css">
+
 				
-			
+<script src="/js/plugins/fancybox.umd.js"></script>
+
 				
+<script src="/js/plugins/fancybox.js"></script>
+
 			
+			<div class="post-header-background-content">
+				<ul class="post-header-tag">
+					
+						
+							<li><a href="/tags/c++"><span>c++</span></a></li>
+						
+					
+				</ul>
 				
-			
+				<h1>7.6 类的静态成员</h1>
+		
 				
-			
+		
+				<div class="post-header-info">
+					<svg t="1604839279282" class="icon" viewBox="0 0 1024 1024" version="1.1"
+					xmlns="http://www.w3.org/2000/svg" p-id="2901" width="20" height="20">
+						<path
+							d="M513 956.3c-247.7 0-448-200.3-448-448S265.3 66.2 513 66.2s448 200.3 448 448-200.3 442.1-448 442.1z m0-830.9c-212.2 0-388.8 170.7-388.8 388.8C124.2 726.3 294.9 903 513 903c212.2 0 388.8-170.7 388.8-388.8S725.2 125.4 513 125.4z m0 430.2c-94.2 0-170.7-76.5-170.7-170.7S418.8 207.8 513 207.8s170.7 76.5 170.7 170.7S607.2 555.6 513 555.6z m0-289.1c-64.6 0-112 52.8-112 112s47.4 117.9 112 117.9 112-52.8 112-112-47.4-117.9-112-117.9z m0 689.8c-135.7 0-259-58.7-341.9-158.9l-11.8-17.8 11.8-17.8c76.5-117.9 206.2-188.5 347.8-188.5 135.7 0 265 64.6 341.9 182.6l11.8 17.8-11.8 17.8C778 897.1 648.7 956.3 513 956.3zM230.3 773.2C300.9 849.7 406.9 897 513 897c112 0 218.1-47.4 288.6-129.8-70.5-88.2-170.7-135.6-282.7-135.6s-218.1 53.3-288.6 141.6z"
+							p-id="2902" fill="#ffffff"></path>
+					</svg>
+					<div class="post-header-info-author">
+						<a href="/about">kin12138</a>
+					</div>
+					
+						<div class="post-header-info-categories">
+							
+								<a href="/categories/c++">c++</a>
+							
+								<a href="/categories/c++ primer">c++ primer</a>
+							
+						</div>
+					
+					<time>2025/03/27 21:43:12</time>
+				</div>
+		
 				
-			
-				
-					<div class="header-background-content">
-						<span>
-							<img no-lazy src="/images/headers_icon/about.svg" alt="Quieter">
-						</span>
-						<h1>关于我</h1>
+					<div class="post-header-stat">
+						<svg version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+						viewBox="0 0 200 200" enable-background="new 0 0 200 200" xml:space="preserve" width="20" height="20">
+							<path fill="#FFFFFF" d="M187.2,165.6c0,2.6-2.1,4.7-4.7,4.7H17.5c-2.6,0-4.7-2.1-4.7-4.7s2.1-4.7,4.7-4.7h165.1
+								C185.2,160.9,187.2,163,187.2,165.6z"/>
+							<path fill="#FFFFFF" d="M17.5,29.7c2.6,0,4.7,2.1,4.7,4.7v131.2c0,2.6-2.1,4.7-4.7,4.7s-4.7-2.1-4.7-4.7V34.4
+								C12.8,31.8,14.9,29.7,17.5,29.7z M77.9,91.5c1.8,1.8,1.8,4.8,0,6.6l-39.8,39.8c-1.9,1.8-4.9,1.7-6.6-0.2c-1.7-1.8-1.7-4.6,0-6.4
+								l39.8-39.8C73.1,89.6,76,89.6,77.9,91.5z M169.9,70.2c1.6,2.1,1.1,5-0.9,6.5c0,0,0,0,0,0l-64.2,48.2c-2.1,1.5-5,1.1-6.6-0.9
+								c-1.6-2.1-1.1-5,0.9-6.5c0,0,0,0,0,0l64.2-48.2C165.4,67.7,168.3,68.1,169.9,70.2L169.9,70.2z"/>
+							<path fill="#FFFFFF" d="M104.6,124.5c-1.8,1.8-4.8,1.8-6.6,0L71.6,98.1c-1.8-1.8-1.8-4.8,0-6.6c1.8-1.8,4.8-1.8,6.6,0l26.3,26.3
+								C106.4,119.6,106.4,122.6,104.6,124.5C104.6,124.4,104.6,124.4,104.6,124.5z"/>
+						</svg>
+		
+						
+							
+<script src="/js/plugins/wordCount.js"></script>
+
+							<p class="post-count">文字数：---</p>
+						
+		
+						
+							<p id="busuanzi_container_page_pv" style='display:none;'>阅读数：<span id="busuanzi_value_page_pv"></span></p>
+						
 					</div>
 				
-			
+			</div>
 		
 	
 </header>
-        <div class="article-container about-content">
-            <article class="about-content-info">
-                <h2 id="关于"><a href="#关于" class="headerlink" title="关于"></a>关于</h2><p>这里是一个不想搞技术的技术怪！</p>
+        <div class="post-content article-container">
+            <article class="post-content-info">
+                <h2 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h2><ul>
+<li>使用 <strong>static 关键字</strong>声明静态成员，可以是 public 的，也可以是 private 的。</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Account</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">calculate</span><span class="hljs-params">()</span> </span>&#123; amount += amount * interestRate; &#125;<br>    <span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">double</span> <span class="hljs-title">rate</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-keyword">return</span> interestRate; &#125;<br>    <span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title">rate</span><span class="hljs-params">( <span class="hljs-type">double</span> )</span></span>;<br><span class="hljs-keyword">private</span>:<br>    std::string owner;<br>    <span class="hljs-type">double</span> amount;<br>    <span class="hljs-type">static</span> <span class="hljs-type">double</span> interestRate;<br>    <span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">double</span> <span class="hljs-title">initRate</span><span class="hljs-params">()</span></span>;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>static 成员存在于任何对象之外，对象中不包含与静态成员有关的任何数据</li>
+<li>静态成员函数不和任何对象绑定在一起，不包含 this 指针</li>
+<li><strong>静态成员不能被声明为 cons</strong>t， 在 <strong>static 函数体内不能使用 this 指针</strong></li>
+</ul>
+<h2 id="使用静态成员"><a href="#使用静态成员" class="headerlink" title="使用静态成员"></a>使用静态成员</h2><ul>
+<li>使用<strong>作用域运算符</strong>直接访问静态成员</li>
+<li>使用类的对象、引用或指针访问静态成员</li>
+<li>成员函数不用通过作用域运算符就可直接使用静态成员</li>
+</ul>
+<h2 id="定义静态成员"><a href="#定义静态成员" class="headerlink" title="定义静态成员"></a>定义静态成员</h2><ul>
+<li>既可以在类内部定义，也可以在类外部定义</li>
+<li>在外部定义时，<strong>不能重复使用</strong> static 关键字；和其他成员一样，必须<strong>指明成员所属类名</strong></li>
+<li><strong>不能在类内部初始化静态成员</strong>，一般必须在类外部定义和初始化静态成员</li>
+<li>类似全局变量，静态成员一旦被定义，就一致<strong>存在于程序的整个生命周期</strong></li>
+<li><p>定义静态成员需要指定对象的类型名，然后是类名、作用域运算符、成员自己的名字</p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 定义并初始化一个静态成员</span><br><span class="hljs-type">double</span> Account::interestRate = <span class="hljs-built_in">initRate</span>();<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="静态成员类内初始化"><a href="#静态成员类内初始化" class="headerlink" title="静态成员类内初始化"></a>静态成员类内初始化</h2><ul>
+<li>一般静态成员不在类内初始化，但是可以为静态成员提供 <strong>const 整数类型</strong>的类内初始值，要求静态成员必须是字面值常量类型的 constexpr。初始值必须是常量表达式。</li>
+</ul>
+<h2 id="静态成员可用于特殊场景"><a href="#静态成员可用于特殊场景" class="headerlink" title="静态成员可用于特殊场景"></a>静态成员可用于特殊场景</h2><ul>
+<li>静态成员可以是<strong>不完全类型</strong></li>
+<li><p>静态成员的类型可以就是它所属的类类型</p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Bar</span>&#123;<br><span class="hljs-keyword">public</span>:<br>    ......<br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-type">static</span> Bar mem1; <br>    Bar *mem2;<br>    Bar mem3;       <span class="hljs-comment">// 错误：数据成员必须是完全类型</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>可以使用<strong>静态成员作为默认实参</strong>，而非静态成员不行</p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Screen</span>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function">Screen &amp; <span class="hljs-title">clear</span><span class="hljs-params">( <span class="hljs-type">char</span> = bkground)</span></span>;<br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-type">static</span> <span class="hljs-type">const</span> <span class="hljs-type">char</span> bkground;<br>&#125;;<br></code></pre></td></tr></table></figure>
 
             </article>
             
@@ -371,6 +473,23 @@
 
 
 <div class="post-bottom">
+    
+        <div class="post-paging">     
+            <div class="post-paging-last">
+                
+                    <a href="/2025/03/27/7.5%20%E5%86%8D%E6%8E%A2%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0/">
+                        上一篇：7.5 再探构造函数
+                    </a>
+                
+            </div>
+            <div class="post-paging-next">
+                
+                    <a href="/2025/03/27/7.4%20%E7%B1%BB%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F/">
+                        下一篇：7.4 类的作用域
+                    </a>
+                
+            </div>
+        </div>
     
     
     

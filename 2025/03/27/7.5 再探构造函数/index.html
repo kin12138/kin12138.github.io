@@ -8,7 +8,7 @@
 	</script>
 	<head>
 		
-<title>Hello World | The technology-sea for kin12138</title>
+<title>7.5 再探构造函数 | The technology-sea for kin12138</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -18,8 +18,9 @@
 <link rel="stylesheet" href="/css/index.css">
 
 
-    <meta name="keywords" content="c++ 学习, 技术分享交流">
-    <meta name="description" content="🍓A technology-commication platform of engineer.">
+
+<meta name="keywords" content="c++,">
+<meta name="description" content="">
 
 
 
@@ -278,6 +279,22 @@
 		
 		
 			
+				postsBreadcrumb(
+					document.getElementById('breadcrumb'),
+					"类别",
+					"/categories",
+					"c++",
+					"/categories/c++"
+				);
+			
+				postsBreadcrumb(
+					document.getElementById('breadcrumb'),
+					"类别",
+					"/categories",
+					"c++ primer",
+					"/categories/c++ primer"
+				);
+			
 		
 	</script>
 </header>
@@ -301,9 +318,13 @@
 			<div class="post-header-background-content">
 				<ul class="post-header-tag">
 					
+						
+							<li><a href="/tags/c++"><span>c++</span></a></li>
+						
+					
 				</ul>
 				
-				<h1>Hello World</h1>
+				<h1>7.5 再探构造函数</h1>
 		
 				
 		
@@ -320,9 +341,13 @@
 					
 						<div class="post-header-info-categories">
 							
+								<a href="/categories/c++">c++</a>
+							
+								<a href="/categories/c++ primer">c++ primer</a>
+							
 						</div>
 					
-					<time>2025/03/20 19:28:21</time>
+					<time>2025/03/27 21:43:12</time>
 				</div>
 		
 				
@@ -357,15 +382,78 @@
 </header>
         <div class="post-content article-container">
             <article class="post-content-info">
-                <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ hexo new <span class="hljs-string">&quot;My New Post&quot;</span><br></code></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ hexo server<br></code></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ hexo generate<br></code></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ hexo deploy<br></code></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+                <h2 id="构造函数初始化列表"><a href="#构造函数初始化列表" class="headerlink" title="构造函数初始化列表"></a>构造函数初始化列表</h2><h3 id="构造函数的初始值有时必不可少"><a href="#构造函数的初始值有时必不可少" class="headerlink" title="构造函数的初始值有时必不可少"></a>构造函数的初始值有时必不可少</h3><ul>
+<li>如果<strong>成员是 const 或者 引用</strong>，则<strong>必须将其初始化</strong></li>
+<li>必须<strong>通过构造函数初始值列表</strong>为成员提供初值，而<strong>不是通过赋值</strong></li>
+</ul>
+<h3 id="成员初始化顺序"><a href="#成员初始化顺序" class="headerlink" title="成员初始化顺序"></a>成员初始化顺序</h3><ul>
+<li>构造函数初始化列表<strong>只说明用于初始化成员的值</strong>，而<strong>不限定初始化顺序</strong></li>
+<li>成员<strong>初始化顺序与类定义中出现顺序一致</strong></li>
+<li>当一个成员是用另一个成员初始化时，<strong>必须保持类中定义顺序与初始化列表顺序的一致</strong></li>
+</ul>
+<h3 id="默认实参"><a href="#默认实参" class="headerlink" title="默认实参"></a>默认实参</h3><ul>
+<li>如果一个构造函数为所有参数提供了默认实参，它实际上也定义了默认构造函数</li>
+</ul>
+<h2 id="委托构造函数"><a href="#委托构造函数" class="headerlink" title="委托构造函数"></a>委托构造函数</h2><ul>
+<li>delegating constructor: 一个委托构造函数使用它所属类的其他构造函数执行自己的初始化过程</li>
+<li>委托构造函数也有成员初始值列表和函数体</li>
+</ul>
+<p>使用委托构造函数重写 Sale_data 类</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Sale_data</span>&#123;<br><br>    ......<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-comment">// 非委托构造函数</span><br>    <span class="hljs-built_in">Sale_data</span>(std::string s, <span class="hljs-type">unsigned</span> n, <span class="hljs-type">double</span> p) :<br>            <span class="hljs-built_in">bookNo</span>(s), <span class="hljs-built_in">units_sold</span>(n), <span class="hljs-built_in">revenue</span>(p) &#123; &#125;<br><br>    <span class="hljs-comment">// 委托构造函数</span><br>    <span class="hljs-built_in">Sale_data</span>() : <span class="hljs-built_in">Sale_data</span>(<span class="hljs-string">&quot;&quot;</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>) &#123; &#125;<br>    <span class="hljs-built_in">Sale_data</span>(std::string &amp;s) : <span class="hljs-built_in">Sale_data</span>(s, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>) &#123; &#125;<br>    <span class="hljs-built_in">Sale_data</span>(<span class="hljs-type">const</span> std::string &amp;s) : <span class="hljs-built_in">bookNo</span>(s) &#123; &#125;<br>    <span class="hljs-built_in">Sale_data</span>(std::istream &amp;is) : <span class="hljs-built_in">Sale_data</span>() &#123; <span class="hljs-built_in">read</span>(is, *<span class="hljs-keyword">this</span>); &#125;<br><br>   ......<br><br><span class="hljs-keyword">private</span>:<br>    ......<br>&#125;;<br></code></pre></td></tr></table></figure>
+<h2 id="默认构造函数的作用"><a href="#默认构造函数的作用" class="headerlink" title="默认构造函数的作用"></a>默认构造函数的作用</h2><p>默认初始化在下面情况发生：</p>
+<ul>
+<li>当在块作用域内不使用任何初始值定义一个非静态变量或数组时</li>
+<li>当一个类本身含有类类型的成员且使用合成的默认构造函数时</li>
+<li>当类类型的成员没有在构造函数初始值列表中显式地初始化时</li>
+</ul>
+<p>值初始化在以下情况发生：</p>
+<ul>
+<li>数组初始化过程中提供的初始值数量少于数组大小时</li>
+<li>当不使用一个初始值定义局部静态变量时</li>
+<li>当通过书写形如 T() 的表达式显式的请求初始化时(其中 T 是类型名)</li>
+</ul>
+<h2 id="隐式的类类型转换"><a href="#隐式的类类型转换" class="headerlink" title="隐式的类类型转换"></a>隐式的类类型转换</h2><ul>
+<li>能通过一个实参调用的构造函数定义了一条<strong>从构造函数的参数类型</strong>向<strong>类类型</strong>隐式转换的规则</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">std::string null_book = <span class="hljs-string">&quot;9-9999-9999&quot;</span>;<br><span class="hljs-comment">// 构造一个临时的 Sale_data 对象</span><br><span class="hljs-comment">// 该对象成员 bookNo = null_book, units_sold 和 revenue 都等于 0</span><br>item.<span class="hljs-built_in">combine</span>(null_book);<br></code></pre></td></tr></table></figure>
+<ul>
+<li>这里使用 string 实参调用 Sale_data 的 combine 成员，编译器用给定的 string 自动创建了一个 Sale_data 对象，这个临时对象被传递给 combine</li>
+<li>combine 的参数是 常量引用，所以可以给该参数传递一个临时量</li>
+</ul>
+<h3 id="只允许一步类型转换"><a href="#只允许一步类型转换" class="headerlink" title="只允许一步类型转换"></a>只允许一步类型转换</h3><ul>
+<li>编译器只会自动地执行<strong>一步类型转换</strong></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">item.<span class="hljs-built_in">combine</span>(<span class="hljs-string">&quot;9-9999-9999&quot;</span>);    <span class="hljs-comment">// 错误，编译器不会将&quot;9-9999-9999&quot;转换为 Sale_data对象</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>可以显式的将字符串转换成 string 或者 Sale_data 对象：</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">item.<span class="hljs-built_in">combine</span>(std::<span class="hljs-built_in">string</span>(<span class="hljs-string">&quot;9-9999-9999&quot;</span>));<br><br>item.<span class="hljs-built_in">combine</span>(<span class="hljs-built_in">Sale_data</span>(<span class="hljs-string">&quot;9-9999-9999&quot;</span>));<br></code></pre></td></tr></table></figure>
+<h3 id="通过-explicit-阻止隐式的类类型转换"><a href="#通过-explicit-阻止隐式的类类型转换" class="headerlink" title="通过 explicit 阻止隐式的类类型转换"></a>通过 explicit 阻止隐式的类类型转换</h3><ul>
+<li>在构造函数声明时，可加入 <strong>explicit 关键字</strong>阻止隐式类类型转换</li>
+<li>explicit 只对一个实参的构造函数有效</li>
+<li>只能在<strong>类内声明构造函数</strong>时使用 <strong>explicit</strong></li>
+<li>explicit 构造函数<strong>只能用于直接初始化</strong>，不能用于拷贝初始化(=)等</li>
+</ul>
+<h2 id="聚合类-aggregate-class"><a href="#聚合类-aggregate-class" class="headerlink" title="聚合类(aggregate class)"></a>聚合类(aggregate class)</h2><ul>
+<li>所有成员都是 public</li>
+<li>没有定义任何构造函数</li>
+<li>没有类内初始值</li>
+<li>没有基类，没有 virtual 函数</li>
+</ul>
+<h2 id="字面值常量类"><a href="#字面值常量类" class="headerlink" title="字面值常量类"></a>字面值常量类</h2><ul>
+<li>数据成员是字面值常量的聚合类是字面值常量类</li>
+<li><p>如果不是聚合类，但符合以下要求，也是字面值常量类：</p>
+<ul>
+<li>数据成员必须是字面值类型</li>
+<li>类必须至少含有机一个 constexpr 构造函数</li>
+<li>如果一个数据成员含有类内初始值，则内置类型成员的初始值必须是常量表达式；或者如果成员属于某种类型，则初始值必须使用成员自己的 constexpr 构造函数</li>
+<li>类必须使用析构函数的默认定义，该成员负责销毁类的对象</li>
+</ul>
+</li>
+</ul>
+<h3 id="constexpr-构造函数"><a href="#constexpr-构造函数" class="headerlink" title="constexpr 构造函数"></a>constexpr 构造函数</h3><ul>
+<li>构造函数不能是 const 的，但字面值常量类的构造函数可以是 constexpr 函数</li>
+</ul>
 
             </article>
             
@@ -426,12 +514,16 @@
         <div class="post-paging">     
             <div class="post-paging-last">
                 
-                    <a href="/2025/03/20/7.1%20%E5%AE%9A%E4%B9%89%E6%8A%BD%E8%B1%A1%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">
-                        上一篇：7.1 定义抽象数据类型
+                    <a href="/2025/03/27/8.2%20%E6%96%87%E4%BB%B6%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E6%B5%81/">
+                        上一篇：8.2 文件输入输出流
                     </a>
                 
             </div>
             <div class="post-paging-next">
+                
+                    <a href="/2025/03/27/7.6%20%E7%B1%BB%E7%9A%84%E9%9D%99%E6%80%81%E6%88%90%E5%91%98/">
+                        下一篇：7.6 类的静态成员
+                    </a>
                 
             </div>
         </div>
