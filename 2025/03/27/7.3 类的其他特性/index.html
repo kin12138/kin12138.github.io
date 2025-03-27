@@ -443,13 +443,35 @@
 <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;window_mgr.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Screen.h&quot;</span></span><br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">window_mgr::clear</span><span class="hljs-params">(window_mgr::ScreenIndex i)</span> </span>&#123;<br>    <span class="hljs-comment">// s 是 Screen 的引用，指向想清空的那个 Screen</span><br>    Screen &amp;s = screens[i];<br>    <span class="hljs-comment">// 将选定 Screen 重置为空白</span><br>    s.contents = std::<span class="hljs-built_in">string</span>(s.height * s.width, <span class="hljs-string">&#x27; &#x27;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
 </ol>
-<h3 id="编译器对-Screen-h-Screen-cpp-window-mgr-h-window-mgr-cpp-的处理过程"><a href="#编译器对-Screen-h-Screen-cpp-window-mgr-h-window-mgr-cpp-的处理过程" class="headerlink" title="编译器对 Screen.h, Screen.cpp, window_mgr.h, window_mgr.cpp 的处理过程"></a>编译器对 Screen.h, Screen.cpp, window_mgr.h, window_mgr.cpp 的处理过程</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs mermaid">flowchart TD<br>    A[&quot;Screen.cpp&quot;]<br>    A --&gt; B[&quot;#include &quot;Screen.h&quot;&quot;]<br>    B --&gt; C[&quot;#include &quot;window_mgr.h&quot;&quot;]<br>    C --&gt; D[&quot;窗口管理器(window_mgr)的完整声明（含 friend 声明）&quot;]<br>    B --&gt; E[&quot;Screen 类定义（友元声明：friend void window_mgr::clear(ScreenIndex);)&quot;]<br>    <br>    subgraph TU1[&quot;Screen.cpp的翻译单元&quot;]<br>        D<br>        E<br>    end<br></code></pre></td></tr></table></figure>
+<h3 id="编译器对-Screen-h-Screen-cpp-window-mgr-h-window-mgr-cpp-的处理过程"><a href="#编译器对-Screen-h-Screen-cpp-window-mgr-h-window-mgr-cpp-的处理过程" class="headerlink" title="编译器对 Screen.h, Screen.cpp, window_mgr.h, window_mgr.cpp 的处理过程"></a>编译器对 Screen.h, Screen.cpp, window_mgr.h, window_mgr.cpp 的处理过程</h3><pre class="mermaid">flowchart TD
+    A["Screen.cpp"]
+    A --> B["#include "Screen.h""]
+    B --> C["#include "window_mgr.h""]
+    C --> D["窗口管理器(window_mgr)的完整声明（含 friend 声明）"]
+    B --> E["Screen 类定义（友元声明：friend void window_mgr::clear(ScreenIndex);)"]
+
+    subgraph TU1["Screen.cpp的翻译单元"]
+        D
+        E
+    end</pre>
+
 <ul>
 <li>Screen.cpp 中包含 <strong>Screen.h</strong> ,Screen.h 中包含 <strong>window_mgr.h</strong></li>
 <li>此时 window_mgr 已经完整，能正确处理友元声明</li>
 <li>这个翻译单元中包含了 Screen.cpp 的代码，Screen.h 中 Screen 类的定义及友元声明，window_mgr.h 中 window_mgr 的声明（此时 <strong>window_mgr 内部对 Screen 的引用只需前向声明即可</strong>）</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs mermaid">flowchart TD<br>    A[&quot;window_mgr.CPP&quot;]<br>    A --&gt; B[&quot;#include &quot;window_mgr.h&quot;&quot;]<br>    B --&gt; C[&quot;window_mgr 类定义（包含对 Screen 的前向声明）&quot;]<br>    A --&gt; D[&quot;#include &quot;Screen.h&quot;&quot;]<br>    D --&gt; E[Screen 类的完整定义（含友元声明）]<br>    <br>    subgraph &quot;TU2: Window_mgr.cpp 翻译单元&quot;<br>        C<br>        E<br>    end<br></code></pre></td></tr></table></figure>
+<pre class="mermaid">flowchart TD
+    A["window_mgr.CPP"]
+    A --> B["#include "window_mgr.h""]
+    B --> C["window_mgr 类定义（包含对 Screen 的前向声明）"]
+    A --> D["#include "Screen.h""]
+    D --> E[Screen 类的完整定义（含友元声明）]
+
+    subgraph "TU2: Window_mgr.cpp 翻译单元"
+        C
+        E
+    end</pre>
+
 <ul>
 <li><strong>window_mgr.cpp</strong> 首先包含 <strong>window_mgr.h</strong>，这时 window_mgr 中对 Screen 的引用仅为前向声明</li>
 <li>随后在 <strong>window_mgr.cpp</strong> 中包含 <strong>Screen.h</strong>(通过包含获得 Screen.h 的完整定义)，从而可以在 <strong>window_mgr.cpp</strong> 中使用 Screen 类的 <strong>public 成员</strong></li>
