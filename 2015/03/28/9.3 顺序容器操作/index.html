@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang=zh-CN data-theme="light">
+	
+<script src="/js/plugins/toggleTheme.js"></script>
+
+	<script>
+		setTheme();
+	</script>
+	<head>
+		
+<title>9.3 顺序容器操作 | The technology-sea for kin12138</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" type="image/x-icon" href="/images/icon/favicon.ico">
+<link href="/css/plugins/print.css" media="print" rel="stylesheet" />
+
+<link rel="stylesheet" href="/css/index.css">
+
+
+
+<meta name="keywords" content="c++,c++ primer,顺序容器,">
+<meta name="description" content="">
+
+
+
+<script src="/js/plugins/jquery.min.js"></script>
+
+
+<script src="/js/plugins/hljs.min.js"></script>
+
+
+<script src="/js/plugins/init.js"></script>
+
+
+<script src="/js/plugins/hide.js"></script>
+
+
+<script src="/js/plugins/tabs.js"></script>
+
+
+
+    
+
+
+
+
+
+
+
+    
+
+	<meta name="generator" content="Hexo 7.3.0"></head>
+
+	<body>
+		<header class="sticky-header">
+	<nav>
+		<div class="nav-left">
+			<a href="/" class="logo">
+				<img no-lazy src="/images/headers_icon/logo.webp" alt="Quieter">
+			</a>
+			<ul class="breadcrumb" id="breadcrumb"></ul>
+		</div>
+		<div class="nav-right">
+			<ul>
+				
+					<li>
+						<a href="/">
+						  主页
+						</a>
+					</li>
+				
+					<li>
+						<a href="/categories">
+						  类别
+						</a>
+					</li>
+				
+					<li>
+						<a href="/tags">
+						  标签
+						</a>
+					</li>
+				
+					<li>
+						<a href="/archives">
+						  归档
+						</a>
+					</li>
+				
+					<li>
+						<a href="/galleries">
+						  相册
+						</a>
+					</li>
+				
+					<li>
+						<a href="/links">
+						  链接
+						</a>
+					</li>
+				
+					<li>
+						<a href="/about">
+						  关于
+						</a>
+					</li>
+								  
+			</ul>
+		</div>
+		<div class="nav-right-close">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+				<path fill="none" d="M0 0h24v24H0z" />
+				<path d="M3 4h18v2H3V4zm0 7h18v2H3v-2zm0 7h18v2H3v-2z" fill="rgba(68,68,68,1)" />
+			</svg>
+		</div>
+
+		<div class="sidebar">
+    <div class="topo">
+        <p>The technology-sea for kin12138</p>
+    </div>
+    <ul>
+        
+        <li>
+            <a href="/">
+                主页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories">
+                类别
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags">
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives">
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/galleries">
+                相册
+            </a>
+        </li>
+        
+        <li>
+            <a href="/links">
+                链接
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about">
+                关于
+            </a>
+        </li>
+        
+    </ul>
+    <div class="sidebar-footer">
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/Weibo.webp" alt="Quieter">
+        </a>
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/Tieba.webp" alt="Quieter">
+        </a>
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/Bilibili.webp" alt="Quieter">
+        </a>
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/github.webp" alt="Quieter">
+        </a>
+        
+    </div>
+</div>
+<div class='shelter'>
+    <script>
+        $(function() {
+            $('.nav-right-close > svg').click(function() {
+                $('.sidebar').animate({
+                    right: "0"
+                }, 500);
+                $('.shelter').fadeIn("slow");
+            
+                var element = $('.topo');
+                element.addClass('custom-style');
+            
+                var links = null;
+                if ("") {
+                    links = "".split(',');
+                } else {
+                    links = "/images/random_top_img/01.webp,/images/random_top_img/02.webp,/images/random_top_img/03.webp,/images/random_top_img/04.webp,/images/random_top_img/05.webp,/images/random_top_img/06.webp,/images/random_top_img/07.webp".split(',');
+                }
+            
+                var randomLink = links[Math.floor(Math.random() * links.length)];
+                element.css('background-image', "url('" + randomLink + "')");
+            });
+          
+            $('.shelter').click(function(e) {
+                $('.sidebar').animate({
+                    right: "-100%"
+                }, 500);
+                $('.shelter').fadeOut("slow");
+            });
+        });      
+    </script>
+</div>
+	</nav>
+
+	
+		<div class="header-background"></div>
+	
+
+	<script>
+		const name = 'post';
+		const ul = document.querySelectorAll('.nav-right ul')[0];
+		const lis = ul.querySelectorAll('li');
+
+		if (name == 'home') {
+			lis[0].classList.add('select');
+		} else {
+			for (let i = 0; i < lis.length; i++) {
+				const li = lis[i];
+				const a = li.querySelector('a');
+				if (name === a.href.split('/')[3]) {
+					li.classList.add('select');
+				}
+			}
+		}
+	</script>
+	
+	<script>
+		var element = document.querySelector('.header-background');
+		if(element) {
+			element.classList.add('custom-style');
+			var links = null;
+			if("")
+			{
+				links = "".split(',');
+			} else
+			{
+				links = "/images/random_top_img/01.webp,/images/random_top_img/02.webp,/images/random_top_img/03.webp,/images/random_top_img/04.webp,/images/random_top_img/05.webp,/images/random_top_img/06.webp,/images/random_top_img/07.webp".split(',');
+			}
+			var randomLink = links[Math.floor(Math.random() * links.length)];
+			element.style.backgroundImage = "url('" + randomLink + "')";
+		}
+	</script>
+
+	
+<script src="/js/plugins/breadcrumb.js"></script>
+
+	<script>
+		var menus_title = [];
+		
+			menus_title.push({home: '主页'});
+		
+			menus_title.push({categories: '类别'});
+		
+			menus_title.push({tags: '标签'});
+		
+			menus_title.push({archives: '归档'});
+		
+			menus_title.push({galleries: '相册'});
+		
+			menus_title.push({links: '链接'});
+		
+			menus_title.push({about: '关于'});
+		
+		
+			
+				postsBreadcrumb(
+					document.getElementById('breadcrumb'),
+					"类别",
+					"/categories",
+					"technology",
+					"/categories/technology"
+				);
+			
+				postsBreadcrumb(
+					document.getElementById('breadcrumb'),
+					"类别",
+					"/categories",
+					"c++",
+					"/categories/c++"
+				);
+			
+		
+	</script>
+</header>
+
+<div class="main-wrapper">
+    <main class="post">
+        <header class="main-header">
+	
+		
+			
+				
+<link rel="stylesheet" href="/css/plugins/fancybox.css">
+
+				
+<script src="/js/plugins/fancybox.umd.js"></script>
+
+				
+<script src="/js/plugins/fancybox.js"></script>
+
+			
+			<div class="post-header-background-content">
+				<ul class="post-header-tag">
+					
+						
+							<li><a href="/tags/c++"><span>c++</span></a></li>
+						
+							<li><a href="/tags/c++ primer"><span>c++ primer</span></a></li>
+						
+							<li><a href="/tags/顺序容器"><span>顺序容器</span></a></li>
+						
+					
+				</ul>
+				
+				<h1>9.3 顺序容器操作</h1>
+		
+				
+		
+				<div class="post-header-info">
+					<svg t="1604839279282" class="icon" viewBox="0 0 1024 1024" version="1.1"
+					xmlns="http://www.w3.org/2000/svg" p-id="2901" width="20" height="20">
+						<path
+							d="M513 956.3c-247.7 0-448-200.3-448-448S265.3 66.2 513 66.2s448 200.3 448 448-200.3 442.1-448 442.1z m0-830.9c-212.2 0-388.8 170.7-388.8 388.8C124.2 726.3 294.9 903 513 903c212.2 0 388.8-170.7 388.8-388.8S725.2 125.4 513 125.4z m0 430.2c-94.2 0-170.7-76.5-170.7-170.7S418.8 207.8 513 207.8s170.7 76.5 170.7 170.7S607.2 555.6 513 555.6z m0-289.1c-64.6 0-112 52.8-112 112s47.4 117.9 112 117.9 112-52.8 112-112-47.4-117.9-112-117.9z m0 689.8c-135.7 0-259-58.7-341.9-158.9l-11.8-17.8 11.8-17.8c76.5-117.9 206.2-188.5 347.8-188.5 135.7 0 265 64.6 341.9 182.6l11.8 17.8-11.8 17.8C778 897.1 648.7 956.3 513 956.3zM230.3 773.2C300.9 849.7 406.9 897 513 897c112 0 218.1-47.4 288.6-129.8-70.5-88.2-170.7-135.6-282.7-135.6s-218.1 53.3-288.6 141.6z"
+							p-id="2902" fill="#ffffff"></path>
+					</svg>
+					<div class="post-header-info-author">
+						<a href="/about">kin12138</a>
+					</div>
+					
+						<div class="post-header-info-categories">
+							
+								<a href="/categories/technology">technology</a>
+							
+								<a href="/categories/c++">c++</a>
+							
+						</div>
+					
+					<time>2015/03/28 00:00:00</time>
+				</div>
+		
+				
+					<div class="post-header-stat">
+						<svg version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+						viewBox="0 0 200 200" enable-background="new 0 0 200 200" xml:space="preserve" width="20" height="20">
+							<path fill="#FFFFFF" d="M187.2,165.6c0,2.6-2.1,4.7-4.7,4.7H17.5c-2.6,0-4.7-2.1-4.7-4.7s2.1-4.7,4.7-4.7h165.1
+								C185.2,160.9,187.2,163,187.2,165.6z"/>
+							<path fill="#FFFFFF" d="M17.5,29.7c2.6,0,4.7,2.1,4.7,4.7v131.2c0,2.6-2.1,4.7-4.7,4.7s-4.7-2.1-4.7-4.7V34.4
+								C12.8,31.8,14.9,29.7,17.5,29.7z M77.9,91.5c1.8,1.8,1.8,4.8,0,6.6l-39.8,39.8c-1.9,1.8-4.9,1.7-6.6-0.2c-1.7-1.8-1.7-4.6,0-6.4
+								l39.8-39.8C73.1,89.6,76,89.6,77.9,91.5z M169.9,70.2c1.6,2.1,1.1,5-0.9,6.5c0,0,0,0,0,0l-64.2,48.2c-2.1,1.5-5,1.1-6.6-0.9
+								c-1.6-2.1-1.1-5,0.9-6.5c0,0,0,0,0,0l64.2-48.2C165.4,67.7,168.3,68.1,169.9,70.2L169.9,70.2z"/>
+							<path fill="#FFFFFF" d="M104.6,124.5c-1.8,1.8-4.8,1.8-6.6,0L71.6,98.1c-1.8-1.8-1.8-4.8,0-6.6c1.8-1.8,4.8-1.8,6.6,0l26.3,26.3
+								C106.4,119.6,106.4,122.6,104.6,124.5C104.6,124.4,104.6,124.4,104.6,124.5z"/>
+						</svg>
+		
+						
+							
+<script src="/js/plugins/wordCount.js"></script>
+
+							<p class="post-count">文字数：---</p>
+						
+		
+						
+							<p id="busuanzi_container_page_pv" style='display:none;'>阅读数：<span id="busuanzi_value_page_pv"></span></p>
+						
+					</div>
+				
+			</div>
+		
+	
+</header>
+        <div class="post-content article-container">
+            <article class="post-content-info">
+                <h2 id="向顺序容器添加元素"><a href="#向顺序容器添加元素" class="headerlink" title="向顺序容器添加元素"></a>向顺序容器添加元素</h2><ul>
+<li>除 array 外，所有容器都可以动态添加或删除元素</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>c.push_back(t) <br> c.emplace_back(args)</td>
+<td>在 c 的尾部创建一个值为 t 或由 args 创建的元素。返回 void</td>
+</tr>
+<tr>
+<td>c.push_front(t) <br> c.emplace_front(args)</td>
+<td>在 c 的头部创建一个值为 t 或由 args 创建的元素。返回void</td>
+</tr>
+<tr>
+<td>c.insert(p, t) <br> c.emplace(p, args)</td>
+<td>在迭代器 <strong>p 指向的元素之前</strong>创建一个值为 t 或由 args 创建的元素。<strong>返回指向新添加元素的迭代器</strong></td>
+</tr>
+<tr>
+<td>c.insert(p, n, t)</td>
+<td>在迭代器 <strong>p 指向的元素之前</strong>插入 n 个值为 t 的元素。<strong>返回指向新添加的第一个元素的迭代器</strong>；若 <strong>n 为 0</strong>，则<strong>返回 p</strong>。</td>
+</tr>
+<tr>
+<td>c.insert(p, begin, end)</td>
+<td>将迭代器 begin 和 end 指向范围内的元素插入到迭代器 p 指向的元素之前。<strong>begin 和 end 不能指向 c 中的元素</strong>。<strong>返回指向新添加第一个元素的迭代器</strong>；若<strong>范围为空</strong>，则<strong>返回 p</strong></td>
+</tr>
+<tr>
+<td>c.insert(p, il)</td>
+<td>il 是 {} 包围的元素值列表。将这些给定值插入到迭代器 p 指向的元素之前。<strong>返回指向新添加第一个元素的迭代器</strong>；若列表为空，则返回 p</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>forward_list 有自己专有版本的 insert 和 emplace</li>
+<li><strong>forward_list</strong> <strong>不支持</strong> push_back 和 emplace_back</li>
+<li><strong>vector 和 string 不支持</strong> push_front 和 emplace_front</li>
+<li>向 <strong>vector、string、deque 插入元素</strong>会使指向容器的<strong>所有迭代器、引用、指针失效</strong></li>
+<li>不同容器使用不同的内存分配策略</li>
+<li>在 <strong>vector 或 string 尾部之外</strong>，或 <strong>deque 的首尾之外</strong>的任何位置<strong>添加元素</strong>，都<strong>需要移动元素</strong></li>
+<li>向 vector 或 string 添加元素，可能引起整个对象存储空间的重新分配。重新分配对象存储空间需要重新分配内存，并将元素从旧的内存空间移动到新的内存空间</li>
+</ul>
+<h3 id="元素容器是拷贝"><a href="#元素容器是拷贝" class="headerlink" title="元素容器是拷贝"></a>元素容器是拷贝</h3><ul>
+<li>使用对象来初始化容器，或将一个对象插入到容器中时，实际放入容器的是对象的拷贝</li>
+</ul>
+<h3 id="push-back"><a href="#push-back" class="headerlink" title="push_back"></a>push_back</h3><ul>
+<li>vector, string, list, deque 都支持 push_back</li>
+</ul>
+<h3 id="push-front"><a href="#push-front" class="headerlink" title="push_front"></a>push_front</h3><ul>
+<li>list, forward_list, deque 支持 push_front</li>
+<li>vector 不支持 push_front</li>
+</ul>
+<h3 id="在容器特定位置添加元素"><a href="#在容器特定位置添加元素" class="headerlink" title="在容器特定位置添加元素"></a>在容器特定位置添加元素</h3><ul>
+<li>vector, deque, list, string 都支持 insert</li>
+<li>forward_list 有自己版本的 insert</li>
+<li><p>有些容器不支持 push_front，但支持 insert，可以用 insert 在容器开始位置添加元素</p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">vector&lt;string&gt; vec;<br>vec.<span class="hljs-built_in">insert</span>(vec.<span class="hljs-built_in">begin</span>(), <span class="hljs-string">&quot;hello&quot;</span>);<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="emplace-操作"><a href="#emplace-操作" class="headerlink" title="emplace 操作"></a>emplace 操作</h4><ul>
+<li>emplace, emplace_front, emplace_back 是<strong>构造元素</strong>，而不是拷贝元素</li>
+<li>调用 push 或 insert 成员，是将元素类型的对象传递给它们，这些<strong>对象被拷贝到容器中</strong></li>
+<li>调用 emplace 成员，是将参数传递给元素类型的构造函数。emplace 成员使用参数在容器管理的内存空间直接构造元素</li>
+<li>传递给 emplace 函数的参数必须与元素类型的构造函数相匹配</li>
+</ul>
+<hr>
+<h2 id="访问元素"><a href="#访问元素" class="headerlink" title="访问元素"></a>访问元素</h2><ul>
+<li>所有顺序容器都有 front 成员函数，返回首元素引用</li>
+<li><strong>除 forward_list 之外</strong>，所有顺序容器都有 back 成员函数，返回尾元素引用</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>c.back()</td>
+<td>返回 c 中尾元素的引用。若 c 为空，则函数行为未定义</td>
+</tr>
+<tr>
+<td>c.front()</td>
+<td>返回 c 中首元素的引用。若 c 为空，则函数行为未定义</td>
+</tr>
+<tr>
+<td>c[n]</td>
+<td>返回 c 中下标为 n 的元素的引用。n 是无符号整数，若 n &gt; c.size(), 则函数行为未定义</td>
+</tr>
+<tr>
+<td>c.at(n)</td>
+<td>返回 c 中下标为 n 的元素的引用。如果下标越界，抛出 out_of_range 异常</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>at 只适用于 string，vector，deque，array</li>
+<li>back 不适用于 forward_list</li>
+</ul>
+<hr>
+<h2 id="删除元素"><a href="#删除元素" class="headerlink" title="删除元素"></a>删除元素</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>c.pop_back()</td>
+<td>删除 c 中尾元素。若 c 为空，函数行为未定义。返回 void</td>
+</tr>
+<tr>
+<td>c.pop_front()</td>
+<td>删除 c 中首元素。若 c 为空，函数行为未定义。返回 void</td>
+</tr>
+<tr>
+<td>c.erase(p)</td>
+<td>删除迭代器 p 指向的元素，<strong>返回一个指向被删元素之后元素的迭代器</strong>。若 p 指向尾元素，则返回尾后(off-the-end)顶点。若 p 是尾后迭代器，函数行为未定义</td>
+</tr>
+<tr>
+<td>c.erase(b, e)</td>
+<td>删除迭代器 b, e 指定范围内的元素。返回一个指向最后一个被删元素之后元素的迭代器。若 e 本身是尾后迭代器，则返回的也是尾后迭代器</td>
+</tr>
+<tr>
+<td>c.clear()</td>
+<td>删除 c 中所有元素，返回 void</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>这些删除操作会改变容器大小，因此不适用于 array</li>
+<li>forward_list 有自己版本的 erase</li>
+<li>f<strong>orward_list 不支持 pop_back</strong></li>
+<li><strong>vector、string 不支持 pop_fron</strong>t</li>
+<li>删除 <strong>deque 除首尾之外</strong>的元素，会使所有迭代器、引用、指针失效</li>
+<li>指向 <strong>vector 或 string 删除点之后位置</strong>的迭代器、引用、指针失效</li>
+<li>删除元素的成员函数不检查参数，因此必须确保被删除元素存在</li>
+</ul>
+<hr>
+<h2 id="forward-list-特殊操作"><a href="#forward-list-特殊操作" class="headerlink" title="forward_list 特殊操作"></a>forward_list 特殊操作</h2><ul>
+<li>在单向链表中，没有简单的方法来获取一个元素的前驱。</li>
+<li>在 forward_list 中添加删除操作都是通过<strong>改变给定元素之后的元素</strong>来完成</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>lst.before_begin() <br> lst.cbefore_begin()</td>
+<td><strong>返回指向链表首元素之前不存在元素的迭代器</strong>。此迭代器<strong>不能解引用</strong>。cbefore_begin 返回 const_iterator</td>
+</tr>
+<tr>
+<td>lst.insert_after(p, t) <br> lst.insert_after(p, n, t) <br> lst.insert_after(p, b, e) <br> lst.insert(p, il)</td>
+<td>在迭代器 <strong>p 之后的位置插入元素</strong>。<br> t 是一个对象，n 是数量，b 和 e 是一对表示范围的迭代器（<strong>b，e 不能指向 lst 内</strong>），il 是一个花括号列表。<br> <strong>返回指向最后一个插入元素的迭代器</strong>。如果<strong>范围为空，则返回 p</strong>。如果 p 是尾后迭代器，则函数行为未定义</td>
+</tr>
+<tr>
+<td>emplace_after(p, args)</td>
+<td>使用 args 在 <strong>p 指定位置之后创建</strong>一个元素。<br> <strong>返回一个指向新元素的迭代器</strong>。若 p 为尾后迭代器，函数行为未定义</td>
+</tr>
+<tr>
+<td>lst.erase_after(p) <br> lst.erase_after(b, e)</td>
+<td>删除迭代器 <strong>p 指定位置之后</strong>的元素。或删除 <strong>从 b 之后直到（但不包括） e</strong> 之间的元素。<br> <strong>返回一个指向被删元素之后元素的迭代器</strong>。若<strong>不存在</strong>这样的元素，<strong>返回尾后迭代器</strong>；如果 <strong>p 指向 lst 的尾元素</strong>或者是<strong>尾后迭代器</strong>，函数行为未定义</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li><p>在 forward_list 中添加或删除元素时，必须关注两个迭代器：一<strong>个指向要处理的元素</strong>，另<strong>一个指向其前驱</strong></p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">forward_list&lt;<span class="hljs-type">int</span>&gt; flst&#123;<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>&#125;;<br><span class="hljs-keyword">auto</span> prev = flst.<span class="hljs-built_in">before_begin</span>();        <span class="hljs-comment">// 指向 flst 的首前元素</span><br><span class="hljs-keyword">auto</span> curr = flst.<span class="hljs-built_in">begin</span>();               <span class="hljs-comment">// 指向 flst 的首元素</span><br><span class="hljs-keyword">while</span> (curr != flst.<span class="hljs-built_in">end</span>()) &#123;<br>    <span class="hljs-keyword">if</span> (*curr % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>) &#123;<br>        curr = flst.<span class="hljs-built_in">erase_after</span>(prev);  <span class="hljs-comment">// 删除元素并移动 curr</span><br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        prev = curr;                    <br>        ++curr;                         <span class="hljs-comment">// 移动 curr，指向下一个元素，prev 指向 curr 前驱</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h2 id="改变容器大小"><a href="#改变容器大小" class="headerlink" title="改变容器大小"></a>改变容器大小</h2><ul>
+<li>使用 <strong>resize</strong> 增大或缩小容器大小</li>
+<li>当前大小 &lt; 要求大小，容器后面元素会被删除</li>
+<li>当前大小 &gt; 要求大小，会将新元素添加到容器后面</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>c.resize(n)</td>
+<td>调整 c 的大小为 n 个元素。<br> 若 n &lt; c.size(), 则多出的元素会被删除 <br> 若必须添加新元素，则对新元素进行值初始化</td>
+</tr>
+<tr>
+<td>c.resize(n, t)</td>
+<td>调整 c 的大小为 n 个元素。<br> 任何新添加的元素都初始化为 t</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>resize 不适用于 array</li>
+<li>如果 resize 缩小容器大小，则指向被删除元素的迭代器、指针、引用都失效</li>
+<li>对 vector、string、deque 使用 resize 可能导致迭代器、引用、指针失效</li>
+</ul>
+<hr>
+<h2 id="容器操作可能使迭代器失效"><a href="#容器操作可能使迭代器失效" class="headerlink" title="容器操作可能使迭代器失效"></a>容器操作可能使迭代器失效</h2><h3 id="向容器添加元素后"><a href="#向容器添加元素后" class="headerlink" title="向容器添加元素后"></a>向容器添加元素后</h3><ul>
+<li><strong>vector</strong> 、<strong>string</strong>：<strong>存储空间被重新分配</strong>，则指向容器的<strong>迭代器、引用、指针失效</strong>；<strong>存储空间未重新分配</strong>，则指向<strong>插入元素之前</strong>的<strong>迭代器、引用、指针有效</strong>，指向<strong>插入元素之后</strong>的<strong>迭代器、引用、指针都失效</strong></li>
+<li><strong>deque</strong>：插入到<strong>首尾位置之外</strong>的任何位置<strong>都会使迭代器、引用、指针失效</strong>。<strong>首尾位置添加元素</strong>，<strong>迭代器会失效</strong>，<strong>但</strong>指向容器内元素的<strong>引用、指针不会失效</strong></li>
+<li><strong>list</strong>、<strong>forward_list</strong>：<strong>迭代器、指针、引用仍有效</strong></li>
+</ul>
+<h3 id="从容器删除元素后"><a href="#从容器删除元素后" class="headerlink" title="从容器删除元素后"></a>从容器删除元素后</h3><ul>
+<li><strong>vector、string</strong>：指向<strong>被删元素之前</strong>的迭代器、引用、指针仍有效</li>
+<li><strong>deque</strong>：<strong>首尾之外</strong>删除元素，指向被删元素之外的<strong>其他迭代器、引用、指针都失效</strong>。<strong>删除尾元素</strong>，<strong>尾后迭代器失效</strong>，其他迭代器、引用、指针仍有效。<strong>删除首元素</strong>，不会受影响</li>
+<li><strong>list、forward_list</strong>：指向容器其他位置的迭代器（包括尾后迭代器和首前迭代器）、引用、指针<strong>仍有效</strong></li>
+</ul>
+<h3 id="不要保存-end-返回的迭代器"><a href="#不要保存-end-返回的迭代器" class="headerlink" title="不要保存 end 返回的迭代器"></a>不要保存 end 返回的迭代器</h3><ul>
+<li>vector、string 添加删除元素，或 deque 除首位置之外添加删除元素，都<strong>会导致尾后迭代器失效</strong>，因此添加删除元素的循环过程必须反复调用 end()，不能在循环前保存 end</li>
+</ul>
+<h3 id="NOTE"><a href="#NOTE" class="headerlink" title="NOTE"></a>NOTE</h3><ul>
+<li><strong>复合赋值语句</strong>（+=）只适用于 vector、string、deque、array，<strong>不适用于 list，forward_list</strong></li>
+</ul>
+
+            </article>
+            
+	<aside class="rightside">
+	
+		<div class="rightside-button" id="js-aside">
+			<span>
+				<img no-lazy src="/images/icon/aside.png" class="rightside-button-icon" alt="Icon">
+			</span>
+		</div>
+		<script>
+			$("#js-aside").click(function () {
+				onShowAsideButton();
+			});
+		</script>
+	
+	<div class="rightside-button" id="js-toggle_theme">
+		<span>
+			<img no-lazy src="/images/icon/toggle_theme.png" class="rightside-button-icon" alt="Icon">
+		</span>
+	</div>
+
+	
+<script src="/js/plugins/goto_position.js"></script>
+
+	
+	<div class="rightside-button" id="js-go_top">
+		<span>
+			<img no-lazy src="/images/icon/go_top.png" class="rightside-button-icon" alt="Icon">
+		</span>
+	</div>
+	<div class="rightside-button" id="js-go_bottom">
+		<span>
+			<img no-lazy src="/images/icon/go_bottom.png" class="rightside-button-icon" alt="Icon">
+		</span>
+	</div>
+
+	<script>
+		setToggleThemeButtonListener();
+	</script>
+	<script>
+		$('#js-go_top')
+		.gotoPosition( {
+			speed: 300,
+			target: 'top',
+		} );
+		$('#js-go_bottom')
+		.gotoPosition( {
+			speed: 300,
+			target: 'bottom',
+		} );
+	</script>
+</aside>
+
+
+<div class="post-bottom">
+    
+        <div class="post-paging">     
+            <div class="post-paging-last">
+                
+                    <a href="/2025/03/20/hello-world/">
+                        上一篇：Hello World
+                    </a>
+                
+            </div>
+            <div class="post-paging-next">
+                
+            </div>
+        </div>
+    
+    
+    
+        
+    
+</div>
+        </div>
+    </main>
+    
+        <aside class="main-aside">
+    
+<script src="/js/widgets/aside.js"></script>
+
+    <script>
+        showAside();
+    </script>
+
+    <div class="aside-top">
+        <div class="aside-top-about aside-card">
+            <a href="/about" class="aside-top-about-portrait">
+                <img no-lazy src="/images/about_icon/about_icon.webp" alt="Q">
+            </a>
+            <div class="aside-top-about-info">
+                <span class="author"> kin12138</span>
+                <span class="description">This is life, it's suck, but i love it</span>
+            </div>              
+            <div class="aside-top-about-site">
+                <a href="/categories" class="aside-top-about-site-item">
+                    <span class="title">类别</span>
+                    <span class="count">8</span>
+                </a>
+                <a href="/tags" class="aside-top-about-site-item">
+                    <span class="title">标签</span>
+                    <span class="count">7</span>
+                </a>
+                <a href="/archives" class="aside-top-about-site-item">
+                    <span class="title">归档</span>
+                    <span class="count">14</span>
+                </a>
+            </div>
+            <div class="aside-top-about-contact">
+                
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/Weibo.webp" alt="Quieter">
+                        </a>
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/Tieba.webp" alt="Quieter">
+                        </a>
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/Bilibili.webp" alt="Quieter">
+                        </a>
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/github.webp" alt="Quieter">
+                        </a>
+                    
+                
+            </div>
+        </div> 
+
+        
+    </div>
+
+    <div class="aside-bottom">
+        
+            <script>
+                
+                    const tocCollapsed = true;
+                
+                
+                    const tocDepth = 6;
+                
+                var headerString = '';
+                for (let i = 1; i <= tocDepth; i++) {
+                    if (i === 1) {
+                        headerString += 'h1';
+                    } else {
+                        headerString += ', h' + i;
+                    }
+                }
+                hbeToc();
+            </script>
+            <div class="aside-bottom-toc aside-card">
+                <div class="aside-bottom-toc-title">
+                    <h1>目录</h1>
+                    <span class="toc-percentage"></span>
+                </div>
+                <ol class="aside-bottom-toc-content"></ol>
+            </div>
+        
+    </div>
+</aside>
+    
+</div>
+		<footer>
+	<div class="content">
+		
+			<span>©2025&nbsp;By&nbsp;<a href="/about">kin12138</a>.</span>
+		
+		<span><a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> theme by <a target="_blank" rel="noopener" href="https://github.com/GZ-Metal-Cell/hexo-theme-quieter">Quieter</a>.</span>
+		
+	</div>
+
+	
+<script src="/js/plugins/ref.js"></script>
+
+	
+<script src="/js/plugins/highlight_tools.js"></script>
+
+	<script>
+		var copyIcon = "/images/icon/copy.png";
+		var closeCodeBlockIcon = "/images/icon/close_code_block.png";
+		var highlightShrink = "";
+		var HighlightHeightLimit = "";
+	</script>
+	
+	<!-- Analytics -->
+
+    
+        <!-- Busuanzi Analytics -->
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+
+
+	
+
+	
+
+    
+		
+<script src="/js/plugins/replaceSpacesWithNbsp.js"></script>
+
+	
+
+	
+	
+	
+		<script>
+			if (typeof init === 'function') {
+				init();
+			}
+		</script>
+	
+
+	
+		
+	
+
+	
+
+	<!--
+		
+<script src="/js/plugins/jquery.pjax.min.js"></script>
+
+		<script>
+			$(document).pjax('a[target!=_blank]', 'main', {
+				fragment: 'main',
+				timeout: 8000
+			});
+
+			$(document).on('pjax:complete', function() {
+			});
+		</script> 
+	-->
+	<script>
+		console.log('\n %c Hexo-Quieter 主题 %c https://github.com/GZ-Metal-Cell/hexo-theme-quieter \n', 'color: #fadfa3; background: #030307; padding:5px 0;', 'background: #fadfa3; padding:5px 0;')
+	</script>
+</footer>
+	</body>
+
+	<!-- Hexo-Quieter 主题  https://github.com/GZ-Metal-Cell/hexo-theme-quieter -->
+</html>
+
