@@ -8,7 +8,7 @@
 	</script>
 	<head>
 		
-<title>9.3 顺序容器操作 | The technology-sea for kin12138</title>
+<title>8.1 IO 类 | The technology-sea for kin12138</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -19,7 +19,7 @@
 
 
 
-<meta name="keywords" content="c++,c++ primer,顺序容器,">
+<meta name="keywords" content="c++,c++ primer,IO 类,">
 <meta name="description" content="">
 
 
@@ -323,12 +323,12 @@
 						
 							<li><a href="/tags/c++ primer"><span>c++ primer</span></a></li>
 						
-							<li><a href="/tags/顺序容器"><span>顺序容器</span></a></li>
+							<li><a href="/tags/IO 类"><span>IO 类</span></a></li>
 						
 					
 				</ul>
 				
-				<h1>9.3 顺序容器操作</h1>
+				<h1>8.1 IO 类</h1>
 		
 				
 		
@@ -351,7 +351,7 @@
 							
 						</div>
 					
-					<time>2015/03/28 00:00:00</time>
+					<time>2025/03/28 00:00:00</time>
 				</div>
 		
 				
@@ -386,241 +386,112 @@
 </header>
         <div class="post-content article-container">
             <article class="post-content-info">
-                <h2 id="向顺序容器添加元素"><a href="#向顺序容器添加元素" class="headerlink" title="向顺序容器添加元素"></a>向顺序容器添加元素</h2><ul>
-<li>除 array 外，所有容器都可以动态添加或删除元素</li>
-</ul>
-<div class="table-container">
+                <h2 id="IO-库类型和头文件"><a href="#IO-库类型和头文件" class="headerlink" title="IO 库类型和头文件"></a>IO 库类型和头文件</h2><div class="table-container">
 <table>
 <thead>
 <tr>
-<th>Operation</th>
-<th>Description</th>
+<th style="text-align:center">头文件</th>
+<th style="text-align:left">类型</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>c.push_back(t) <br> c.emplace_back(args)</td>
-<td>在 c 的尾部创建一个值为 t 或由 args 创建的元素。返回 void</td>
+<td style="text-align:center">iostream</td>
+<td style="text-align:left">istream, wistream: 从流读出数据 <br> ostream, wostream: 向流写入数据 <br> iostream, wiostream: 读写流</td>
 </tr>
 <tr>
-<td>c.push_front(t) <br> c.emplace_front(args)</td>
-<td>在 c 的头部创建一个值为 t 或由 args 创建的元素。返回void</td>
+<td style="text-align:center">fstream</td>
+<td style="text-align:left">ifstream, wifstream: 从文件读取数据 <br> ofstream, wofstream: 向文件写入数据 <br> iofstream, wiostream: 读写文件</td>
 </tr>
 <tr>
-<td>c.insert(p, t) <br> c.emplace(p, args)</td>
-<td>在迭代器 <strong>p 指向的元素之前</strong>创建一个值为 t 或由 args 创建的元素。<strong>返回指向新添加元素的迭代器</strong></td>
-</tr>
-<tr>
-<td>c.insert(p, n, t)</td>
-<td>在迭代器 <strong>p 指向的元素之前</strong>插入 n 个值为 t 的元素。<strong>返回指向新添加的第一个元素的迭代器</strong>；若 <strong>n 为 0</strong>，则<strong>返回 p</strong>。</td>
-</tr>
-<tr>
-<td>c.insert(p, begin, end)</td>
-<td>将迭代器 begin 和 end 指向范围内的元素插入到迭代器 p 指向的元素之前。<strong>begin 和 end 不能指向 c 中的元素</strong>。<strong>返回指向新添加第一个元素的迭代器</strong>；若<strong>范围为空</strong>，则<strong>返回 p</strong></td>
-</tr>
-<tr>
-<td>c.insert(p, il)</td>
-<td>il 是 {} 包围的元素值列表。将这些给定值插入到迭代器 p 指向的元素之前。<strong>返回指向新添加第一个元素的迭代器</strong>；若列表为空，则返回 p</td>
+<td style="text-align:center">sstream</td>
+<td style="text-align:left">istringstream, wistringstream: 从 string 读取数据 <br> ostringstream, wostringstream: 向 string 写入数据 <br> stringstream, wstringstream: 读写 string</td>
 </tr>
 </tbody>
 </table>
 </div>
-<ul>
-<li>forward_list 有自己专有版本的 insert 和 emplace</li>
-<li><strong>forward_list</strong> <strong>不支持</strong> push_back 和 emplace_back</li>
-<li><strong>vector 和 string 不支持</strong> push_front 和 emplace_front</li>
-<li>向 <strong>vector、string、deque 插入元素</strong>会使指向容器的<strong>所有迭代器、引用、指针失效</strong></li>
-<li>不同容器使用不同的内存分配策略</li>
-<li>在 <strong>vector 或 string 尾部之外</strong>，或 <strong>deque 的首尾之外</strong>的任何位置<strong>添加元素</strong>，都<strong>需要移动元素</strong></li>
-<li>向 vector 或 string 添加元素，可能引起整个对象存储空间的重新分配。重新分配对象存储空间需要重新分配内存，并将元素从旧的内存空间移动到新的内存空间</li>
+<h3 id="IO-对象无拷贝或赋值"><a href="#IO-对象无拷贝或赋值" class="headerlink" title="IO 对象无拷贝或赋值"></a>IO 对象无拷贝或赋值</h3><ul>
+<li>通常以<strong>引用</strong>的形式传递和返回流</li>
 </ul>
-<h3 id="元素容器是拷贝"><a href="#元素容器是拷贝" class="headerlink" title="元素容器是拷贝"></a>元素容器是拷贝</h3><ul>
-<li>使用对象来初始化容器，或将一个对象插入到容器中时，实际放入容器的是对象的拷贝</li>
-</ul>
-<h3 id="push-back"><a href="#push-back" class="headerlink" title="push_back"></a>push_back</h3><ul>
-<li>vector, string, list, deque 都支持 push_back</li>
-</ul>
-<h3 id="push-front"><a href="#push-front" class="headerlink" title="push_front"></a>push_front</h3><ul>
-<li>list, forward_list, deque 支持 push_front</li>
-<li>vector 不支持 push_front</li>
-</ul>
-<h3 id="在容器特定位置添加元素"><a href="#在容器特定位置添加元素" class="headerlink" title="在容器特定位置添加元素"></a>在容器特定位置添加元素</h3><ul>
-<li>vector, deque, list, string 都支持 insert</li>
-<li>forward_list 有自己版本的 insert</li>
-<li><p>有些容器不支持 push_front，但支持 insert，可以用 insert 在容器开始位置添加元素</p>
-  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">vector&lt;string&gt; vec;<br>vec.<span class="hljs-built_in">insert</span>(vec.<span class="hljs-built_in">begin</span>(), <span class="hljs-string">&quot;hello&quot;</span>);<br></code></pre></td></tr></table></figure>
+<h3 id="条件状态-condition-state"><a href="#条件状态-condition-state" class="headerlink" title="条件状态(condition state)"></a>条件状态(condition state)</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">类型与函数</th>
+<th style="text-align:left">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">strm::iostate</td>
+<td style="text-align:left">strm 是一种 IO 类型，iostate 提供了表达condition state的完整功能</td>
+</tr>
+<tr>
+<td style="text-align:left">strm::badbit</td>
+<td style="text-align:left">用来指出流已崩溃</td>
+</tr>
+<tr>
+<td style="text-align:left">strm::failbit</td>
+<td style="text-align:left">用来指出一个 IO 操作失败了</td>
+</tr>
+<tr>
+<td style="text-align:left">strm::eofbit</td>
+<td style="text-align:left">用来指出流到达了文件结束</td>
+</tr>
+<tr>
+<td style="text-align:left">strm::goodbit</td>
+<td style="text-align:left">用来指出流未处于错误状态，此值保证为零</td>
+</tr>
+<tr>
+<td style="text-align:left">s.eof()</td>
+<td style="text-align:left">若流 s 的 eofbit 置位，返回 true</td>
+</tr>
+<tr>
+<td style="text-align:left">s.fail()</td>
+<td style="text-align:left">若 s 的 failbit / badbit 置位，则返回 true</td>
+</tr>
+<tr>
+<td style="text-align:left">s.bad()</td>
+<td style="text-align:left">若 s 的badbit 置位，则返回 true</td>
+</tr>
+<tr>
+<td style="text-align:left">s.good()</td>
+<td style="text-align:left">若 s 处于有效状态，则返回 true</td>
+</tr>
+<tr>
+<td style="text-align:left">s.clear()</td>
+<td style="text-align:left">将流 s 的所有条件状态位置位，将流的状态设置为有效，返回 void</td>
+</tr>
+<tr>
+<td style="text-align:left">s.clear(flags)</td>
+<td style="text-align:left">根据给定的 flag 标志位，将流中对应的条件状态位<strong>复位</strong>。flags 类型为 strm::iostate。返回 void</td>
+</tr>
+<tr>
+<td style="text-align:left">s.setstate(flags)</td>
+<td style="text-align:left">根据给定的 flag 标志位，将流中对应的条件状态位<strong>置位</strong>，flags 类型为 strm::iostate。返回 void</td>
+</tr>
+<tr>
+<td style="text-align:left">s.rdstate()</td>
+<td style="text-align:left">返回流 s 的当前条件状态，返回值类型为 strm::iostate</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="确定一个流状态的最简单方法"><a href="#确定一个流状态的最简单方法" class="headerlink" title="确定一个流状态的最简单方法"></a>确定一个流状态的最简单方法</h3><ul>
+<li><p>将它作为<strong>条件</strong>来使用</p>
+<p>  while 循环检查 &gt;&gt; 表达式返回的流状态。如果输入操作成功，则保持流状态，条件为真。</p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">while</span>(cin &gt;&gt; word) &#123;<br>    <span class="hljs-comment">// ok: 读操作成功</span><br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
 </ul>
-<h4 id="emplace-操作"><a href="#emplace-操作" class="headerlink" title="emplace 操作"></a>emplace 操作</h4><ul>
-<li>emplace, emplace_front, emplace_back 是<strong>构造元素</strong>，而不是拷贝元素</li>
-<li>调用 push 或 insert 成员，是将元素类型的对象传递给它们，这些<strong>对象被拷贝到容器中</strong></li>
-<li>调用 emplace 成员，是将参数传递给元素类型的构造函数。emplace 成员使用参数在容器管理的内存空间直接构造元素</li>
-<li>传递给 emplace 函数的参数必须与元素类型的构造函数相匹配</li>
+<h3 id="刷新输出缓冲区"><a href="#刷新输出缓冲区" class="headerlink" title="刷新输出缓冲区"></a>刷新输出缓冲区</h3><ul>
+<li>endl: 输出缓冲区内容和一个换行，然后刷新缓冲区</li>
+<li>flush：输出缓冲区内容，刷新缓冲区，不附加任何字符</li>
+<li>ends：输出缓冲区内容和一个空字符，然后刷新缓冲区</li>
 </ul>
-<hr>
-<h2 id="访问元素"><a href="#访问元素" class="headerlink" title="访问元素"></a>访问元素</h2><ul>
-<li>所有顺序容器都有 front 成员函数，返回首元素引用</li>
-<li><strong>除 forward_list 之外</strong>，所有顺序容器都有 back 成员函数，返回尾元素引用</li>
-</ul>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>Operation</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>c.back()</td>
-<td>返回 c 中尾元素的引用。若 c 为空，则函数行为未定义</td>
-</tr>
-<tr>
-<td>c.front()</td>
-<td>返回 c 中首元素的引用。若 c 为空，则函数行为未定义</td>
-</tr>
-<tr>
-<td>c[n]</td>
-<td>返回 c 中下标为 n 的元素的引用。n 是无符号整数，若 n &gt; c.size(), 则函数行为未定义</td>
-</tr>
-<tr>
-<td>c.at(n)</td>
-<td>返回 c 中下标为 n 的元素的引用。如果下标越界，抛出 out_of_range 异常</td>
-</tr>
-</tbody>
-</table>
-</div>
-<ul>
-<li>at 只适用于 string，vector，deque，array</li>
-<li>back 不适用于 forward_list</li>
-</ul>
-<hr>
-<h2 id="删除元素"><a href="#删除元素" class="headerlink" title="删除元素"></a>删除元素</h2><div class="table-container">
-<table>
-<thead>
-<tr>
-<th>Operation</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>c.pop_back()</td>
-<td>删除 c 中尾元素。若 c 为空，函数行为未定义。返回 void</td>
-</tr>
-<tr>
-<td>c.pop_front()</td>
-<td>删除 c 中首元素。若 c 为空，函数行为未定义。返回 void</td>
-</tr>
-<tr>
-<td>c.erase(p)</td>
-<td>删除迭代器 p 指向的元素，<strong>返回一个指向被删元素之后元素的迭代器</strong>。若 p 指向尾元素，则返回尾后(off-the-end)顶点。若 p 是尾后迭代器，函数行为未定义</td>
-</tr>
-<tr>
-<td>c.erase(b, e)</td>
-<td>删除迭代器 b, e 指定范围内的元素。返回一个指向最后一个被删元素之后元素的迭代器。若 e 本身是尾后迭代器，则返回的也是尾后迭代器</td>
-</tr>
-<tr>
-<td>c.clear()</td>
-<td>删除 c 中所有元素，返回 void</td>
-</tr>
-</tbody>
-</table>
-</div>
-<ul>
-<li>这些删除操作会改变容器大小，因此不适用于 array</li>
-<li>forward_list 有自己版本的 erase</li>
-<li>f<strong>orward_list 不支持 pop_back</strong></li>
-<li><strong>vector、string 不支持 pop_fron</strong>t</li>
-<li>删除 <strong>deque 除首尾之外</strong>的元素，会使所有迭代器、引用、指针失效</li>
-<li>指向 <strong>vector 或 string 删除点之后位置</strong>的迭代器、引用、指针失效</li>
-<li>删除元素的成员函数不检查参数，因此必须确保被删除元素存在</li>
-</ul>
-<hr>
-<h2 id="forward-list-特殊操作"><a href="#forward-list-特殊操作" class="headerlink" title="forward_list 特殊操作"></a>forward_list 特殊操作</h2><ul>
-<li>在单向链表中，没有简单的方法来获取一个元素的前驱。</li>
-<li>在 forward_list 中添加删除操作都是通过<strong>改变给定元素之后的元素</strong>来完成</li>
-</ul>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>Operation</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>lst.before_begin() <br> lst.cbefore_begin()</td>
-<td><strong>返回指向链表首元素之前不存在元素的迭代器</strong>。此迭代器<strong>不能解引用</strong>。cbefore_begin 返回 const_iterator</td>
-</tr>
-<tr>
-<td>lst.insert_after(p, t) <br> lst.insert_after(p, n, t) <br> lst.insert_after(p, b, e) <br> lst.insert(p, il)</td>
-<td>在迭代器 <strong>p 之后的位置插入元素</strong>。<br> t 是一个对象，n 是数量，b 和 e 是一对表示范围的迭代器（<strong>b，e 不能指向 lst 内</strong>），il 是一个花括号列表。<br> <strong>返回指向最后一个插入元素的迭代器</strong>。如果<strong>范围为空，则返回 p</strong>。如果 p 是尾后迭代器，则函数行为未定义</td>
-</tr>
-<tr>
-<td>emplace_after(p, args)</td>
-<td>使用 args 在 <strong>p 指定位置之后创建</strong>一个元素。<br> <strong>返回一个指向新元素的迭代器</strong>。若 p 为尾后迭代器，函数行为未定义</td>
-</tr>
-<tr>
-<td>lst.erase_after(p) <br> lst.erase_after(b, e)</td>
-<td>删除迭代器 <strong>p 指定位置之后</strong>的元素。或删除 <strong>从 b 之后直到（但不包括） e</strong> 之间的元素。<br> <strong>返回一个指向被删元素之后元素的迭代器</strong>。若<strong>不存在</strong>这样的元素，<strong>返回尾后迭代器</strong>；如果 <strong>p 指向 lst 的尾元素</strong>或者是<strong>尾后迭代器</strong>，函数行为未定义</td>
-</tr>
-</tbody>
-</table>
-</div>
-<ul>
-<li><p>在 forward_list 中添加或删除元素时，必须关注两个迭代器：一<strong>个指向要处理的元素</strong>，另<strong>一个指向其前驱</strong></p>
-  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">forward_list&lt;<span class="hljs-type">int</span>&gt; flst&#123;<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>&#125;;<br><span class="hljs-keyword">auto</span> prev = flst.<span class="hljs-built_in">before_begin</span>();        <span class="hljs-comment">// 指向 flst 的首前元素</span><br><span class="hljs-keyword">auto</span> curr = flst.<span class="hljs-built_in">begin</span>();               <span class="hljs-comment">// 指向 flst 的首元素</span><br><span class="hljs-keyword">while</span> (curr != flst.<span class="hljs-built_in">end</span>()) &#123;<br>    <span class="hljs-keyword">if</span> (*curr % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>) &#123;<br>        curr = flst.<span class="hljs-built_in">erase_after</span>(prev);  <span class="hljs-comment">// 删除元素并移动 curr</span><br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        prev = curr;                    <br>        ++curr;                         <span class="hljs-comment">// 移动 curr，指向下一个元素，prev 指向 curr 前驱</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-</li>
-</ul>
-<hr>
-<h2 id="改变容器大小"><a href="#改变容器大小" class="headerlink" title="改变容器大小"></a>改变容器大小</h2><ul>
-<li>使用 <strong>resize</strong> 增大或缩小容器大小</li>
-<li>当前大小 &lt; 要求大小，容器后面元素会被删除</li>
-<li>当前大小 &gt; 要求大小，会将新元素添加到容器后面</li>
-</ul>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>Operation</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>c.resize(n)</td>
-<td>调整 c 的大小为 n 个元素。<br> 若 n &lt; c.size(), 则多出的元素会被删除 <br> 若必须添加新元素，则对新元素进行值初始化</td>
-</tr>
-<tr>
-<td>c.resize(n, t)</td>
-<td>调整 c 的大小为 n 个元素。<br> 任何新添加的元素都初始化为 t</td>
-</tr>
-</tbody>
-</table>
-</div>
-<ul>
-<li>resize 不适用于 array</li>
-<li>如果 resize 缩小容器大小，则指向被删除元素的迭代器、指针、引用都失效</li>
-<li>对 vector、string、deque 使用 resize 可能导致迭代器、引用、指针失效</li>
-</ul>
-<hr>
-<h2 id="容器操作可能使迭代器失效"><a href="#容器操作可能使迭代器失效" class="headerlink" title="容器操作可能使迭代器失效"></a>容器操作可能使迭代器失效</h2><h3 id="向容器添加元素后"><a href="#向容器添加元素后" class="headerlink" title="向容器添加元素后"></a>向容器添加元素后</h3><ul>
-<li><strong>vector</strong> 、<strong>string</strong>：<strong>存储空间被重新分配</strong>，则指向容器的<strong>迭代器、引用、指针失效</strong>；<strong>存储空间未重新分配</strong>，则指向<strong>插入元素之前</strong>的<strong>迭代器、引用、指针有效</strong>，指向<strong>插入元素之后</strong>的<strong>迭代器、引用、指针都失效</strong></li>
-<li><strong>deque</strong>：插入到<strong>首尾位置之外</strong>的任何位置<strong>都会使迭代器、引用、指针失效</strong>。<strong>首尾位置添加元素</strong>，<strong>迭代器会失效</strong>，<strong>但</strong>指向容器内元素的<strong>引用、指针不会失效</strong></li>
-<li><strong>list</strong>、<strong>forward_list</strong>：<strong>迭代器、指针、引用仍有效</strong></li>
-</ul>
-<h3 id="从容器删除元素后"><a href="#从容器删除元素后" class="headerlink" title="从容器删除元素后"></a>从容器删除元素后</h3><ul>
-<li><strong>vector、string</strong>：指向<strong>被删元素之前</strong>的迭代器、引用、指针仍有效</li>
-<li><strong>deque</strong>：<strong>首尾之外</strong>删除元素，指向被删元素之外的<strong>其他迭代器、引用、指针都失效</strong>。<strong>删除尾元素</strong>，<strong>尾后迭代器失效</strong>，其他迭代器、引用、指针仍有效。<strong>删除首元素</strong>，不会受影响</li>
-<li><strong>list、forward_list</strong>：指向容器其他位置的迭代器（包括尾后迭代器和首前迭代器）、引用、指针<strong>仍有效</strong></li>
-</ul>
-<h3 id="不要保存-end-返回的迭代器"><a href="#不要保存-end-返回的迭代器" class="headerlink" title="不要保存 end 返回的迭代器"></a>不要保存 end 返回的迭代器</h3><ul>
-<li>vector、string 添加删除元素，或 deque 除首位置之外添加删除元素，都<strong>会导致尾后迭代器失效</strong>，因此添加删除元素的循环过程必须反复调用 end()，不能在循环前保存 end</li>
-</ul>
-<h3 id="NOTE"><a href="#NOTE" class="headerlink" title="NOTE"></a>NOTE</h3><ul>
-<li><strong>复合赋值语句</strong>（+=）只适用于 vector、string、deque、array，<strong>不适用于 list，forward_list</strong></li>
+<h3 id="unitbuf-操纵符"><a href="#unitbuf-操纵符" class="headerlink" title="unitbuf 操纵符"></a>unitbuf 操纵符</h3><p>若想在<strong>每次输出操作后都刷新缓冲区</strong>，可以使用 <strong>unitbuf 操纵符</strong>。它使得流在接下来的每次写操作之后都进行一次 flush 操作。而 <strong>nounitbuf 操纵符</strong>则重置流，<strong>使流恢复正常</strong>的系统管理缓冲区刷新机制。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">cout &lt;&lt; unitbuf;    <span class="hljs-comment">// 之后所有输出操作后都会刷新缓冲区</span><br>                    <span class="hljs-comment">// 任何输出都立即刷新，无缓冲</span><br>cout &lt;&lt; nounitbuf;  <span class="hljs-comment">// 回到正常缓冲方式</span><br></code></pre></td></tr></table></figure>
+<h3 id="关联输入流与输出流"><a href="#关联输入流与输出流" class="headerlink" title="关联输入流与输出流"></a>关联输入流与输出流</h3><ul>
+<li>当一个输入流关联到输出流，任何从输入流读取数据的操作都会刷新关联的输出流</li>
 </ul>
 
             </article>
@@ -682,12 +553,16 @@
         <div class="post-paging">     
             <div class="post-paging-last">
                 
-                    <a href="/2025/03/20/hello-world/">
-                        上一篇：Hello World
+                    <a href="/2025/03/28/8.2%20%E6%96%87%E4%BB%B6%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E6%B5%81/">
+                        上一篇：8.2 文件输入输出流
                     </a>
                 
             </div>
             <div class="post-paging-next">
+                
+                    <a href="/2025/03/28/8.3%20string%20stream/">
+                        下一篇：8.3 string 流
+                    </a>
                 
             </div>
         </div>
@@ -724,7 +599,7 @@
                 </a>
                 <a href="/tags" class="aside-top-about-site-item">
                     <span class="title">标签</span>
-                    <span class="count">7</span>
+                    <span class="count">9</span>
                 </a>
                 <a href="/archives" class="aside-top-about-site-item">
                     <span class="title">归档</span>
