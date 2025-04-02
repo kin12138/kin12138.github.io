@@ -8,7 +8,7 @@
 	</script>
 	<head>
 		
-<title>主页 | The technology-sea for kin12138</title>
+<title>Some Question about file stream in cpp | The technology-sea for kin12138</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -18,8 +18,9 @@
 <link rel="stylesheet" href="/css/index.css">
 
 
-    <meta name="keywords" content="c++ 学习, 技术分享交流">
-    <meta name="description" content="🍓A technology-commication platform of engineer.">
+
+<meta name="keywords" content="c++,c++ primer,file stream,">
+<meta name="description" content="">
 
 
 
@@ -278,6 +279,14 @@
 		
 		
 			
+				postsBreadcrumb(
+					document.getElementById('breadcrumb'),
+					"类别",
+					"/categories",
+					"technology",
+					"/categories/technology"
+				);
+			
 		
 	</script>
 </header>
@@ -301,9 +310,17 @@
 			<div class="post-header-background-content">
 				<ul class="post-header-tag">
 					
+						
+							<li><a href="/tags/c++"><span>c++</span></a></li>
+						
+							<li><a href="/tags/c++ primer"><span>c++ primer</span></a></li>
+						
+							<li><a href="/tags/file stream"><span>file stream</span></a></li>
+						
+					
 				</ul>
 				
-				<h1></h1>
+				<h1>Some Question about file stream in cpp</h1>
 		
 				
 		
@@ -320,9 +337,11 @@
 					
 						<div class="post-header-info-categories">
 							
+								<a href="/categories/technology">technology</a>
+							
 						</div>
 					
-					<time>2025/04/02 23:35:06</time>
+					<time>2025/03/28 00:00:00</time>
 				</div>
 		
 				
@@ -357,7 +376,7 @@
 </header>
         <div class="post-content article-container">
             <article class="post-content-info">
-                <h1 id="Some-Question-about-file-stream-in-cpp"><a href="#Some-Question-about-file-stream-in-cpp" class="headerlink" title="Some Question about file stream in cpp"></a>Some Question about file stream in cpp</h1><h2 id="current-work-directory"><a href="#current-work-directory" class="headerlink" title="current work directory"></a>current work directory</h2><p>windows 获取当前工作目录：</p>
+                <h2 id="current-work-directory"><a href="#current-work-directory" class="headerlink" title="current work directory"></a>current work directory</h2><p>windows 获取当前工作目录：</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;direct.h&gt;</span> <span class="hljs-comment">// windows</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-type">char</span> cwd[<span class="hljs-number">1024</span>];<br>    <span class="hljs-keyword">if</span> (_getcwd(cwd, <span class="hljs-built_in">sizeof</span>(cwd)) != <span class="hljs-literal">NULL</span>) &#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;当前工作目录: &quot;</span> &lt;&lt; cwd &lt;&lt; std::endl;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        std::cerr &lt;&lt; <span class="hljs-string">&quot;获取工作目录失败&quot;</span> &lt;&lt; std::endl;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 <h2 id="file-path"><a href="#file-path" class="headerlink" title="file path"></a>file path</h2><p>例如打开一个文件：</p>
 <ul>
@@ -398,7 +417,7 @@
             
 	<aside class="rightside">
 	
-		<div class="rightside-button not-toc-button" id="js-aside">
+		<div class="rightside-button" id="js-aside">
 			<span>
 				<img no-lazy src="/images/icon/aside.png" class="rightside-button-icon" alt="Icon">
 			</span>
@@ -453,11 +472,15 @@
         <div class="post-paging">     
             <div class="post-paging-last">
                 
+                    <a href="/2025/03/28/8.%20IO%E5%BA%93/8.3%20string%20stream/">
+                        上一篇：8.3 string 流
+                    </a>
+                
             </div>
             <div class="post-paging-next">
                 
-                    <a href="/2025/04/02/7.%20%E7%B1%BB/7.2%20%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6%E4%B8%8E%E5%B0%81%E8%A3%85/">
-                        下一篇：7.2 访问控制与封装
+                    <a href="/2025/03/28/9.%20%E9%A1%BA%E5%BA%8F%E5%AE%B9%E5%99%A8/9.1%20Sequentail%20Containers/">
+                        下一篇：9.1 顺序容器概述
                     </a>
                 
             </div>
@@ -529,6 +552,31 @@
     </div>
 
     <div class="aside-bottom">
+        
+            <script>
+                
+                    const tocCollapsed = true;
+                
+                
+                    const tocDepth = 6;
+                
+                var headerString = '';
+                for (let i = 1; i <= tocDepth; i++) {
+                    if (i === 1) {
+                        headerString += 'h1';
+                    } else {
+                        headerString += ', h' + i;
+                    }
+                }
+                hbeToc();
+            </script>
+            <div class="aside-bottom-toc aside-card">
+                <div class="aside-bottom-toc-title">
+                    <h1>目录</h1>
+                    <span class="toc-percentage"></span>
+                </div>
+                <ol class="aside-bottom-toc-content"></ol>
+            </div>
         
     </div>
 </aside>
