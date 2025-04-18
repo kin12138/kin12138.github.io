@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang=zh-CN data-theme="light">
+	
+<script src="/js/plugins/toggleTheme.js"></script>
+
+	<script>
+		setTheme();
+	</script>
+	<head>
+		
+<title>13.1 拷贝、赋值与销毁 | The technology-sea for kin12138</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" type="image/x-icon" href="/images/icon/favicon.ico">
+<link href="/css/plugins/print.css" media="print" rel="stylesheet" />
+
+<link rel="stylesheet" href="/css/index.css">
+
+
+
+<meta name="keywords" content="c++,c++ primer,拷贝构造函数,拷贝赋值运算符,析构函数,">
+<meta name="description" content="">
+
+
+
+<script src="/js/plugins/jquery.min.js"></script>
+
+
+<script src="/js/plugins/hljs.min.js"></script>
+
+
+<script src="/js/plugins/init.js"></script>
+
+
+<script src="/js/plugins/hide.js"></script>
+
+
+<script src="/js/plugins/tabs.js"></script>
+
+
+
+    
+
+
+
+
+
+
+
+    
+
+	<meta name="generator" content="Hexo 7.3.0"></head>
+
+	<body>
+		<header class="sticky-header">
+	<nav>
+		<div class="nav-left">
+			<a href="/" class="logo">
+				<img no-lazy src="/images/headers_icon/logo.webp" alt="Quieter">
+			</a>
+			<ul class="breadcrumb" id="breadcrumb"></ul>
+		</div>
+		<div class="nav-right">
+			<ul>
+				
+					<li>
+						<a href="/">
+						  主页
+						</a>
+					</li>
+				
+					<li>
+						<a href="/categories">
+						  类别
+						</a>
+					</li>
+				
+					<li>
+						<a href="/tags">
+						  标签
+						</a>
+					</li>
+				
+					<li>
+						<a href="/archives">
+						  归档
+						</a>
+					</li>
+				
+					<li>
+						<a href="/galleries">
+						  相册
+						</a>
+					</li>
+				
+					<li>
+						<a href="/links">
+						  链接
+						</a>
+					</li>
+				
+					<li>
+						<a href="/about">
+						  关于
+						</a>
+					</li>
+								  
+			</ul>
+		</div>
+		<div class="nav-right-close">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+				<path fill="none" d="M0 0h24v24H0z" />
+				<path d="M3 4h18v2H3V4zm0 7h18v2H3v-2zm0 7h18v2H3v-2z" fill="rgba(68,68,68,1)" />
+			</svg>
+		</div>
+
+		<div class="sidebar">
+    <div class="topo">
+        <p>The technology-sea for kin12138</p>
+    </div>
+    <ul>
+        
+        <li>
+            <a href="/">
+                主页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories">
+                类别
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags">
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives">
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/galleries">
+                相册
+            </a>
+        </li>
+        
+        <li>
+            <a href="/links">
+                链接
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about">
+                关于
+            </a>
+        </li>
+        
+    </ul>
+    <div class="sidebar-footer">
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/Weibo.webp" alt="Quieter">
+        </a>
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/Tieba.webp" alt="Quieter">
+        </a>
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/Bilibili.webp" alt="Quieter">
+        </a>
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/github.webp" alt="Quieter">
+        </a>
+        
+    </div>
+</div>
+<div class='shelter'>
+    <script>
+        $(function() {
+            $('.nav-right-close > svg').click(function() {
+                $('.sidebar').animate({
+                    right: "0"
+                }, 500);
+                $('.shelter').fadeIn("slow");
+            
+                var element = $('.topo');
+                element.addClass('custom-style');
+            
+                var links = null;
+                if ("") {
+                    links = "".split(',');
+                } else {
+                    links = "/images/random_top_img/01.webp,/images/random_top_img/02.webp,/images/random_top_img/03.webp,/images/random_top_img/04.webp,/images/random_top_img/05.webp,/images/random_top_img/06.webp,/images/random_top_img/07.webp".split(',');
+                }
+            
+                var randomLink = links[Math.floor(Math.random() * links.length)];
+                element.css('background-image', "url('" + randomLink + "')");
+            });
+          
+            $('.shelter').click(function(e) {
+                $('.sidebar').animate({
+                    right: "-100%"
+                }, 500);
+                $('.shelter').fadeOut("slow");
+            });
+        });      
+    </script>
+</div>
+	</nav>
+
+	
+		<div class="header-background"></div>
+	
+
+	<script>
+		const name = 'post';
+		const ul = document.querySelectorAll('.nav-right ul')[0];
+		const lis = ul.querySelectorAll('li');
+
+		if (name == 'home') {
+			lis[0].classList.add('select');
+		} else {
+			for (let i = 0; i < lis.length; i++) {
+				const li = lis[i];
+				const a = li.querySelector('a');
+				if (name === a.href.split('/')[3]) {
+					li.classList.add('select');
+				}
+			}
+		}
+	</script>
+	
+	<script>
+		var element = document.querySelector('.header-background');
+		if(element) {
+			element.classList.add('custom-style');
+			var links = null;
+			if("")
+			{
+				links = "".split(',');
+			} else
+			{
+				links = "/images/random_top_img/01.webp,/images/random_top_img/02.webp,/images/random_top_img/03.webp,/images/random_top_img/04.webp,/images/random_top_img/05.webp,/images/random_top_img/06.webp,/images/random_top_img/07.webp".split(',');
+			}
+			var randomLink = links[Math.floor(Math.random() * links.length)];
+			element.style.backgroundImage = "url('" + randomLink + "')";
+		}
+	</script>
+
+	
+<script src="/js/plugins/breadcrumb.js"></script>
+
+	<script>
+		var menus_title = [];
+		
+			menus_title.push({home: '主页'});
+		
+			menus_title.push({categories: '类别'});
+		
+			menus_title.push({tags: '标签'});
+		
+			menus_title.push({archives: '归档'});
+		
+			menus_title.push({galleries: '相册'});
+		
+			menus_title.push({links: '链接'});
+		
+			menus_title.push({about: '关于'});
+		
+		
+			
+				postsBreadcrumb(
+					document.getElementById('breadcrumb'),
+					"类别",
+					"/categories",
+					"technology",
+					"/categories/technology"
+				);
+			
+		
+	</script>
+</header>
+
+<div class="main-wrapper">
+    <main class="post">
+        <header class="main-header">
+	
+		
+			
+				
+<link rel="stylesheet" href="/css/plugins/fancybox.css">
+
+				
+<script src="/js/plugins/fancybox.umd.js"></script>
+
+				
+<script src="/js/plugins/fancybox.js"></script>
+
+			
+			<div class="post-header-background-content">
+				<ul class="post-header-tag">
+					
+						
+							<li><a href="/tags/c++"><span>c++</span></a></li>
+						
+							<li><a href="/tags/c++ primer"><span>c++ primer</span></a></li>
+						
+							<li><a href="/tags/拷贝构造函数"><span>拷贝构造函数</span></a></li>
+						
+							<li><a href="/tags/拷贝赋值运算符"><span>拷贝赋值运算符</span></a></li>
+						
+							<li><a href="/tags/析构函数"><span>析构函数</span></a></li>
+						
+					
+				</ul>
+				
+				<h1>13.1 拷贝、赋值与销毁</h1>
+		
+				
+		
+				<div class="post-header-info">
+					<svg t="1604839279282" class="icon" viewBox="0 0 1024 1024" version="1.1"
+					xmlns="http://www.w3.org/2000/svg" p-id="2901" width="20" height="20">
+						<path
+							d="M513 956.3c-247.7 0-448-200.3-448-448S265.3 66.2 513 66.2s448 200.3 448 448-200.3 442.1-448 442.1z m0-830.9c-212.2 0-388.8 170.7-388.8 388.8C124.2 726.3 294.9 903 513 903c212.2 0 388.8-170.7 388.8-388.8S725.2 125.4 513 125.4z m0 430.2c-94.2 0-170.7-76.5-170.7-170.7S418.8 207.8 513 207.8s170.7 76.5 170.7 170.7S607.2 555.6 513 555.6z m0-289.1c-64.6 0-112 52.8-112 112s47.4 117.9 112 117.9 112-52.8 112-112-47.4-117.9-112-117.9z m0 689.8c-135.7 0-259-58.7-341.9-158.9l-11.8-17.8 11.8-17.8c76.5-117.9 206.2-188.5 347.8-188.5 135.7 0 265 64.6 341.9 182.6l11.8 17.8-11.8 17.8C778 897.1 648.7 956.3 513 956.3zM230.3 773.2C300.9 849.7 406.9 897 513 897c112 0 218.1-47.4 288.6-129.8-70.5-88.2-170.7-135.6-282.7-135.6s-218.1 53.3-288.6 141.6z"
+							p-id="2902" fill="#ffffff"></path>
+					</svg>
+					<div class="post-header-info-author">
+						<a href="/about">kin12138</a>
+					</div>
+					
+						<div class="post-header-info-categories">
+							
+								<a href="/categories/technology">technology</a>
+							
+						</div>
+					
+					<time>2025/04/18 00:00:00</time>
+				</div>
+		
+				
+					<div class="post-header-stat">
+						<svg version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+						viewBox="0 0 200 200" enable-background="new 0 0 200 200" xml:space="preserve" width="20" height="20">
+							<path fill="#FFFFFF" d="M187.2,165.6c0,2.6-2.1,4.7-4.7,4.7H17.5c-2.6,0-4.7-2.1-4.7-4.7s2.1-4.7,4.7-4.7h165.1
+								C185.2,160.9,187.2,163,187.2,165.6z"/>
+							<path fill="#FFFFFF" d="M17.5,29.7c2.6,0,4.7,2.1,4.7,4.7v131.2c0,2.6-2.1,4.7-4.7,4.7s-4.7-2.1-4.7-4.7V34.4
+								C12.8,31.8,14.9,29.7,17.5,29.7z M77.9,91.5c1.8,1.8,1.8,4.8,0,6.6l-39.8,39.8c-1.9,1.8-4.9,1.7-6.6-0.2c-1.7-1.8-1.7-4.6,0-6.4
+								l39.8-39.8C73.1,89.6,76,89.6,77.9,91.5z M169.9,70.2c1.6,2.1,1.1,5-0.9,6.5c0,0,0,0,0,0l-64.2,48.2c-2.1,1.5-5,1.1-6.6-0.9
+								c-1.6-2.1-1.1-5,0.9-6.5c0,0,0,0,0,0l64.2-48.2C165.4,67.7,168.3,68.1,169.9,70.2L169.9,70.2z"/>
+							<path fill="#FFFFFF" d="M104.6,124.5c-1.8,1.8-4.8,1.8-6.6,0L71.6,98.1c-1.8-1.8-1.8-4.8,0-6.6c1.8-1.8,4.8-1.8,6.6,0l26.3,26.3
+								C106.4,119.6,106.4,122.6,104.6,124.5C104.6,124.4,104.6,124.4,104.6,124.5z"/>
+						</svg>
+		
+						
+							
+<script src="/js/plugins/wordCount.js"></script>
+
+							<p class="post-count">文字数：---</p>
+						
+		
+						
+							<p id="busuanzi_container_page_pv" style='display:none;'>阅读数：<span id="busuanzi_value_page_pv"></span></p>
+						
+					</div>
+				
+			</div>
+		
+	
+</header>
+        <div class="post-content article-container">
+            <article class="post-content-info">
+                <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
+<li>一个类通过定义五种特殊的成员函数来控制此类型的对象在拷贝、赋值、移动和销毁时做什么<ul>
+<li><strong>拷贝构造函数 (copy constructor)</strong></li>
+<li><strong>拷贝赋值运算符 (copy-assignment operator)</strong></li>
+<li><strong>移动构造函数 (move constructor)</strong></li>
+<li><strong>移动赋值运算符 (move-assignment operator)</strong></li>
+<li><strong>析构函数 (destructor)</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="拷贝构造函数"><a href="#拷贝构造函数" class="headerlink" title="拷贝构造函数"></a>拷贝构造函数</h2><ul>
+<li>一个构造函数的<strong>第一个参数是自身类型的引用</strong>，且<strong>其他额外参数都有默认值</strong>，则这个构造函数就是拷贝构造函数</li>
+<li>拷贝构造函数<strong>通常不应该是 explicit</strong></li>
+</ul>
+<h3 id="合成拷贝构造函数-synthesized-copy-constructor"><a href="#合成拷贝构造函数-synthesized-copy-constructor" class="headerlink" title="合成拷贝构造函数(synthesized copy constructor)"></a>合成拷贝构造函数(synthesized copy constructor)</h3><ul>
+<li>一旦定义了一个构造函数，编译器就不会合成 <strong>synthesized default constructor</strong></li>
+<li>但是，<strong>即使定义了其他构造函数，编译器还是会合成一个 synthesized copy constructor</strong></li>
+<li>编译器从给定对象中依次将非 static 成员拷贝到正在创建的对象中</li>
+<li>每个成员的类型决定了它将如何拷贝：<ul>
+<li><strong>类类型成员</strong>：使用其拷贝构造函数来拷贝</li>
+<li><strong>内置类型成员</strong>：直接拷贝</li>
+<li><strong>不能直接拷贝数组</strong>，但 synthesized copy constructor 会<strong>逐元素地拷贝一个数组类型成员</strong>，如果数组元素是类类型，则使用元素的拷贝构造函数进行拷贝</li>
+</ul>
+</li>
+<li>合成拷贝构造函数可以用来禁止该类型对象的拷贝</li>
+</ul>
+<h3 id="拷贝初始化"><a href="#拷贝初始化" class="headerlink" title="拷贝初始化"></a>拷贝初始化</h3><ul>
+<li>直接初始化与拷贝初始化的区别<ul>
+<li><strong>拷贝初始化(copy initialization)</strong>：<strong>使用 <code>=</code></strong> 来初始化一个变量</li>
+<li><strong>直接初始化(direct initialization)</strong>：<strong>不使用 <code>=</code></strong> 来初始化变量</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-function">string <span class="hljs-title">dots</span><span class="hljs-params">(<span class="hljs-number">10</span>, <span class="hljs-string">&#x27;.&#x27;</span>)</span></span>;               <span class="hljs-comment">// 直接初始化</span><br><span class="hljs-function">string <span class="hljs-title">s</span><span class="hljs-params">(dots)</span></span>;                     <span class="hljs-comment">// 直接初始化</span><br><br>string s2 = dots;                   <span class="hljs-comment">// 拷贝初始化</span><br>string null_book = <span class="hljs-string">&quot;9999-8888-88&quot;</span>;  <span class="hljs-comment">// 拷贝初始化</span><br>string nines = <span class="hljs-built_in">string</span>(<span class="hljs-number">100</span>, <span class="hljs-string">&#x27;9&#x27;</span>);    <span class="hljs-comment">// 拷贝初始化</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>直接初始化要求编译器<strong>使用函数匹配</strong>选择一个与所提供参数最匹配的构造函数</li>
+<li>拷贝初始化要求编译器<strong>将右侧运算对象拷贝到正在创建的对象中</strong>，还会<strong>按需进行类型转换</strong></li>
+<li><strong>拷贝初始化</strong>不仅可以<strong>使用拷贝构造函数</strong>，还可以<strong>使用移动构造函数</strong></li>
+<li>拷贝初始化不仅在使用 <code>=</code> 定义变量时发生，以下情况也可能发生<ul>
+<li>将一个对象作为实参<strong>传递给一个非引用类型的形参</strong></li>
+<li><strong>从一个返回类型为非引用类型的函数返回一个对象</strong></li>
+<li>用<strong>花括号列表初始化一个数组中的元素或一个聚合类中的成员</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="参数值和返回值"><a href="#参数值和返回值" class="headerlink" title="参数值和返回值"></a>参数值和返回值</h3><ul>
+<li>拷贝构造函数<strong>自身的参数必须是引用类型</strong>，它用来<strong>初始化非引用类型的对象</strong></li>
+</ul>
+<h3 id="拷贝初始化的限制"><a href="#拷贝初始化的限制" class="headerlink" title="拷贝初始化的限制"></a>拷贝初始化的限制</h3><ul>
+<li>如果使用的<strong>初始化值要求通过 explicit 的构造函数来进行类型转换</strong>，那么就必须<strong>显式的使用 explicit 构造函数</strong></li>
+</ul>
+<h3 id="编译器可以绕过拷贝构造函数"><a href="#编译器可以绕过拷贝构造函数" class="headerlink" title="编译器可以绕过拷贝构造函数"></a>编译器可以绕过拷贝构造函数</h3><ul>
+<li><p>在拷贝初始化的过程中，<strong>编译器可以跳过拷贝/移动构造函数</strong>，即，可以将下面代码：</p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">string null_book = <span class="hljs-string">&quot;1111-2222&quot;</span>; <span class="hljs-comment">// 拷贝初始化</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>改写为</p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-function">string <span class="hljs-title">null_book</span><span class="hljs-params">(<span class="hljs-string">&quot;1111-2222&quot;</span>)</span></span>;  <span class="hljs-comment">// 编译器略过了拷贝构造函数</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="拷贝赋值运算符"><a href="#拷贝赋值运算符" class="headerlink" title="拷贝赋值运算符"></a>拷贝赋值运算符</h2><ul>
+<li>如果类未定义自己的拷贝赋值运算符，编译器就会合成一个</li>
+</ul>
+<h3 id="重载赋值运算符"><a href="#重载赋值运算符" class="headerlink" title="重载赋值运算符"></a>重载赋值运算符</h3><ul>
+<li>重载运算符<strong>本质上是函数</strong>，名字由 operator 关键字后跟要定义的运算符的符号组成</li>
+<li><strong>运算符函数也有参数类型和返回类型</strong></li>
+<li>重载运算符的<strong>参数表示运算符的运算对象</strong><ul>
+<li><strong>某些运算符必须定义为成员函数</strong></li>
+<li>如果<strong>运算符是成员函数</strong>，<strong>其左侧的运算对象就绑定到隐式的 this 参数</strong></li>
+<li>对于一个<strong>二元运算符</strong>，<strong>其右侧运算对象作为显式参数传递</strong></li>
+</ul>
+</li>
+<li>赋值运算符<strong>接受一个与其所在类相同类型的参数</strong>，通常<strong>返回一个指向其左侧运算对象的引用</strong></li>
+</ul>
+<h3 id="合成拷贝赋值运算符-synthesized-copy-assignment-operator"><a href="#合成拷贝赋值运算符-synthesized-copy-assignment-operator" class="headerlink" title="合成拷贝赋值运算符(synthesized copy-assignment operator)"></a>合成拷贝赋值运算符(synthesized copy-assignment operator)</h3><ul>
+<li>如果没有定义自己的拷贝赋值运算符，编译器会生成一个合成拷贝赋值运算符</li>
+<li>作用：将右侧对象的每个 <strong>非 static 成员</strong>赋予左侧对象</li>
+<li><strong>对于数组类型成员，逐个赋值数组元素</strong></li>
+<li>合成拷贝赋值运算符可以用来禁止该类型对象的赋值</li>
+</ul>
+<h2 id="析构函数"><a href="#析构函数" class="headerlink" title="析构函数"></a>析构函数</h2><ul>
+<li>析构函数释放对象使用的资源，并销毁对象的非 static 成员</li>
+<li><strong>析构函数没有返回值，也不接受参数，因此不能被重载</strong></li>
+</ul>
+<h3 id="析构函数完成什么工作"><a href="#析构函数完成什么工作" class="headerlink" title="析构函数完成什么工作"></a>析构函数完成什么工作</h3><ul>
+<li>在一个<strong>构造函数中</strong><ul>
+<li><strong>首先进行成员初始化</strong>，按照它们在类中出现的顺序进行初始化</li>
+<li><strong>然后执行函数体</strong></li>
+</ul>
+</li>
+<li><strong>析构函数</strong>中<ul>
+<li><strong>首先执行函数体</strong></li>
+<li><strong>然后销毁成员</strong>，成员<strong>按初始化顺序的逆序</strong>进行销毁</li>
+</ul>
+</li>
+<li>析构函数中析构部分是隐式的，成员销毁时发生什么完全依赖于成员的类型</li>
+<li><strong>隐式销毁一个内置指针类型的成员不会 delete 它所指向的对象</strong></li>
+</ul>
+<h3 id="什么时候调用析构函数"><a href="#什么时候调用析构函数" class="headerlink" title="什么时候调用析构函数"></a>什么时候调用析构函数</h3><ul>
+<li>一个对象被销毁，就会调用其析构函数<ul>
+<li>变量离开作用域时，其成员被销毁</li>
+<li>一个对象被销毁时，成员被销毁</li>
+<li>容器(无论是标准库容器还是数组) 被销毁时，其元素被销毁</li>
+<li>对于动态分配的对象，当指向它的指针执行 delete 运算符时被销毁</li>
+<li>对于临时对象，当创建它的完整表达式结束时被销毁</li>
+</ul>
+</li>
+<li><strong>当指向一个对象的引用或指针离开作用域时，不会执行析构函数</strong></li>
+</ul>
+<h3 id="合成析构函数-synthesized-destructor"><a href="#合成析构函数-synthesized-destructor" class="headerlink" title="合成析构函数(synthesized destructor)"></a>合成析构函数(synthesized destructor)</h3><ul>
+<li>合成析构函数可以用来组织该类型的对象被销毁</li>
+</ul>
+<h2 id="三-五法则"><a href="#三-五法则" class="headerlink" title="三/五法则"></a>三/五法则</h2><h3 id="需要自定义析构函数的类也需要自定义拷贝和赋值操作"><a href="#需要自定义析构函数的类也需要自定义拷贝和赋值操作" class="headerlink" title="需要自定义析构函数的类也需要自定义拷贝和赋值操作"></a>需要自定义析构函数的类也需要自定义拷贝和赋值操作</h3><h3 id="需要自定义拷贝操作的类也需要自定义赋值操作，反之亦然"><a href="#需要自定义拷贝操作的类也需要自定义赋值操作，反之亦然" class="headerlink" title="需要自定义拷贝操作的类也需要自定义赋值操作，反之亦然"></a>需要自定义拷贝操作的类也需要自定义赋值操作，反之亦然</h3><h2 id="使用-default"><a href="#使用-default" class="headerlink" title="使用 =default"></a>使用 <code>=default</code></h2><ul>
+<li>可以将拷贝控制成员定义为 <code>=default</code> 来显式的要求编译器生成合成的版本</li>
+<li><strong>只能对具有合成版本的成员函数使用 <code>=default</code></strong>（即默认构造函数或拷贝控制成员）</li>
+</ul>
+<h2 id="阻止拷贝"><a href="#阻止拷贝" class="headerlink" title="阻止拷贝"></a>阻止拷贝</h2><ul>
+<li>对于某些类来说，<strong>拷贝构造函数和拷贝赋值运算符没有意义</strong>，但是<strong>即使不定义，编译器还是会自动生成合成版本</strong>，此时就需要阻止拷贝或赋值</li>
+</ul>
+<h3 id="定义删除的函数"><a href="#定义删除的函数" class="headerlink" title="定义删除的函数"></a>定义删除的函数</h3><ul>
+<li>通过将拷贝构造函数和拷贝赋值运算符定义为<strong>删除的函数(deleted function)</strong> 来阻止拷贝</li>
+<li><strong>删除的函数(deleted function):</strong><ul>
+<li><strong>虽然声明了函数，但是不能以任何方式使用它</strong></li>
+<li>在函数参数列表后加上 <strong><code>=default</code></strong> 指明函数被定义为 deleted function</li>
+</ul>
+</li>
+<li>与 <code>=default</code> 不同， <strong><code>=delete</code> 必须出现在函数第一次声明的时候</strong><ul>
+<li><strong><code>=default</code> 直到编译器生成代码时才需要</strong></li>
+<li><code>=delete</code> 编译器需要直到一个函数是被删除的，以便禁止试图使用它的操作</li>
+</ul>
+</li>
+<li><strong>可以对任何函数使用 <code>=delete</code></strong>，而只<strong>能对编译器可以合成的默认构造函数或拷贝控制成员使用 <code>=default</code></strong></li>
+</ul>
+<h3 id="析构函数不能时-deleted-function"><a href="#析构函数不能时-deleted-function" class="headerlink" title="析构函数不能时 deleted function"></a>析构函数不能时 deleted function</h3><ul>
+<li>删除析构函数，就无法销毁此类型的对象</li>
+<li>对于<strong>析构函数已经删除</strong>的类型<ul>
+<li><strong>不能定义该类型的变量</strong></li>
+<li><strong>不能释放指向该类型动态分配对象的指针</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="合成的拷贝控制成员可能是删除的"><a href="#合成的拷贝控制成员可能是删除的" class="headerlink" title="合成的拷贝控制成员可能是删除的"></a>合成的拷贝控制成员可能是删除的</h3><ul>
+<li><p><strong>类的 synthesized destructor</strong> 被定义为 <strong>deleted function</strong></p>
+<ul>
+<li>如果类的<strong>某个成员的 destructor</strong> 是 deleted function 或是不可访问的 (例如是  private)</li>
+</ul>
+</li>
+<li><p><strong>类的 synthesized copy constructor</strong> 被定义为 <strong>deleted function</strong></p>
+<ul>
+<li>如果类的 <strong>某个成员的 copy constructor</strong> 是 deleted function 或是不可访问的</li>
+<li>如果类的 <strong>某个成员的 destructor</strong> 是 deleted function 或是不可访问的</li>
+</ul>
+</li>
+<li><p><strong>类的 synthesized copy-assignment operator</strong> 被定义为 deleted function</p>
+<ul>
+<li>如果类的 <strong>某个成员的 copy-assignment operator</strong> 是 deleted function 或是不可访问的</li>
+<li>或是<strong>类有 const 成员或引用成员</strong></li>
+</ul>
+</li>
+<li><p><strong>类的 default constructor</strong> 被定义为 <strong>deleted function</strong></p>
+<ul>
+<li>如果类的<strong>某个成员的 destructor</strong> 是 deleted function 或是不可访问的</li>
+<li>或是<strong>类有一个引用成员</strong>，它<strong>没有类内初始化器</strong></li>
+<li>或是<strong>类有一个 const 成员</strong>，它<strong>没有类内初始化器</strong>，<strong>且其类型未显式定义 default constructor</strong></li>
+</ul>
+</li>
+</ul>
+<p><strong><em>本质上，这些规则的含义是：如果一个类有数据成员不能被默认构造、拷贝、赋值、销毁，则对应的成员函数将被定义为 deleted function</em></strong></p>
+<h3 id="private-拷贝控制"><a href="#private-拷贝控制" class="headerlink" title="private 拷贝控制"></a>private 拷贝控制</h3><ul>
+<li>新标准之前，<strong>将拷贝构造函数和拷贝赋值运算符声明为 private 来阻止拷贝</strong><ul>
+<li>将拷贝控制成员声明为 private，<strong>用户代码将不能拷贝这个对象</strong></li>
+<li>将拷贝控制成员声明为 private，但<strong>不定义它们</strong>，将<strong>阻止其他成员函数和友元函数进行拷贝</strong></li>
+</ul>
+</li>
+<li><strong>试图拷贝对象的用户代码</strong>将在<strong>编译阶段被标记为错误</strong></li>
+<li><strong>成员函数或友元函数的拷贝操作</strong>会<strong>导致链接时错误</strong></li>
+</ul>
+
+            </article>
+            
+	<aside class="rightside">
+	
+		<div class="rightside-button" id="js-aside">
+			<span>
+				<img no-lazy src="/images/icon/aside.png" class="rightside-button-icon" alt="Icon">
+			</span>
+		</div>
+		<script>
+			$("#js-aside").click(function () {
+				onShowAsideButton();
+			});
+		</script>
+	
+	<div class="rightside-button" id="js-toggle_theme">
+		<span>
+			<img no-lazy src="/images/icon/toggle_theme.png" class="rightside-button-icon" alt="Icon">
+		</span>
+	</div>
+
+	
+<script src="/js/plugins/goto_position.js"></script>
+
+	
+	<div class="rightside-button" id="js-go_top">
+		<span>
+			<img no-lazy src="/images/icon/go_top.png" class="rightside-button-icon" alt="Icon">
+		</span>
+	</div>
+	<div class="rightside-button" id="js-go_bottom">
+		<span>
+			<img no-lazy src="/images/icon/go_bottom.png" class="rightside-button-icon" alt="Icon">
+		</span>
+	</div>
+
+	<script>
+		setToggleThemeButtonListener();
+	</script>
+	<script>
+		$('#js-go_top')
+		.gotoPosition( {
+			speed: 300,
+			target: 'top',
+		} );
+		$('#js-go_bottom')
+		.gotoPosition( {
+			speed: 300,
+			target: 'bottom',
+		} );
+	</script>
+</aside>
+
+
+<div class="post-bottom">
+    
+        <div class="post-paging">     
+            <div class="post-paging-last">
+                
+            </div>
+            <div class="post-paging-next">
+                
+                    <a href="/2025/04/18/13.%20%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6/13.2%20%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6%E4%B8%8E%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86/">
+                        下一篇：13.2 拷贝控制与资源管理
+                    </a>
+                
+            </div>
+        </div>
+    
+    
+    
+        
+    
+</div>
+        </div>
+    </main>
+    
+        <aside class="main-aside">
+    
+<script src="/js/widgets/aside.js"></script>
+
+    <script>
+        showAside();
+    </script>
+
+    <div class="aside-top">
+        <div class="aside-top-about aside-card">
+            <a href="/about" class="aside-top-about-portrait">
+                <img no-lazy src="/images/about_icon/about_icon.webp" alt="Q">
+            </a>
+            <div class="aside-top-about-info">
+                <span class="author"> kin12138</span>
+                <span class="description">This is life, it's suck, but i love it</span>
+            </div>              
+            <div class="aside-top-about-site">
+                <a href="/categories" class="aside-top-about-site-item">
+                    <span class="title">类别</span>
+                    <span class="count">2</span>
+                </a>
+                <a href="/tags" class="aside-top-about-site-item">
+                    <span class="title">标签</span>
+                    <span class="count">49</span>
+                </a>
+                <a href="/archives" class="aside-top-about-site-item">
+                    <span class="title">归档</span>
+                    <span class="count">33</span>
+                </a>
+            </div>
+            <div class="aside-top-about-contact">
+                
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/Weibo.webp" alt="Quieter">
+                        </a>
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/Tieba.webp" alt="Quieter">
+                        </a>
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/Bilibili.webp" alt="Quieter">
+                        </a>
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/github.webp" alt="Quieter">
+                        </a>
+                    
+                
+            </div>
+        </div> 
+
+        
+    </div>
+
+    <div class="aside-bottom">
+        
+            <script>
+                
+                    const tocCollapsed = true;
+                
+                
+                    const tocDepth = 6;
+                
+                var headerString = '';
+                for (let i = 1; i <= tocDepth; i++) {
+                    if (i === 1) {
+                        headerString += 'h1';
+                    } else {
+                        headerString += ', h' + i;
+                    }
+                }
+                hbeToc();
+            </script>
+            <div class="aside-bottom-toc aside-card">
+                <div class="aside-bottom-toc-title">
+                    <h1>目录</h1>
+                    <span class="toc-percentage"></span>
+                </div>
+                <ol class="aside-bottom-toc-content"></ol>
+            </div>
+        
+    </div>
+</aside>
+    
+</div>
+		<footer>
+	<div class="content">
+		
+			<span>©2025&nbsp;By&nbsp;<a href="/about">kin12138</a>.</span>
+		
+		<span><a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> theme by <a target="_blank" rel="noopener" href="https://github.com/GZ-Metal-Cell/hexo-theme-quieter">Quieter</a>.</span>
+		
+	</div>
+
+	
+<script src="/js/plugins/ref.js"></script>
+
+	
+<script src="/js/plugins/highlight_tools.js"></script>
+
+	<script>
+		var copyIcon = "/images/icon/copy.png";
+		var closeCodeBlockIcon = "/images/icon/close_code_block.png";
+		var highlightShrink = "";
+		var HighlightHeightLimit = "";
+	</script>
+	
+	<!-- Analytics -->
+
+    
+        <!-- Busuanzi Analytics -->
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+
+
+	
+
+	
+
+    
+		
+<script src="/js/plugins/replaceSpacesWithNbsp.js"></script>
+
+	
+
+	
+	
+	
+		<script>
+			if (typeof init === 'function') {
+				init();
+			}
+		</script>
+	
+
+	
+		
+	
+
+	
+
+	<!--
+		
+<script src="/js/plugins/jquery.pjax.min.js"></script>
+
+		<script>
+			$(document).pjax('a[target!=_blank]', 'main', {
+				fragment: 'main',
+				timeout: 8000
+			});
+
+			$(document).on('pjax:complete', function() {
+			});
+		</script> 
+	-->
+	<script>
+		console.log('\n %c Hexo-Quieter 主题 %c https://github.com/GZ-Metal-Cell/hexo-theme-quieter \n', 'color: #fadfa3; background: #030307; padding:5px 0;', 'background: #fadfa3; padding:5px 0;')
+	</script>
+</footer>
+	</body>
+
+	<!-- Hexo-Quieter 主题  https://github.com/GZ-Metal-Cell/hexo-theme-quieter -->
+</html>
+

@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang=zh-CN data-theme="light">
+	
+<script src="/js/plugins/toggleTheme.js"></script>
+
+	<script>
+		setTheme();
+	</script>
+	<head>
+		
+<title>12.3 使用标准库：文本查询程序 | The technology-sea for kin12138</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" type="image/x-icon" href="/images/icon/favicon.ico">
+<link href="/css/plugins/print.css" media="print" rel="stylesheet" />
+
+<link rel="stylesheet" href="/css/index.css">
+
+
+
+<meta name="keywords" content="c++,c++ primer,文本查询程序,">
+<meta name="description" content="">
+
+
+
+<script src="/js/plugins/jquery.min.js"></script>
+
+
+<script src="/js/plugins/hljs.min.js"></script>
+
+
+<script src="/js/plugins/init.js"></script>
+
+
+<script src="/js/plugins/hide.js"></script>
+
+
+<script src="/js/plugins/tabs.js"></script>
+
+
+
+    
+
+
+
+
+
+
+
+    
+
+	<meta name="generator" content="Hexo 7.3.0"></head>
+
+	<body>
+		<header class="sticky-header">
+	<nav>
+		<div class="nav-left">
+			<a href="/" class="logo">
+				<img no-lazy src="/images/headers_icon/logo.webp" alt="Quieter">
+			</a>
+			<ul class="breadcrumb" id="breadcrumb"></ul>
+		</div>
+		<div class="nav-right">
+			<ul>
+				
+					<li>
+						<a href="/">
+						  主页
+						</a>
+					</li>
+				
+					<li>
+						<a href="/categories">
+						  类别
+						</a>
+					</li>
+				
+					<li>
+						<a href="/tags">
+						  标签
+						</a>
+					</li>
+				
+					<li>
+						<a href="/archives">
+						  归档
+						</a>
+					</li>
+				
+					<li>
+						<a href="/galleries">
+						  相册
+						</a>
+					</li>
+				
+					<li>
+						<a href="/links">
+						  链接
+						</a>
+					</li>
+				
+					<li>
+						<a href="/about">
+						  关于
+						</a>
+					</li>
+								  
+			</ul>
+		</div>
+		<div class="nav-right-close">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+				<path fill="none" d="M0 0h24v24H0z" />
+				<path d="M3 4h18v2H3V4zm0 7h18v2H3v-2zm0 7h18v2H3v-2z" fill="rgba(68,68,68,1)" />
+			</svg>
+		</div>
+
+		<div class="sidebar">
+    <div class="topo">
+        <p>The technology-sea for kin12138</p>
+    </div>
+    <ul>
+        
+        <li>
+            <a href="/">
+                主页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories">
+                类别
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags">
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives">
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/galleries">
+                相册
+            </a>
+        </li>
+        
+        <li>
+            <a href="/links">
+                链接
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about">
+                关于
+            </a>
+        </li>
+        
+    </ul>
+    <div class="sidebar-footer">
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/Weibo.webp" alt="Quieter">
+        </a>
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/Tieba.webp" alt="Quieter">
+        </a>
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/Bilibili.webp" alt="Quieter">
+        </a>
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/github.webp" alt="Quieter">
+        </a>
+        
+    </div>
+</div>
+<div class='shelter'>
+    <script>
+        $(function() {
+            $('.nav-right-close > svg').click(function() {
+                $('.sidebar').animate({
+                    right: "0"
+                }, 500);
+                $('.shelter').fadeIn("slow");
+            
+                var element = $('.topo');
+                element.addClass('custom-style');
+            
+                var links = null;
+                if ("") {
+                    links = "".split(',');
+                } else {
+                    links = "/images/random_top_img/01.webp,/images/random_top_img/02.webp,/images/random_top_img/03.webp,/images/random_top_img/04.webp,/images/random_top_img/05.webp,/images/random_top_img/06.webp,/images/random_top_img/07.webp".split(',');
+                }
+            
+                var randomLink = links[Math.floor(Math.random() * links.length)];
+                element.css('background-image', "url('" + randomLink + "')");
+            });
+          
+            $('.shelter').click(function(e) {
+                $('.sidebar').animate({
+                    right: "-100%"
+                }, 500);
+                $('.shelter').fadeOut("slow");
+            });
+        });      
+    </script>
+</div>
+	</nav>
+
+	
+		<div class="header-background"></div>
+	
+
+	<script>
+		const name = 'post';
+		const ul = document.querySelectorAll('.nav-right ul')[0];
+		const lis = ul.querySelectorAll('li');
+
+		if (name == 'home') {
+			lis[0].classList.add('select');
+		} else {
+			for (let i = 0; i < lis.length; i++) {
+				const li = lis[i];
+				const a = li.querySelector('a');
+				if (name === a.href.split('/')[3]) {
+					li.classList.add('select');
+				}
+			}
+		}
+	</script>
+	
+	<script>
+		var element = document.querySelector('.header-background');
+		if(element) {
+			element.classList.add('custom-style');
+			var links = null;
+			if("")
+			{
+				links = "".split(',');
+			} else
+			{
+				links = "/images/random_top_img/01.webp,/images/random_top_img/02.webp,/images/random_top_img/03.webp,/images/random_top_img/04.webp,/images/random_top_img/05.webp,/images/random_top_img/06.webp,/images/random_top_img/07.webp".split(',');
+			}
+			var randomLink = links[Math.floor(Math.random() * links.length)];
+			element.style.backgroundImage = "url('" + randomLink + "')";
+		}
+	</script>
+
+	
+<script src="/js/plugins/breadcrumb.js"></script>
+
+	<script>
+		var menus_title = [];
+		
+			menus_title.push({home: '主页'});
+		
+			menus_title.push({categories: '类别'});
+		
+			menus_title.push({tags: '标签'});
+		
+			menus_title.push({archives: '归档'});
+		
+			menus_title.push({galleries: '相册'});
+		
+			menus_title.push({links: '链接'});
+		
+			menus_title.push({about: '关于'});
+		
+		
+			
+				postsBreadcrumb(
+					document.getElementById('breadcrumb'),
+					"类别",
+					"/categories",
+					"technology",
+					"/categories/technology"
+				);
+			
+		
+	</script>
+</header>
+
+<div class="main-wrapper">
+    <main class="post">
+        <header class="main-header">
+	
+		
+			
+				
+<link rel="stylesheet" href="/css/plugins/fancybox.css">
+
+				
+<script src="/js/plugins/fancybox.umd.js"></script>
+
+				
+<script src="/js/plugins/fancybox.js"></script>
+
+			
+			<div class="post-header-background-content">
+				<ul class="post-header-tag">
+					
+						
+							<li><a href="/tags/c++"><span>c++</span></a></li>
+						
+							<li><a href="/tags/c++ primer"><span>c++ primer</span></a></li>
+						
+							<li><a href="/tags/文本查询程序"><span>文本查询程序</span></a></li>
+						
+					
+				</ul>
+				
+				<h1>12.3 使用标准库：文本查询程序</h1>
+		
+				
+		
+				<div class="post-header-info">
+					<svg t="1604839279282" class="icon" viewBox="0 0 1024 1024" version="1.1"
+					xmlns="http://www.w3.org/2000/svg" p-id="2901" width="20" height="20">
+						<path
+							d="M513 956.3c-247.7 0-448-200.3-448-448S265.3 66.2 513 66.2s448 200.3 448 448-200.3 442.1-448 442.1z m0-830.9c-212.2 0-388.8 170.7-388.8 388.8C124.2 726.3 294.9 903 513 903c212.2 0 388.8-170.7 388.8-388.8S725.2 125.4 513 125.4z m0 430.2c-94.2 0-170.7-76.5-170.7-170.7S418.8 207.8 513 207.8s170.7 76.5 170.7 170.7S607.2 555.6 513 555.6z m0-289.1c-64.6 0-112 52.8-112 112s47.4 117.9 112 117.9 112-52.8 112-112-47.4-117.9-112-117.9z m0 689.8c-135.7 0-259-58.7-341.9-158.9l-11.8-17.8 11.8-17.8c76.5-117.9 206.2-188.5 347.8-188.5 135.7 0 265 64.6 341.9 182.6l11.8 17.8-11.8 17.8C778 897.1 648.7 956.3 513 956.3zM230.3 773.2C300.9 849.7 406.9 897 513 897c112 0 218.1-47.4 288.6-129.8-70.5-88.2-170.7-135.6-282.7-135.6s-218.1 53.3-288.6 141.6z"
+							p-id="2902" fill="#ffffff"></path>
+					</svg>
+					<div class="post-header-info-author">
+						<a href="/about">kin12138</a>
+					</div>
+					
+						<div class="post-header-info-categories">
+							
+								<a href="/categories/technology">technology</a>
+							
+						</div>
+					
+					<time>2025/04/17 00:00:00</time>
+				</div>
+		
+				
+					<div class="post-header-stat">
+						<svg version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+						viewBox="0 0 200 200" enable-background="new 0 0 200 200" xml:space="preserve" width="20" height="20">
+							<path fill="#FFFFFF" d="M187.2,165.6c0,2.6-2.1,4.7-4.7,4.7H17.5c-2.6,0-4.7-2.1-4.7-4.7s2.1-4.7,4.7-4.7h165.1
+								C185.2,160.9,187.2,163,187.2,165.6z"/>
+							<path fill="#FFFFFF" d="M17.5,29.7c2.6,0,4.7,2.1,4.7,4.7v131.2c0,2.6-2.1,4.7-4.7,4.7s-4.7-2.1-4.7-4.7V34.4
+								C12.8,31.8,14.9,29.7,17.5,29.7z M77.9,91.5c1.8,1.8,1.8,4.8,0,6.6l-39.8,39.8c-1.9,1.8-4.9,1.7-6.6-0.2c-1.7-1.8-1.7-4.6,0-6.4
+								l39.8-39.8C73.1,89.6,76,89.6,77.9,91.5z M169.9,70.2c1.6,2.1,1.1,5-0.9,6.5c0,0,0,0,0,0l-64.2,48.2c-2.1,1.5-5,1.1-6.6-0.9
+								c-1.6-2.1-1.1-5,0.9-6.5c0,0,0,0,0,0l64.2-48.2C165.4,67.7,168.3,68.1,169.9,70.2L169.9,70.2z"/>
+							<path fill="#FFFFFF" d="M104.6,124.5c-1.8,1.8-4.8,1.8-6.6,0L71.6,98.1c-1.8-1.8-1.8-4.8,0-6.6c1.8-1.8,4.8-1.8,6.6,0l26.3,26.3
+								C106.4,119.6,106.4,122.6,104.6,124.5C104.6,124.4,104.6,124.4,104.6,124.5z"/>
+						</svg>
+		
+						
+							
+<script src="/js/plugins/wordCount.js"></script>
+
+							<p class="post-count">文字数：---</p>
+						
+		
+						
+							<p id="busuanzi_container_page_pv" style='display:none;'>阅读数：<span id="busuanzi_value_page_pv"></span></p>
+						
+					</div>
+				
+			</div>
+		
+	
+</header>
+        <div class="post-content article-container">
+            <article class="post-content-info">
+                <ul>
+<li>实现一个简单的文本查询程序</li>
+<li>程序允许用户在一个给定文件中查询单词</li>
+<li>查询结果是单词在文件中出现的次数以及其所在行的列表</li>
+<li>如果一个单词在一行中出现多次，此行只列出一次</li>
+<li>行会按升序输出</li>
+</ul>
+<h2 id="文本查询程序设计"><a href="#文本查询程序设计" class="headerlink" title="文本查询程序设计"></a>文本查询程序设计</h2><h3 id="需求分析"><a href="#需求分析" class="headerlink" title="需求分析"></a>需求分析</h3><ul>
+<li>程序需要逐行读入文件，并将每行分解为单个单词</li>
+<li>当程序生成输出时：<ul>
+<li>必须能提取每个单词所关联的行号</li>
+<li>行号必须按升序出现且无重复</li>
+<li>必须能打印给定行号中的文本</li>
+</ul>
+</li>
+</ul>
+<h3 id="详细设计"><a href="#详细设计" class="headerlink" title="详细设计"></a>详细设计</h3><ul>
+<li>使用 vector\<string> 保存文件输入的一个拷贝，文件的每行保存为 vector 的一个元素，当需要打印一行时，使用行号作为下标来提取文本</li>
+<li>使用 istringstream 来提取每行中的单词</li>
+<li>使用 set 保存每个单词在输入文件中出现的行号。保证每行只出现一次且按升序存储</li>
+<li>使用 map 将每个单词与它出现的行号 set 关联起来。方便的提取任意单词的 set</li>
+</ul>
+<h4 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h4><ul>
+<li>抽象一个保存输入文件的类，命名为 TextQuery，包含一个 vector 和一个 map，vector 保存输入文件内容，map 关联每个单词和它出现的行号 set</li>
+<li>TextQuery 有读取输入文件的构造函数和一个执行查询的操作<ul>
+<li>查询操作：查找 map 成员，检查给定单词是否出现。此函数需要确定返回内容，一旦找到一个单词，需要知道它出现了几次、它出现的行号以及每行的文本</li>
+<li>定义另一个类来保存查询结果，命名为 QueryResult，此类会有一个 print 函数，负责打印工作</li>
+</ul>
+</li>
+</ul>
+<h4 id="在类之间共享数据"><a href="#在类之间共享数据" class="headerlink" title="在类之间共享数据"></a>在类之间共享数据</h4><ul>
+<li>QueryResult 类需要访问保存文件内容的 vector 和关联单词与行号 set 的 map，这些数据保存在 TextQuery 类中，<strong>并且两个类的生存周期应该相同</strong></li>
+<li>这两个类在概念上共享了数据，可以使用 shared_ptr</li>
+</ul>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><h3 id="编写使用-TextQuery-类的函数"><a href="#编写使用-TextQuery-类的函数" class="headerlink" title="编写使用 TextQuery 类的函数"></a>编写使用 TextQuery 类的函数</h3><ul>
+<li>此函数接受一个指向要处理文件的 ifstream , 并与用户交互，打印给定单词的查询结果</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">runQueries</span><span class="hljs-params">(std::ifstream &amp;infile)</span> </span>&#123;<br>    <span class="hljs-function">TextQuery <span class="hljs-title">tq</span><span class="hljs-params">(infile)</span></span>;   <span class="hljs-comment">// 保存文件并建立查询 map</span><br>    <span class="hljs-comment">// 与用户交互: 提示用户输入要查询的单词，完成查询并打印结果</span><br>    <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>) &#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;enter word to look for, or q to quie: \n&quot;</span>;<br>        std::string s;<br>        <span class="hljs-comment">// 若遇到文件尾或用户输入 &#x27;q&#x27; 时终止</span><br>        <span class="hljs-keyword">if</span> (!(std::cin&gt;&gt;s) || s == <span class="hljs-string">&quot;q&quot;</span>) <span class="hljs-keyword">break</span>;<br><br>        <span class="hljs-comment">// 指向查询并打印结果</span><br>        <span class="hljs-built_in">print</span>(std::cout, tq.<span class="hljs-built_in">query</span>(s))  &lt;&lt; std::endl;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="TextQuery-类和-QueryResult-类的定义"><a href="#TextQuery-类和-QueryResult-类的定义" class="headerlink" title="TextQuery 类和 QueryResult 类的定义"></a>TextQuery 类和 QueryResult 类的定义</h3><h4 id="TextQuery-h"><a href="#TextQuery-h" class="headerlink" title="TextQuery.h"></a>TextQuery.h</h4><ul>
+<li>数据成员：<ul>
+<li>一个指向动态分配的 vector 的 shared_ptr</li>
+<li>一个 string 到 shared_ptr\<set> 的 map，每个单词关联到动态分配的 set 上</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> KNOWLEDGETEST_TEXTQUERY_H</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> KNOWLEDGETEST_TEXTQUERY_H</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;memory&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;vector&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;map&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;set&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;fstream&gt;</span></span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">QueryResult</span>;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">TextQuery</span> &#123;<br><br>    <span class="hljs-keyword">using</span> line_no = <span class="hljs-type">unsigned</span> ;<br>    <span class="hljs-keyword">using</span> Line_set = std::set&lt;line_no&gt;;<br>    <span class="hljs-keyword">using</span> Line_map = std::map&lt;std::string, std::shared_ptr&lt;Line_set&gt;&gt;;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">TextQuery</span>(std::ifstream &amp;);<br>    <span class="hljs-function">QueryResult <span class="hljs-title">query</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string &amp;)</span> <span class="hljs-type">const</span></span>;<br><br><span class="hljs-keyword">private</span>:<br>    std::shared_ptr&lt;std::vector&lt;std::string&gt;&gt; data;<br>    <span class="hljs-comment">//wl_map 关联单词与行号 set</span><br>    Line_map wl_map;<br>&#125;;<br><br><br><span class="hljs-meta">#<span class="hljs-keyword">endif</span> <span class="hljs-comment">//KNOWLEDGETEST_TEXTQUERY_H</span></span><br></code></pre></td></tr></table></figure>
+<h4 id="TextQuery-cpp"><a href="#TextQuery-cpp" class="headerlink" title="TextQuery.cpp"></a>TextQuery.cpp</h4><figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;TextQuery.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;QueryResult.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sstream&gt;</span></span><br><br>TextQuery::<span class="hljs-built_in">TextQuery</span>(std::ifstream &amp;infile) : <span class="hljs-built_in">data</span>(<span class="hljs-keyword">new</span> std::<span class="hljs-built_in">vector</span>&lt;std::string&gt;() )&#123;<br>    std::string text;<br>    <span class="hljs-keyword">while</span> (std::<span class="hljs-built_in">getline</span>(infile, text)) &#123;<br>        <span class="hljs-comment">// 将一行文本保存为 vector 的一个元素</span><br>        data-&gt;<span class="hljs-built_in">push_back</span>(text);<br>        line_no line_number = data-&gt;<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>;    <span class="hljs-comment">// 当前行号</span><br><br>        <span class="hljs-comment">// 在 map 中保存每个单词和它相应的行号</span><br>        std::string word;<br>        <span class="hljs-function">std::istringstream <span class="hljs-title">stream</span><span class="hljs-params">(text)</span></span>;<br>        <span class="hljs-keyword">while</span> (stream &gt;&gt; word) &#123;<br>            <span class="hljs-keyword">auto</span> &amp;lines = wl_map[word];<br>            <span class="hljs-keyword">if</span> (!lines)     <span class="hljs-comment">// 如果单词是第一次碰到的，此指针为空</span><br>                lines.<span class="hljs-built_in">reset</span>(<span class="hljs-keyword">new</span> Line_set);  <span class="hljs-comment">// 分配一个新的 set</span><br>            lines-&gt;<span class="hljs-built_in">insert</span>(line_number);<br>        &#125;<br>    &#125;<br>&#125;<br><br><span class="hljs-function">QueryResult <span class="hljs-title">TextQuery::query</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string &amp; word)</span> <span class="hljs-type">const</span> </span>&#123;<br>    <span class="hljs-type">static</span> <span class="hljs-keyword">auto</span> no_lines = std::<span class="hljs-built_in">make_shared</span>&lt;Line_set&gt; ();<br><br>    <span class="hljs-keyword">auto</span> it = wl_map.<span class="hljs-built_in">find</span>(word);<br>    <span class="hljs-keyword">if</span> (it == wl_map.<span class="hljs-built_in">end</span>())<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">QueryResult</span>(word, data, no_lines);<br>    <span class="hljs-keyword">else</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">QueryResult</span>(word, data, it-&gt;second);<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="QueryResult-h"><a href="#QueryResult-h" class="headerlink" title="QueryResult.h"></a>QueryResult.h</h4><ul>
+<li>需要共享的数据是保存行内容的 vector 和保存行号的 set</li>
+<li>数据成员：<ul>
+<li>string sought：目标单词</li>
+<li>一个指向 vector 的 shared_ptr</li>
+<li>一个指向 set 的 shared_ptr</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> KNOWLEDGETEST_QUERYRESULT_H</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> KNOWLEDGETEST_QUERYRESULT_H</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;memory&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;utility&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;vector&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;map&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;set&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">QueryResult</span> &#123;<br>    <span class="hljs-function"><span class="hljs-keyword">friend</span> std::ostream &amp; <span class="hljs-title">print</span><span class="hljs-params">(std::ostream &amp; os, <span class="hljs-type">const</span> QueryResult &amp;)</span></span>;<br><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">QueryResult</span>(<span class="hljs-type">const</span> std::string &amp; s,<br>                std::shared_ptr&lt;std::vector&lt;std::string&gt;&gt; c,<br>                std::shared_ptr&lt;std::set&lt;<span class="hljs-type">unsigned</span>&gt;&gt; ls )<br>                : <span class="hljs-built_in">sought</span>(s),  <span class="hljs-built_in">contents</span>(std::<span class="hljs-built_in">move</span>(c)), <span class="hljs-built_in">lines</span>(std::<span class="hljs-built_in">move</span>(ls))&#123; &#125;<br><span class="hljs-keyword">private</span>:<br>    std::string sought;<br>    std::shared_ptr&lt;std::vector&lt;std::string &gt;&gt; contents;<br>    std::shared_ptr&lt;std::set&lt;<span class="hljs-type">unsigned</span>&gt;&gt; lines;<br>&#125;;<br><br><span class="hljs-function">std::ostream &amp; <span class="hljs-title">print</span><span class="hljs-params">(std::ostream &amp; os, <span class="hljs-type">const</span> QueryResult &amp;)</span></span>;<br><br><span class="hljs-meta">#<span class="hljs-keyword">endif</span> <span class="hljs-comment">//KNOWLEDGETEST_QUERYRESULT_H</span></span><br></code></pre></td></tr></table></figure>
+<h4 id="QueryResult-cpp"><a href="#QueryResult-cpp" class="headerlink" title="QueryResult.cpp"></a>QueryResult.cpp</h4><figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;QueryResult.h&quot;</span></span><br><br><span class="hljs-function">std::ostream &amp; <span class="hljs-title">print</span><span class="hljs-params">(std::ostream &amp; os, <span class="hljs-type">const</span> QueryResult &amp; qr)</span></span>&#123;<br>    <span class="hljs-type">size_t</span> count = qr.lines-&gt;<span class="hljs-built_in">size</span>();<br>    os &lt;&lt; qr.sought &lt;&lt; <span class="hljs-string">&quot; occurs &quot;</span> &lt;&lt; count<br>    &lt;&lt; (count &gt; <span class="hljs-number">1</span> ? <span class="hljs-string">&quot; times &quot;</span> : <span class="hljs-string">&quot; time &quot;</span>)<br>    &lt;&lt; <span class="hljs-string">&quot;\n&quot;</span>;<br><br>    <span class="hljs-comment">// 逐个打印</span><br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> lineno : *qr.lines) &#123;<br>        os &lt;&lt; <span class="hljs-string">&quot;\t(line &quot;</span> &lt;&lt; lineno + <span class="hljs-number">1</span> &lt;&lt; <span class="hljs-string">&quot;) &quot;</span><br>           &lt;&lt; qr.contents-&gt;<span class="hljs-built_in">at</span>(lineno)<br>           &lt;&lt; <span class="hljs-string">&quot;\n&quot;</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> os;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+            </article>
+            
+	<aside class="rightside">
+	
+		<div class="rightside-button" id="js-aside">
+			<span>
+				<img no-lazy src="/images/icon/aside.png" class="rightside-button-icon" alt="Icon">
+			</span>
+		</div>
+		<script>
+			$("#js-aside").click(function () {
+				onShowAsideButton();
+			});
+		</script>
+	
+	<div class="rightside-button" id="js-toggle_theme">
+		<span>
+			<img no-lazy src="/images/icon/toggle_theme.png" class="rightside-button-icon" alt="Icon">
+		</span>
+	</div>
+
+	
+<script src="/js/plugins/goto_position.js"></script>
+
+	
+	<div class="rightside-button" id="js-go_top">
+		<span>
+			<img no-lazy src="/images/icon/go_top.png" class="rightside-button-icon" alt="Icon">
+		</span>
+	</div>
+	<div class="rightside-button" id="js-go_bottom">
+		<span>
+			<img no-lazy src="/images/icon/go_bottom.png" class="rightside-button-icon" alt="Icon">
+		</span>
+	</div>
+
+	<script>
+		setToggleThemeButtonListener();
+	</script>
+	<script>
+		$('#js-go_top')
+		.gotoPosition( {
+			speed: 300,
+			target: 'top',
+		} );
+		$('#js-go_bottom')
+		.gotoPosition( {
+			speed: 300,
+			target: 'bottom',
+		} );
+	</script>
+</aside>
+
+
+<div class="post-bottom">
+    
+        <div class="post-paging">     
+            <div class="post-paging-last">
+                
+                    <a href="/2025/04/18/13.%20%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6/13.2%20%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6%E4%B8%8E%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86/">
+                        上一篇：13.2 拷贝控制与资源管理
+                    </a>
+                
+            </div>
+            <div class="post-paging-next">
+                
+                    <a href="/2025/04/16/12.%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98/12.2%20%E5%8A%A8%E6%80%81%E6%95%B0%E7%BB%84/">
+                        下一篇：12.2 动态数组
+                    </a>
+                
+            </div>
+        </div>
+    
+    
+    
+        
+    
+</div>
+        </div>
+    </main>
+    
+        <aside class="main-aside">
+    
+<script src="/js/widgets/aside.js"></script>
+
+    <script>
+        showAside();
+    </script>
+
+    <div class="aside-top">
+        <div class="aside-top-about aside-card">
+            <a href="/about" class="aside-top-about-portrait">
+                <img no-lazy src="/images/about_icon/about_icon.webp" alt="Q">
+            </a>
+            <div class="aside-top-about-info">
+                <span class="author"> kin12138</span>
+                <span class="description">This is life, it's suck, but i love it</span>
+            </div>              
+            <div class="aside-top-about-site">
+                <a href="/categories" class="aside-top-about-site-item">
+                    <span class="title">类别</span>
+                    <span class="count">2</span>
+                </a>
+                <a href="/tags" class="aside-top-about-site-item">
+                    <span class="title">标签</span>
+                    <span class="count">49</span>
+                </a>
+                <a href="/archives" class="aside-top-about-site-item">
+                    <span class="title">归档</span>
+                    <span class="count">33</span>
+                </a>
+            </div>
+            <div class="aside-top-about-contact">
+                
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/Weibo.webp" alt="Quieter">
+                        </a>
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/Tieba.webp" alt="Quieter">
+                        </a>
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/Bilibili.webp" alt="Quieter">
+                        </a>
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/github.webp" alt="Quieter">
+                        </a>
+                    
+                
+            </div>
+        </div> 
+
+        
+    </div>
+
+    <div class="aside-bottom">
+        
+            <script>
+                
+                    const tocCollapsed = true;
+                
+                
+                    const tocDepth = 6;
+                
+                var headerString = '';
+                for (let i = 1; i <= tocDepth; i++) {
+                    if (i === 1) {
+                        headerString += 'h1';
+                    } else {
+                        headerString += ', h' + i;
+                    }
+                }
+                hbeToc();
+            </script>
+            <div class="aside-bottom-toc aside-card">
+                <div class="aside-bottom-toc-title">
+                    <h1>目录</h1>
+                    <span class="toc-percentage"></span>
+                </div>
+                <ol class="aside-bottom-toc-content"></ol>
+            </div>
+        
+    </div>
+</aside>
+    
+</div>
+		<footer>
+	<div class="content">
+		
+			<span>©2025&nbsp;By&nbsp;<a href="/about">kin12138</a>.</span>
+		
+		<span><a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> theme by <a target="_blank" rel="noopener" href="https://github.com/GZ-Metal-Cell/hexo-theme-quieter">Quieter</a>.</span>
+		
+	</div>
+
+	
+<script src="/js/plugins/ref.js"></script>
+
+	
+<script src="/js/plugins/highlight_tools.js"></script>
+
+	<script>
+		var copyIcon = "/images/icon/copy.png";
+		var closeCodeBlockIcon = "/images/icon/close_code_block.png";
+		var highlightShrink = "";
+		var HighlightHeightLimit = "";
+	</script>
+	
+	<!-- Analytics -->
+
+    
+        <!-- Busuanzi Analytics -->
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+
+
+	
+
+	
+
+    
+		
+<script src="/js/plugins/replaceSpacesWithNbsp.js"></script>
+
+	
+
+	
+	
+	
+		<script>
+			if (typeof init === 'function') {
+				init();
+			}
+		</script>
+	
+
+	
+		
+	
+
+	
+
+	<!--
+		
+<script src="/js/plugins/jquery.pjax.min.js"></script>
+
+		<script>
+			$(document).pjax('a[target!=_blank]', 'main', {
+				fragment: 'main',
+				timeout: 8000
+			});
+
+			$(document).on('pjax:complete', function() {
+			});
+		</script> 
+	-->
+	<script>
+		console.log('\n %c Hexo-Quieter 主题 %c https://github.com/GZ-Metal-Cell/hexo-theme-quieter \n', 'color: #fadfa3; background: #030307; padding:5px 0;', 'background: #fadfa3; padding:5px 0;')
+	</script>
+</footer>
+	</body>
+
+	<!-- Hexo-Quieter 主题  https://github.com/GZ-Metal-Cell/hexo-theme-quieter -->
+</html>
+
