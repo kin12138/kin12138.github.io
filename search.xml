@@ -70,6 +70,66 @@
     
     
     <entry>
+      <title>13.3 交换操作</title>
+      <link href="/2025/04/18/13.%20%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6/13.3%20%E4%BA%A4%E6%8D%A2%E6%93%8D%E4%BD%9C/"/>
+      <url>/2025/04/18/13.%20%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6/13.3%20%E4%BA%A4%E6%8D%A2%E6%93%8D%E4%BD%9C/</url>
+      
+        <content type="html"><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul><li>管理资源的类通常还定义一个名为 <strong>swap</strong> 的函数</li><li>如果类定义了自己的 swap，那么算法将使用自定义版本。否则算法将使用标准库定义的 swap</li><li>使用 swap 交换指针比交换数据值性能更好</li></ul><h2 id="定义一个-swap-函数"><a href="#定义一个-swap-函数" class="headerlink" title="定义一个 swap 函数"></a>定义一个 swap 函数</h2><figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">HasPtr2</span>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">friend</span> <span class="hljs-type">void</span> <span class="hljs-title">swap</span><span class="hljs-params">(HasPtr2 &amp;, HasPtr2 &amp;)</span></span>;<br>    <span class="hljs-comment">// 其他成员</span><br>&#125;;<br><br><span class="hljs-function"><span class="hljs-keyword">inline</span></span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">swap</span><span class="hljs-params">(HasPtr2 &amp;lhs, HasPtr2 &amp;rhs)</span> </span>&#123;<br>    <span class="hljs-keyword">using</span> std::swap;<br>    <span class="hljs-built_in">swap</span>(lhs.ps2, rhs.ps2);     <span class="hljs-comment">// 交换指针，而不是 string 数据</span><br>    <span class="hljs-built_in">swap</span>(lhs.i2, rhs.i2);       <span class="hljs-comment">// 交换 i 数据</span><br>&#125;<br></code></pre></td></tr></table></figure><ul><li><strong>由于要交换的数据是内置类型，所以使用 std::swap</strong></li><li><strong>若要交换的数据是其他类类型，那么必须为这个类型定义自己的 swap 版本</strong></li></ul><h2 id="在赋值运算符中使用-swap"><a href="#在赋值运算符中使用-swap" class="headerlink" title="在赋值运算符中使用 swap"></a>在赋值运算符中使用 swap</h2><ul><li>定义了 swap 的类通常使用 swap 来定义它们的赋值运算符，运算符使用了<strong>拷贝并交换 (copy and swap) 技术</strong>：<strong>将左侧对象与右侧对象的一个副本进行交换</strong></li></ul><figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 注意 rhs 按值传递，</span><br><span class="hljs-comment">// 意味着 HasPtr 的拷贝构造函数将右侧运算对象中的 string 拷贝到 rhs</span><br>HasPtr &amp; HasPtr::<span class="hljs-keyword">operator</span>=(HasPtr rhs) &#123;<br>    <span class="hljs-built_in">swap</span>(*<span class="hljs-keyword">this</span>, rhs);<br>    <span class="hljs-keyword">return</span> *<span class="hljs-keyword">this</span>;<br>&#125;<br></code></pre></td></tr></table></figure><ul><li>rhs 是右侧运算对象的一个拷贝</li><li>调用 swap 来交换 rhs 和 <em>this 中的数据成员。这个**调用将左侧运算对象(</em>this)中原来保存的指针成员存入 rhs 中<strong>，并</strong>将 rhs 中的指针存入 <em>this 中*</em></li><li>swap 调用结束，<strong>*this 中的指针成员指向一个新分配的 string（右侧运算对象中 string 的一个拷贝）</strong></li><li>函数返回 *this 之后，销毁 rhs，执行 HasPtr 的析构函数，释放 rhs 指向的内存</li><li><strong>使用拷贝和交换的赋值运算符自动就是异常安全的，且能正确处理自赋值</strong><ul><li>首先拷贝了右侧运算对象保证了自赋值的正确性</li><li>代码中唯一可能出现异常的地方是拷贝构造函数中的 new 表达式，即使真的发生了异常，也是在改变左侧运算符之前发生的</li></ul></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> technology </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> c++ </tag>
+            
+            <tag> c++ primer </tag>
+            
+            <tag> 交换操作 </tag>
+            
+            <tag> 拷贝并交换技术 </tag>
+            
+            <tag> 定义 swap 函数 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>13.4 拷贝控制示例</title>
+      <link href="/2025/04/18/13.%20%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6/13.4%20%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6%E7%A4%BA%E4%BE%8B/"/>
+      <url>/2025/04/18/13.%20%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6/13.4%20%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6%E7%A4%BA%E4%BE%8B/</url>
+      
+        <content type="html"><![CDATA[<h2 id="需求分析"><a href="#需求分析" class="headerlink" title="需求分析"></a>需求分析</h2><ul><li>定义两个类命名为 <strong>Message</strong> 和 <strong>Folder</strong>，分别表示<strong>电子邮件消息</strong>和<strong>消息目录</strong></li><li>每个 Message 可以出现在多个 Folder 中，但是任意给定 Message 的内容只有一个副本</li><li>如果一条 Message 内容被改变，则从它所在的任何 Folder 中浏览此 Message 都会看到改变后的内容</li><li>为了记录 Message 位于哪些 Folder 中，每个 Message 保存它所在 Folder 的指针 set</li><li>每个 Folder 保存它拥有的 Message 的指针的 set</li></ul><h2 id="Message-类"><a href="#Message-类" class="headerlink" title="Message 类"></a>Message 类</h2><ul><li>Message 提供 save 和 remove 操作：来向一个 Folder 添加一条 Message 或从 Folder 中删除一条 Message</li><li>为了<strong>创建一个新的 Message</strong>，会指明消息内容，但不会指出 Folder。将一条 Message 放入 Folder 中，必须调用 save</li><li><strong>拷贝一个 Message</strong> 时，副本和原对象将是不同的对象，但两个 Message 都出现在同一个 Folder 中，因此<strong>拷贝 Message 的操作包括拷贝 Message 内容和 Folder 指针 set 的拷贝</strong>，<strong>而且必须在每个包含此消息的 Folder 中都添加一个指向新创建的 Message 的指针</strong></li><li><strong>销毁一个 Message</strong> 时，必须从包含此消息的所有 Folder 中删除指向此条 Message 的指针</li><li><strong>将一个 Message 对象赋予另一个 Message 对象</strong>，左侧 Message 的内容将被右侧 Message 取代。还必须更新 Folder 集合，从原来包含左侧 Message 的 Folder 中将它删除，并将它添加到包含右侧 Message 的 Folder 中</li></ul><h3 id="Message-的-save-和-remove-成员"><a href="#Message-的-save-和-remove-成员" class="headerlink" title="Message 的 save 和 remove 成员"></a>Message 的 save 和 remove 成员</h3><h3 id="Message-的拷贝控制成员"><a href="#Message-的拷贝控制成员" class="headerlink" title="Message 的拷贝控制成员"></a>Message 的拷贝控制成员</h3><h3 id="Message-的析构函数"><a href="#Message-的析构函数" class="headerlink" title="Message 的析构函数"></a>Message 的析构函数</h3><h3 id="Message-的拷贝赋值运算符"><a href="#Message-的拷贝赋值运算符" class="headerlink" title="Message 的拷贝赋值运算符"></a>Message 的拷贝赋值运算符</h3>]]></content>
+      
+      
+      <categories>
+          
+          <category> technology </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> c++ </tag>
+            
+            <tag> c++ primer </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>12.3 使用标准库：文本查询程序</title>
       <link href="/2025/04/17/12.%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98/12.3%20%E4%BD%BF%E7%94%A8%E6%A0%87%E5%87%86%E5%BA%93%EF%BC%9A%E6%96%87%E6%9C%AC%E6%9F%A5%E8%AF%A2%E7%A8%8B%E5%BA%8F/"/>
       <url>/2025/04/17/12.%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98/12.3%20%E4%BD%BF%E7%94%A8%E6%A0%87%E5%87%86%E5%BA%93%EF%BC%9A%E6%96%87%E6%9C%AC%E6%9F%A5%E8%AF%A2%E7%A8%8B%E5%BA%8F/</url>
