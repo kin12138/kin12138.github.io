@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang=zh-CN data-theme="light">
+	
+<script src="/js/plugins/toggleTheme.js"></script>
+
+	<script>
+		setTheme();
+	</script>
+	<head>
+		
+<title>14.8 函数调用运算符 | The technology-sea for kin12138</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" type="image/x-icon" href="/images/icon/favicon.ico">
+<link href="/css/plugins/print.css" media="print" rel="stylesheet" />
+
+<link rel="stylesheet" href="/css/index.css">
+
+
+
+<meta name="keywords" content="c++,c++ primer,函数调用运算符,标准库函数对象,function,">
+<meta name="description" content="">
+
+
+
+<script src="/js/plugins/jquery.min.js"></script>
+
+
+<script src="/js/plugins/hljs.min.js"></script>
+
+
+<script src="/js/plugins/init.js"></script>
+
+
+<script src="/js/plugins/hide.js"></script>
+
+
+<script src="/js/plugins/tabs.js"></script>
+
+
+
+    
+
+
+
+
+
+
+
+    
+
+	<meta name="generator" content="Hexo 7.3.0"></head>
+
+	<body>
+		<header class="sticky-header">
+	<nav>
+		<div class="nav-left">
+			<a href="/" class="logo">
+				<img no-lazy src="/images/headers_icon/logo.webp" alt="Quieter">
+			</a>
+			<ul class="breadcrumb" id="breadcrumb"></ul>
+		</div>
+		<div class="nav-right">
+			<ul>
+				
+					<li>
+						<a href="/">
+						  主页
+						</a>
+					</li>
+				
+					<li>
+						<a href="/categories">
+						  类别
+						</a>
+					</li>
+				
+					<li>
+						<a href="/tags">
+						  标签
+						</a>
+					</li>
+				
+					<li>
+						<a href="/archives">
+						  归档
+						</a>
+					</li>
+				
+					<li>
+						<a href="/galleries">
+						  相册
+						</a>
+					</li>
+				
+					<li>
+						<a href="/links">
+						  链接
+						</a>
+					</li>
+				
+					<li>
+						<a href="/about">
+						  关于
+						</a>
+					</li>
+								  
+			</ul>
+		</div>
+		<div class="nav-right-close">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+				<path fill="none" d="M0 0h24v24H0z" />
+				<path d="M3 4h18v2H3V4zm0 7h18v2H3v-2zm0 7h18v2H3v-2z" fill="rgba(68,68,68,1)" />
+			</svg>
+		</div>
+
+		<div class="sidebar">
+    <div class="topo">
+        <p>The technology-sea for kin12138</p>
+    </div>
+    <ul>
+        
+        <li>
+            <a href="/">
+                主页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories">
+                类别
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags">
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives">
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/galleries">
+                相册
+            </a>
+        </li>
+        
+        <li>
+            <a href="/links">
+                链接
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about">
+                关于
+            </a>
+        </li>
+        
+    </ul>
+    <div class="sidebar-footer">
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/Weibo.webp" alt="Quieter">
+        </a>
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/Tieba.webp" alt="Quieter">
+        </a>
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/Bilibili.webp" alt="Quieter">
+        </a>
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/github.webp" alt="Quieter">
+        </a>
+        
+    </div>
+</div>
+<div class='shelter'>
+    <script>
+        $(function() {
+            $('.nav-right-close > svg').click(function() {
+                $('.sidebar').animate({
+                    right: "0"
+                }, 500);
+                $('.shelter').fadeIn("slow");
+            
+                var element = $('.topo');
+                element.addClass('custom-style');
+            
+                var links = null;
+                if ("") {
+                    links = "".split(',');
+                } else {
+                    links = "/images/random_top_img/01.webp,/images/random_top_img/02.webp,/images/random_top_img/03.webp,/images/random_top_img/04.webp,/images/random_top_img/05.webp,/images/random_top_img/06.webp,/images/random_top_img/07.webp".split(',');
+                }
+            
+                var randomLink = links[Math.floor(Math.random() * links.length)];
+                element.css('background-image', "url('" + randomLink + "')");
+            });
+          
+            $('.shelter').click(function(e) {
+                $('.sidebar').animate({
+                    right: "-100%"
+                }, 500);
+                $('.shelter').fadeOut("slow");
+            });
+        });      
+    </script>
+</div>
+	</nav>
+
+	
+		<div class="header-background"></div>
+	
+
+	<script>
+		const name = 'post';
+		const ul = document.querySelectorAll('.nav-right ul')[0];
+		const lis = ul.querySelectorAll('li');
+
+		if (name == 'home') {
+			lis[0].classList.add('select');
+		} else {
+			for (let i = 0; i < lis.length; i++) {
+				const li = lis[i];
+				const a = li.querySelector('a');
+				if (name === a.href.split('/')[3]) {
+					li.classList.add('select');
+				}
+			}
+		}
+	</script>
+	
+	<script>
+		var element = document.querySelector('.header-background');
+		if(element) {
+			element.classList.add('custom-style');
+			var links = null;
+			if("")
+			{
+				links = "".split(',');
+			} else
+			{
+				links = "/images/random_top_img/01.webp,/images/random_top_img/02.webp,/images/random_top_img/03.webp,/images/random_top_img/04.webp,/images/random_top_img/05.webp,/images/random_top_img/06.webp,/images/random_top_img/07.webp".split(',');
+			}
+			var randomLink = links[Math.floor(Math.random() * links.length)];
+			element.style.backgroundImage = "url('" + randomLink + "')";
+		}
+	</script>
+
+	
+<script src="/js/plugins/breadcrumb.js"></script>
+
+	<script>
+		var menus_title = [];
+		
+			menus_title.push({home: '主页'});
+		
+			menus_title.push({categories: '类别'});
+		
+			menus_title.push({tags: '标签'});
+		
+			menus_title.push({archives: '归档'});
+		
+			menus_title.push({galleries: '相册'});
+		
+			menus_title.push({links: '链接'});
+		
+			menus_title.push({about: '关于'});
+		
+		
+			
+				postsBreadcrumb(
+					document.getElementById('breadcrumb'),
+					"类别",
+					"/categories",
+					"technology",
+					"/categories/technology"
+				);
+			
+		
+	</script>
+</header>
+
+<div class="main-wrapper">
+    <main class="post">
+        <header class="main-header">
+	
+		
+			
+				
+<link rel="stylesheet" href="/css/plugins/fancybox.css">
+
+				
+<script src="/js/plugins/fancybox.umd.js"></script>
+
+				
+<script src="/js/plugins/fancybox.js"></script>
+
+			
+			<div class="post-header-background-content">
+				<ul class="post-header-tag">
+					
+						
+							<li><a href="/tags/c++"><span>c++</span></a></li>
+						
+							<li><a href="/tags/c++ primer"><span>c++ primer</span></a></li>
+						
+							<li><a href="/tags/函数调用运算符"><span>函数调用运算符</span></a></li>
+						
+							<li><a href="/tags/标准库函数对象"><span>标准库函数对象</span></a></li>
+						
+							<li><a href="/tags/function"><span>function</span></a></li>
+						
+					
+				</ul>
+				
+				<h1>14.8 函数调用运算符</h1>
+		
+				
+		
+				<div class="post-header-info">
+					<svg t="1604839279282" class="icon" viewBox="0 0 1024 1024" version="1.1"
+					xmlns="http://www.w3.org/2000/svg" p-id="2901" width="20" height="20">
+						<path
+							d="M513 956.3c-247.7 0-448-200.3-448-448S265.3 66.2 513 66.2s448 200.3 448 448-200.3 442.1-448 442.1z m0-830.9c-212.2 0-388.8 170.7-388.8 388.8C124.2 726.3 294.9 903 513 903c212.2 0 388.8-170.7 388.8-388.8S725.2 125.4 513 125.4z m0 430.2c-94.2 0-170.7-76.5-170.7-170.7S418.8 207.8 513 207.8s170.7 76.5 170.7 170.7S607.2 555.6 513 555.6z m0-289.1c-64.6 0-112 52.8-112 112s47.4 117.9 112 117.9 112-52.8 112-112-47.4-117.9-112-117.9z m0 689.8c-135.7 0-259-58.7-341.9-158.9l-11.8-17.8 11.8-17.8c76.5-117.9 206.2-188.5 347.8-188.5 135.7 0 265 64.6 341.9 182.6l11.8 17.8-11.8 17.8C778 897.1 648.7 956.3 513 956.3zM230.3 773.2C300.9 849.7 406.9 897 513 897c112 0 218.1-47.4 288.6-129.8-70.5-88.2-170.7-135.6-282.7-135.6s-218.1 53.3-288.6 141.6z"
+							p-id="2902" fill="#ffffff"></path>
+					</svg>
+					<div class="post-header-info-author">
+						<a href="/about">kin12138</a>
+					</div>
+					
+						<div class="post-header-info-categories">
+							
+								<a href="/categories/technology">technology</a>
+							
+						</div>
+					
+					<time>2025/04/24 00:00:00</time>
+				</div>
+		
+				
+					<div class="post-header-stat">
+						<svg version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+						viewBox="0 0 200 200" enable-background="new 0 0 200 200" xml:space="preserve" width="20" height="20">
+							<path fill="#FFFFFF" d="M187.2,165.6c0,2.6-2.1,4.7-4.7,4.7H17.5c-2.6,0-4.7-2.1-4.7-4.7s2.1-4.7,4.7-4.7h165.1
+								C185.2,160.9,187.2,163,187.2,165.6z"/>
+							<path fill="#FFFFFF" d="M17.5,29.7c2.6,0,4.7,2.1,4.7,4.7v131.2c0,2.6-2.1,4.7-4.7,4.7s-4.7-2.1-4.7-4.7V34.4
+								C12.8,31.8,14.9,29.7,17.5,29.7z M77.9,91.5c1.8,1.8,1.8,4.8,0,6.6l-39.8,39.8c-1.9,1.8-4.9,1.7-6.6-0.2c-1.7-1.8-1.7-4.6,0-6.4
+								l39.8-39.8C73.1,89.6,76,89.6,77.9,91.5z M169.9,70.2c1.6,2.1,1.1,5-0.9,6.5c0,0,0,0,0,0l-64.2,48.2c-2.1,1.5-5,1.1-6.6-0.9
+								c-1.6-2.1-1.1-5,0.9-6.5c0,0,0,0,0,0l64.2-48.2C165.4,67.7,168.3,68.1,169.9,70.2L169.9,70.2z"/>
+							<path fill="#FFFFFF" d="M104.6,124.5c-1.8,1.8-4.8,1.8-6.6,0L71.6,98.1c-1.8-1.8-1.8-4.8,0-6.6c1.8-1.8,4.8-1.8,6.6,0l26.3,26.3
+								C106.4,119.6,106.4,122.6,104.6,124.5C104.6,124.4,104.6,124.4,104.6,124.5z"/>
+						</svg>
+		
+						
+							
+<script src="/js/plugins/wordCount.js"></script>
+
+							<p class="post-count">文字数：---</p>
+						
+		
+						
+							<p id="busuanzi_container_page_pv" style='display:none;'>阅读数：<span id="busuanzi_value_page_pv"></span></p>
+						
+					</div>
+				
+			</div>
+		
+	
+</header>
+        <div class="post-content article-container">
+            <article class="post-content-info">
+                <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
+<li>如果<strong>类重载了函数调用运算符，则可以像使用函数一样使用该类的对象</strong>，这样的类同时也能存储状态，比普通函数更加灵活</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">absInt</span>&#123;<br>    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(<span class="hljs-type">int</span> val)</span> <span class="hljs-type">const</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> val &lt; <span class="hljs-number">0</span> ? -val : val;<br>    &#125;<br>&#125;；<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-type">int</span> i = <span class="hljs-number">-42</span>;<br>abdInt absobj;<br><span class="hljs-type">int</span> ui = <span class="hljs-built_in">absobj</span>(i);     <span class="hljs-comment">// 将 i 传递给 abdobj.operator()</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>函数调用运算符必须是成员函数</strong>，一个类可以定义多个不同版本的函数调用运算符，相互之间<strong>在参数数量或类型上进行区别</strong></li>
+<li>如果类定义了函数调用运算符，则<strong>该类的对象称为<em>函数对象(function object)</em></strong></li>
+</ul>
+<h3 id="含有状态的函数对象类"><a href="#含有状态的函数对象类" class="headerlink" title="含有状态的函数对象类"></a>含有状态的函数对象类</h3><ul>
+<li>函数对象类通常也包含其他数据成员，用于定制调用运算符中的操作</li>
+<li><p>定义一个重载了函数调用运算符的类</p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">PrintString</span>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">PrintString</span>(std::ostream &amp; o = std::cout, <span class="hljs-type">char</span> c = <span class="hljs-string">&#x27; &#x27;</span>) : <br>                <span class="hljs-built_in">os</span>(o), <span class="hljs-built_in">sep</span>(c) &#123; &#125;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span> <span class="hljs-params">(<span class="hljs-type">const</span> std::string &amp; str)</span> <span class="hljs-type">const</span> </span>&#123; os &lt;&lt; str &lt;&lt; sep; &#125;<br><span class="hljs-keyword">private</span>:<br>    std::ostream &amp; os;  <span class="hljs-comment">// 用于写入的目的流</span><br>    <span class="hljs-type">char</span> sep;       <span class="hljs-comment">// 用于将不同输出隔开的字符</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>使用 PrintString</p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">PrintString printer;        <span class="hljs-comment">// 使用默认值，打印到 std::cout</span><br><span class="hljs-built_in">printer</span>(s);                 <span class="hljs-comment">// 在 std::cout 中打印 s, 后跟一个空格</span><br><span class="hljs-function">PrintString <span class="hljs-title">errors</span><span class="hljs-params">(std::cerr, <span class="hljs-string">&#x27;\n&#x27;</span>)</span></span>;<br><span class="hljs-built_in">errors</span>(s);                  <span class="hljs-comment">// 在 std::cerr 中打印 s ，后跟一个换行符</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>函数对象常常作为泛型算法的实参。例如，在 for_each 中使用自定义的函数对象来打印容器内容</p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">std::for_each(vs.<span class="hljs-built_in">begin</span>(), vs.<span class="hljs-built_in">end</span>(), <span class="hljs-built_in">PrintString</span>(cerr, <span class="hljs-string">&#x27;\n&#x27;</span>));<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="lambda-是函数对象"><a href="#lambda-是函数对象" class="headerlink" title="lambda 是函数对象"></a>lambda 是函数对象</h2><ul>
+<li>写一个 <strong>lambda，编译器会将其翻译成未命名的类的未命名函数对象</strong></li>
+<li>lambda 表达式产生的类中只含有一个重载的函数调用运算符</li>
+<li>默认情况下，lambda 不能改变它捕获的变量，因此<strong>默认情况下，lambda 产生的类中重载函数调用运算符是 const 成员函数</strong>，如果 lambda 被声明为可变的，则函数调用运算符就不是 const 成员了</li>
+</ul>
+<h3 id="表示-lambda-及相应捕获行为的类"><a href="#表示-lambda-及相应捕获行为的类" class="headerlink" title="表示 lambda 及相应捕获行为的类"></a>表示 lambda 及相应捕获行为的类</h3><ul>
+<li>当 lambda 通过<strong>引用捕获变量</strong>时，由程序负责确保 lambda 执行时引用所引的对象是存在的。<strong>编译器可以直接使用该引用而无需在生成的类中将其存储为一个数据成员</strong></li>
+<li>当 lambda 通过<strong>值捕获变量</strong>时，lambda 产生的类<strong>必须为每个值捕获的变量建立对应的数据成员，同时创建构造函数，令其使用捕获的变量的值来初始化数据成员</strong></li>
+<li><strong>lambda 产生的类不含有默认构造函数、赋值运算符、默认析构函数</strong>；</li>
+<li>它<strong>是否含有拷贝构造函数或移动构造函数要视捕获的数据成员类型来看</strong></li>
+</ul>
+<h2 id="标准库定义的函数对象"><a href="#标准库定义的函数对象" class="headerlink" title="标准库定义的函数对象"></a>标准库定义的函数对象</h2><ul>
+<li>标准库定义了一组表示算术运算符、关系运算符、逻辑运算符的类，每个类分别定义了一个执行所命名操作的调用运算符</li>
+<li>这些类都是模板形式，可以为其指定具体的应用类型，即调用运算符的形参类型</li>
+<li>这些类都定义在 <strong>functional 头文件</strong>中</li>
+<li><p>标准库函数对象：</p>
+<p>  | 算数 | 关系 | 逻辑 |<br>  | —- | —- | —- |<br>  | <code>plus&lt;Type&gt;</code> | <code>equal_to&lt;Type&gt;</code> | <code>logical_and&lt;Type&gt;</code> |<br>  | <code>minus&lt;Type&gt;</code> | <code>not_equal_to&lt;Type&gt;</code> | <code>logical_or&lt;Type&gt;</code> |<br>  | <code>multiplies&lt;Type&gt;</code> | <code>greater&lt;Type&gt;</code> | <code>logical_not&lt;Type&gt;</code> |<br>  | <code>divides&lt;Type&gt;</code> | <code>greater_equal&lt;Type&gt;</code> | |<br>  | <code>modulus&lt;Type&gt;</code> | <code>less&lt;Type&gt;</code> | |<br>  | <code>negate&lt;Type&gt;</code> | <code>less_equal&lt;Type&gt;</code> | |</p>
+</li>
+</ul>
+<h3 id="在算法中使用标准库函数对象"><a href="#在算法中使用标准库函数对象" class="headerlink" title="在算法中使用标准库函数对象"></a>在算法中使用标准库函数对象</h3><ul>
+<li><p><strong>表示运算符的函数对象常用来替换算法中的默认运算符</strong></p>
+<ul>
+<li><p>例如默认情况排序算法使用 <code>operator&lt;</code> 将序列按升序排序，可以对算法传入一个 greater 类型的对象来将序列按降序排序，该类将产生一个调用运算符并执行待排序列类型的大于运算</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 传入一个临时函数对象用于执行两个 string 对象的 &gt; 比较运算</span><br><span class="hljs-built_in">sort</span>(vec.<span class="hljs-built_in">begin</span>(), vec.<span class="hljs-built_in">end</span>(), <span class="hljs-built_in">greater</span>&lt;string&gt;());<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><strong>特别注意，标准库规定其函数对象对于指针同样适用</strong></p>
+<ul>
+<li><strong>直接比较两个无关指针将会产生未定义行为</strong></li>
+<li><p>但可以使用标准库函数对象来实现比较指针的目的</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">vector&lt;string*&gt; vec;<br><br><span class="hljs-comment">// 错误，vec 中的指针之间没有关系，所以 &lt; 将产生未定义行为</span><br><span class="hljs-built_in">sort</span>(vec.<span class="hljs-built_in">begin</span>(), vec.<span class="hljs-built_in">end</span>(), <br>        [](string *a, string *b) &#123; <span class="hljs-keyword">return</span> a &lt; b; &#125;);<br><br><span class="hljs-comment">// 正确，可以使用标准库的 less 来比较指针</span><br><span class="hljs-built_in">sort</span>(vec.<span class="hljs-built_in">begin</span>(), vec.<span class="hljs-built_in">end</span>(), <span class="hljs-built_in">less</span>&lt;string*&gt; ());<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><strong>关联容器使用 <code>less&lt;key_type&gt;</code> 对元素排序，因此定义一个指针作为关键字的 set 或 map 可以无需声明 less</strong></p>
+</li>
+</ul>
+<h2 id="可调用对象与-function"><a href="#可调用对象与-function" class="headerlink" title="可调用对象与 function"></a>可调用对象与 function</h2><ul>
+<li>c++ 中的可调用对象：<ul>
+<li><strong>函数</strong></li>
+<li><strong>函数指针</strong></li>
+<li><strong>lambda</strong> 表达式</li>
+<li><strong>bind</strong> 创建的对象</li>
+<li><strong>重载了函数调用运算符的类</strong></li>
+</ul>
+</li>
+<li>可调用对象也有自己的类型<ul>
+<li>lambda 表达式有唯一的（未命名）类类型</li>
+<li>函数和函数指针的类型取决于其返回值类型和实参类型</li>
+</ul>
+</li>
+</ul>
+<h3 id="不同类型可能具有相同的调用形式"><a href="#不同类型可能具有相同的调用形式" class="headerlink" title="不同类型可能具有相同的调用形式"></a>不同类型可能具有相同的调用形式</h3><ul>
+<li>不同类型的可调用对象可能共享同一种<strong>调用形式(call signature)</strong><ul>
+<li>调用形式指明了调用返回的类型，以及传递给调用的实参类型，例如 <code>int(int, int)</code></li>
+</ul>
+</li>
+<li><p>下面几个不同的可调用对象有一个<strong>共享的调用形式</strong>：<code>int(int, int)</code></p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 普通函数</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> i, <span class="hljs-type">int</span> j)</span> </span>&#123; <span class="hljs-keyword">return</span> i + j; &#125;<br><span class="hljs-comment">// lambda, 其产生一个未命名的函数对象类</span><br><span class="hljs-keyword">auto</span> mod = [](<span class="hljs-type">int</span> i, <span class="hljs-type">int</span> j) &#123; <span class="hljs-keyword">return</span> i % j; &#125;<br><span class="hljs-comment">// 函数对象类</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">divide</span>&#123;<br>    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span> <span class="hljs-params">(<span class="hljs-type">int</span> denominator, <span class="hljs-type">int</span> divisor)</span> </span>&#123; <br>        <span class="hljs-keyword">return</span> denominator / divisor; <br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="函数表-function-table"><a href="#函数表-function-table" class="headerlink" title="函数表(function table)"></a>函数表(function table)</h4><ul>
+<li>可定义一个<strong>函数表(function table) 用于存储指向这些可调用对象的“指针”</strong></li>
+<li>当程序需要执行某个特定操作时，从表中查找该调用的函数</li>
+<li><p>函数表可通过 map 来实现</p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">map&lt;string, (<span class="hljs-type">int</span>*) (<span class="hljs-type">int</span>, <span class="hljs-type">int</span>)&gt; function_table;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>但这种定义方式，<strong>只能向 map 中添加 <code>(int*) (int, int)</code> 类型的函数指针，而不能添加 lambda 或者重载了调用运算符的类</strong></p>
+</li>
+</ul>
+<h3 id="标准库-function-类型"><a href="#标准库-function-类型" class="headerlink" title="标准库 function 类型"></a>标准库 function 类型</h3><ul>
+<li>function 用来<strong>解决如何定义函数表 map 的 mapped_type 类型问题</strong></li>
+<li>function 定义在<strong>头文件 functional</strong> 中</li>
+<li><p><strong>function 定义的操作</strong></p>
+<p>  | Operatoration | Description |<br>  | —- | —- |<br>  | <code>function&lt;T&gt; f;</code> | f 是用来存储可调用对象的空 function <br> <strong>这些调用对象的调用形式应该与函数类型 T 相同</strong> <em>(即 T 是 retType(args))</em> |<br>  | <code>function&lt;T&gt; f(nullptr);</code> | 显式的构造一个空 function |<br>  | <code>function&lt;T&gt; f(obj);</code> | 在 f 中存储可调用对象 obj 的副本 |<br>  | <code>f</code> | <strong>将 f 作为条件：当 f 中含有一个可调用对象时为真，否则为假</strong> |<br>  | <code>f(args)</code> | 调用 f 中的对象，参数是 args |</p>
+</li>
+<li><p>定义为 <strong><code>function&lt;T&gt;</code> 的成员的类型</strong></p>
+<p>  | Type | Description |<br>  | —- | —- |<br>  | <code>result_type</code> | 该 function 类型的<strong>可调用对象的返回类型</strong> |<br>  | <code>argument_type</code> <br> <code>first_argument_type</code> <br> <code>second_argument_type</code> | <strong>当 T 有一个或两个实参时定义的类型</strong> <br> <strong>如果 T 只有一个实参，则 argument_type 是该类型的同义词(argument_type 等价于 T)</strong> <br> 如果有两个实参，则 <strong>firse_argument_type 和 second_argument_type 分别代表两个实参的类型</strong> |</p>
+</li>
+<li><p>function 是一个<strong>模板</strong>，当创建 function 时必须提供额外信息(例如<strong>对象的调用形式</strong>)</p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">function&lt;<span class="hljs-type">int</span>(<span class="hljs-type">int</span>,<span class="hljs-type">int</span>)&gt;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>重新声明几种可调用对象</p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">function&lt;<span class="hljs-type">int</span>(<span class="hljs-type">int</span>,<span class="hljs-type">int</span>)&gt; f1 = add;    <span class="hljs-comment">// 函数指针</span><br>function&lt;<span class="hljs-type">int</span>(<span class="hljs-type">int</span>,<span class="hljs-type">int</span>)&gt; f2 = <span class="hljs-built_in">divide</span>();   <span class="hljs-comment">// 函数对象类的对象</span><br>function&lt;<span class="hljs-type">int</span>(<span class="hljs-type">int</span>,<span class="hljs-type">int</span>)&gt; f3 = [](<span class="hljs-type">int</span> i, <span class="hljs-type">int</span> j)        <span class="hljs-comment">// lambda</span><br>                            &#123;<span class="hljs-keyword">return</span> i * j; &#125;<br><br>cout &lt;&lt; <span class="hljs-built_in">f1</span>(<span class="hljs-number">4</span>,<span class="hljs-number">2</span>) &lt;&lt; endl;        <span class="hljs-comment">// print 6</span><br>cout &lt;&lt; <span class="hljs-built_in">f2</span>(<span class="hljs-number">4</span>,<span class="hljs-number">2</span>) &lt;&lt; endl;        <span class="hljs-comment">// print 2</span><br>cout &lt;&lt; <span class="hljs-built_in">f3</span>(<span class="hljs-number">4</span>,<span class="hljs-number">2</span>) &lt;&lt; endl;        <span class="hljs-comment">// print 8</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>使用 function 定义函数表</p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 所有的可调用对象必须接受两个 int 、返回一个 int</span><br><span class="hljs-comment">// map 中的元素可以是函数指针、函数对象、lambda</span><br>map&lt;string, funciton&lt;<span class="hljs-type">int</span>(<span class="hljs-type">int</span>,<span class="hljs-type">int</span>)&gt;&gt; function_table;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>向这个 map 中添加可调用对象：</p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">map&lt;string, function&lt;<span class="hljs-type">int</span>(<span class="hljs-type">int</span>,<span class="hljs-type">int</span>)&gt;&gt; function_tables = &#123;<br>    &#123;<span class="hljs-string">&quot;+&quot;</span>, add&#125;,                                 <span class="hljs-comment">// 函数指针</span><br>    &#123;<span class="hljs-string">&quot;-&quot;</span>, std::<span class="hljs-built_in">minus</span>&lt;<span class="hljs-type">int</span>&gt; ()&#125;,                  <span class="hljs-comment">// 标准库函数对象</span><br>    &#123;<span class="hljs-string">&quot;/&quot;</span>, <span class="hljs-built_in">divide</span>()&#125;,                            <span class="hljs-comment">// 用户定义的函数对象</span><br>    &#123;<span class="hljs-string">&quot;*&quot;</span>, [](<span class="hljs-type">int</span> i, <span class="hljs-type">int</span> j) &#123; <span class="hljs-keyword">return</span> i*j; &#125;&#125;,    <span class="hljs-comment">// 未命名的 lambda 对象</span><br>    &#123;<span class="hljs-string">&quot;%&quot;</span>, mod&#125;                                  <span class="hljs-comment">// 命名了的 lambda 对象</span><br>    &#125;;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>尽管这些<strong>可调用对象的类型不同</strong>，但是它们都<strong>共享一个调用形式</strong>，所以仍然能够把这些所有类型都存储在同一个 <code>function&lt;int(int,int)&gt;</code> 类型中</p>
+</li>
+<li><p>function 类型重载了调用运算符，该运算符<strong>接受它自己的实参</strong>然后<strong>将其传递给存好的可调用对象</strong></p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">function_table[<span class="hljs-string">&quot;+&quot;</span>] (<span class="hljs-number">10</span>, <span class="hljs-number">5</span>);        <span class="hljs-comment">// 调用 add</span><br>function_table[<span class="hljs-string">&quot;-&quot;</span>] (<span class="hljs-number">10</span>, <span class="hljs-number">5</span>);        <span class="hljs-comment">// 使用 minus&lt;int&gt; 对象的调用运算符</span><br>funciton_table[<span class="hljs-string">&quot;/&quot;</span>] (<span class="hljs-number">10</span>, <span class="hljs-number">5</span>);        <span class="hljs-comment">// 使用 divide 对象的调用运算符</span><br>function_table[<span class="hljs-string">&quot;*&quot;</span>] (<span class="hljs-number">10</span>, <span class="hljs-number">5</span>);        <span class="hljs-comment">// 调用 lambda 对象</span><br>function_table[<span class="hljs-string">&quot;%&quot;</span>] (<span class="hljs-number">10</span>, <span class="hljs-number">5</span>);        <span class="hljs-comment">// 调用 lambda 对象</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="重载的函数与-function"><a href="#重载的函数与-function" class="headerlink" title="重载的函数与 function"></a>重载的函数与 function</h3><ul>
+<li><p>不能直接将重载函数的名字存入 function 类型的对象中，有命名二义性的问题</p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> i, <span class="hljs-type">int</span> j)</span> </span>&#123; <span class="hljs-keyword">return</span> i + j; &#125;<br><span class="hljs-function">Sale_data <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">const</span> Sale_data &amp; lhs, <span class="hljs-type">const</span> Sale_data &amp; rhs)</span></span>;<br>map&lt;string, function&lt;<span class="hljs-type">int</span>(<span class="hljs-type">int</span>,<span class="hljs-type">int</span>)&gt;&gt; function_table;<br>function_table.<span class="hljs-built_in">insert</span>(&#123;<span class="hljs-string">&quot;+&quot;</span>, add&#125;);      <span class="hljs-comment">// 错误，哪个 add ?</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>可以通过<strong>存储函数指针</strong>解决二义性问题</p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-built_in">int</span> (*fp) (<span class="hljs-type">int</span> i, <span class="hljs-type">int</span> j) &#123; <span class="hljs-keyword">return</span> i + j; &#125;<br>function_table.<span class="hljs-built_in">insert</span>( &#123;<span class="hljs-string">&quot;+&quot;</span>, fp&#125;);<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>也可以<strong>使用 lambda</strong> 解决</p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 使用 lambda 来指定希望使用的 add 版本</span><br>function_table.<span class="hljs-built_in">insert</span>(&#123;<span class="hljs-string">&quot;+&quot;</span>, [](<span class="hljs-type">int</span> i, <span class="hljs-type">int</span> j) &#123; <span class="hljs-keyword">return</span> <span class="hljs-built_in">add</span>(i,j); &#125; &#125;);<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+
+            </article>
+            
+	<aside class="rightside">
+	
+		<div class="rightside-button" id="js-aside">
+			<span>
+				<img no-lazy src="/images/icon/aside.png" class="rightside-button-icon" alt="Icon">
+			</span>
+		</div>
+		<script>
+			$("#js-aside").click(function () {
+				onShowAsideButton();
+			});
+		</script>
+	
+	<div class="rightside-button" id="js-toggle_theme">
+		<span>
+			<img no-lazy src="/images/icon/toggle_theme.png" class="rightside-button-icon" alt="Icon">
+		</span>
+	</div>
+
+	
+<script src="/js/plugins/goto_position.js"></script>
+
+	
+	<div class="rightside-button" id="js-go_top">
+		<span>
+			<img no-lazy src="/images/icon/go_top.png" class="rightside-button-icon" alt="Icon">
+		</span>
+	</div>
+	<div class="rightside-button" id="js-go_bottom">
+		<span>
+			<img no-lazy src="/images/icon/go_bottom.png" class="rightside-button-icon" alt="Icon">
+		</span>
+	</div>
+
+	<script>
+		setToggleThemeButtonListener();
+	</script>
+	<script>
+		$('#js-go_top')
+		.gotoPosition( {
+			speed: 300,
+			target: 'top',
+		} );
+		$('#js-go_bottom')
+		.gotoPosition( {
+			speed: 300,
+			target: 'bottom',
+		} );
+	</script>
+</aside>
+
+
+<div class="post-bottom">
+    
+        <div class="post-paging">     
+            <div class="post-paging-last">
+                
+                    <a href="/2025/04/24/14.%20%E9%87%8D%E8%BD%BD%E8%BF%90%E7%AE%97%E5%92%8C%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/14.7%20%E6%88%90%E5%91%98%E8%AE%BF%E9%97%AE%E8%BF%90%E7%AE%97%E7%AC%A6/">
+                        上一篇：14.7 成员访问运算符
+                    </a>
+                
+            </div>
+            <div class="post-paging-next">
+                
+                    <a href="/2025/04/23/14.%20%E9%87%8D%E8%BD%BD%E8%BF%90%E7%AE%97%E5%92%8C%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/14.1%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">
+                        下一篇：14.1 重载运算基本概念
+                    </a>
+                
+            </div>
+        </div>
+    
+    
+    
+        
+    
+</div>
+        </div>
+    </main>
+    
+        <aside class="main-aside">
+    
+<script src="/js/widgets/aside.js"></script>
+
+    <script>
+        showAside();
+    </script>
+
+    <div class="aside-top">
+        <div class="aside-top-about aside-card">
+            <a href="/about" class="aside-top-about-portrait">
+                <img no-lazy src="/images/about_icon/about_icon.webp" alt="Q">
+            </a>
+            <div class="aside-top-about-info">
+                <span class="author"> kin12138</span>
+                <span class="description">This is life, it's suck, but i love it</span>
+            </div>              
+            <div class="aside-top-about-site">
+                <a href="/categories" class="aside-top-about-site-item">
+                    <span class="title">类别</span>
+                    <span class="count">2</span>
+                </a>
+                <a href="/tags" class="aside-top-about-site-item">
+                    <span class="title">标签</span>
+                    <span class="count">95</span>
+                </a>
+                <a href="/archives" class="aside-top-about-site-item">
+                    <span class="title">归档</span>
+                    <span class="count">55</span>
+                </a>
+            </div>
+            <div class="aside-top-about-contact">
+                
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/Weibo.webp" alt="Quieter">
+                        </a>
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/Tieba.webp" alt="Quieter">
+                        </a>
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/Bilibili.webp" alt="Quieter">
+                        </a>
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/github.webp" alt="Quieter">
+                        </a>
+                    
+                
+            </div>
+        </div> 
+
+        
+    </div>
+
+    <div class="aside-bottom">
+        
+            <script>
+                
+                    const tocCollapsed = true;
+                
+                
+                    const tocDepth = 6;
+                
+                var headerString = '';
+                for (let i = 1; i <= tocDepth; i++) {
+                    if (i === 1) {
+                        headerString += 'h1';
+                    } else {
+                        headerString += ', h' + i;
+                    }
+                }
+                hbeToc();
+            </script>
+            <div class="aside-bottom-toc aside-card">
+                <div class="aside-bottom-toc-title">
+                    <h1>目录</h1>
+                    <span class="toc-percentage"></span>
+                </div>
+                <ol class="aside-bottom-toc-content"></ol>
+            </div>
+        
+    </div>
+</aside>
+    
+</div>
+		<footer>
+	<div class="content">
+		
+			<span>©2025&nbsp;By&nbsp;<a href="/about">kin12138</a>.</span>
+		
+		<span><a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> theme by <a target="_blank" rel="noopener" href="https://github.com/GZ-Metal-Cell/hexo-theme-quieter">Quieter</a>.</span>
+		
+	</div>
+
+	
+<script src="/js/plugins/ref.js"></script>
+
+	
+<script src="/js/plugins/highlight_tools.js"></script>
+
+	<script>
+		var copyIcon = "/images/icon/copy.png";
+		var closeCodeBlockIcon = "/images/icon/close_code_block.png";
+		var highlightShrink = "";
+		var HighlightHeightLimit = "";
+	</script>
+	
+	<!-- Analytics -->
+
+    
+        <!-- Busuanzi Analytics -->
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+
+
+	
+
+	
+
+    
+		
+<script src="/js/plugins/replaceSpacesWithNbsp.js"></script>
+
+	
+
+	
+	
+	
+		<script>
+			if (typeof init === 'function') {
+				init();
+			}
+		</script>
+	
+
+	
+		
+	
+
+	
+
+	<!--
+		
+<script src="/js/plugins/jquery.pjax.min.js"></script>
+
+		<script>
+			$(document).pjax('a[target!=_blank]', 'main', {
+				fragment: 'main',
+				timeout: 8000
+			});
+
+			$(document).on('pjax:complete', function() {
+			});
+		</script> 
+	-->
+	<script>
+		console.log('\n %c Hexo-Quieter 主题 %c https://github.com/GZ-Metal-Cell/hexo-theme-quieter \n', 'color: #fadfa3; background: #030307; padding:5px 0;', 'background: #fadfa3; padding:5px 0;')
+	</script>
+</footer>
+	</body>
+
+	<!-- Hexo-Quieter 主题  https://github.com/GZ-Metal-Cell/hexo-theme-quieter -->
+</html>
+

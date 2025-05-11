@@ -388,7 +388,41 @@
 <li><strong>销毁一个 Message</strong> 时，必须从包含此消息的所有 Folder 中删除指向此条 Message 的指针</li>
 <li><strong>将一个 Message 对象赋予另一个 Message 对象</strong>，左侧 Message 的内容将被右侧 Message 取代。还必须更新 Folder 集合，从原来包含左侧 Message 的 Folder 中将它删除，并将它添加到包含右侧 Message 的 Folder 中</li>
 </ul>
-<h3 id="Message-的-save-和-remove-成员"><a href="#Message-的-save-和-remove-成员" class="headerlink" title="Message 的 save 和 remove 成员"></a>Message 的 save 和 remove 成员</h3><h3 id="Message-的拷贝控制成员"><a href="#Message-的拷贝控制成员" class="headerlink" title="Message 的拷贝控制成员"></a>Message 的拷贝控制成员</h3><h3 id="Message-的析构函数"><a href="#Message-的析构函数" class="headerlink" title="Message 的析构函数"></a>Message 的析构函数</h3><h3 id="Message-的拷贝赋值运算符"><a href="#Message-的拷贝赋值运算符" class="headerlink" title="Message 的拷贝赋值运算符"></a>Message 的拷贝赋值运算符</h3>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Folder</span>;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Message</span> &#123;<br>    <span class="hljs-keyword">friend</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Folder</span>;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-comment">// folders 被隐式初始化为空集合</span><br>    <span class="hljs-function"><span class="hljs-keyword">explicit</span> <span class="hljs-title">Message</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string &amp; str = <span class="hljs-string">&quot;&quot;</span>)</span> : contents(str) &#123;</span> &#125;<br>    <span class="hljs-comment">// 拷贝控制成员，用来管理指向本 Message 的指针</span><br>    <span class="hljs-built_in">Message</span>(<span class="hljs-type">const</span> Message &amp;);<br>    Message &amp; <span class="hljs-keyword">operator</span>=(<span class="hljs-type">const</span> Message &amp;);<br>    ~<span class="hljs-built_in">Message</span>();<br>    <span class="hljs-comment">// 从给定 Folder 集合中添加或删除本条 Message</span><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">save</span><span class="hljs-params">(Folder &amp;)</span></span>;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">remove</span><span class="hljs-params">(Folder &amp;)</span></span>;<br><br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-comment">// 拷贝构造函数、拷贝赋值运算符、析构函数中所使用的工具函数</span><br>    <span class="hljs-comment">//将 Message 添加到指向参数的 Folder 中</span><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">add_to_Folders</span><span class="hljs-params">(<span class="hljs-type">const</span> Message &amp;)</span></span>;<br>    <span class="hljs-comment">// 从 Folders 中的每个 Folder 中删除本条 Message</span><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">remove_from_Folders</span><span class="hljs-params">()</span></span>;<br><br><span class="hljs-keyword">private</span>:<br>    std::string contents;       <span class="hljs-comment">// 实际消息内容</span><br>    std::set&lt;Folder*&gt; folders;      <span class="hljs-comment">// 包含本条 Message 的 Folder</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+<h3 id="Message-的-save-和-remove-成员"><a href="#Message-的-save-和-remove-成员" class="headerlink" title="Message 的 save 和 remove 成员"></a>Message 的 save 和 remove 成员</h3><figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Message::save</span><span class="hljs-params">(Folder &amp; f)</span> </span>&#123;<br>    <span class="hljs-comment">// 将给定的 Folder 添加到本 Message 的 folders 列表中</span><br>    folders.<span class="hljs-built_in">insert</span>(&amp;f);<br>    <span class="hljs-comment">// 将本 Message 添加到f 的 Message 集合中</span><br>    f.<span class="hljs-built_in">addMsg</span>(*<span class="hljs-keyword">this</span>);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Message::remove</span><span class="hljs-params">(Folder &amp;f)</span> </span>&#123;<br>    <span class="hljs-comment">// 从 folders 列表中删除给定 f</span><br>    folders.<span class="hljs-built_in">erase</span>(&amp;f);<br>    <span class="hljs-comment">// 从 f 的 Message 集合中删除本 Message</span><br>    f.<span class="hljs-built_in">remMsg</span>(*<span class="hljs-keyword">this</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="Message-的拷贝控制成员"><a href="#Message-的拷贝控制成员" class="headerlink" title="Message 的拷贝控制成员"></a>Message 的拷贝控制成员</h3><ul>
+<li><strong>拷贝 Message 时，得到的副本应该与原 Message 在相同的 Folder 中</strong>，因此必须遍历 Message 中存储的 Folder 指针的 set，对每个指向原 Message 的 Folder 添加一个指向新 Message 的指针</li>
+<li>拷贝构造函数与拷贝赋值运算符都需要这个操作，将它定义为一个工具函数</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Message::add_to_Folders</span><span class="hljs-params">(<span class="hljs-type">const</span> Message &amp; m)</span> </span>&#123;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> f : m.folders) &#123;<br>        f-&gt;<span class="hljs-built_in">addMsg</span>(*<span class="hljs-keyword">this</span>);       <span class="hljs-comment">// 向每个包含 m 的 Folder 添加指向本 Message 的指针</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">Message::<span class="hljs-built_in">Message</span>(<span class="hljs-type">const</span> Message &amp; m) :<br>        <span class="hljs-built_in">contents</span>(m.contents), <span class="hljs-built_in">folders</span>(m.folders) &#123;<br>    <span class="hljs-built_in">add_to_Folders</span>(m);      <span class="hljs-comment">// 将本 Message 添加到所有包含 m 的 Folder 中</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="Message-的析构函数"><a href="#Message-的析构函数" class="headerlink" title="Message 的析构函数"></a>Message 的析构函数</h3><ul>
+<li>当一个 Message 被销毁时，<strong>必须从保存指向此 Message 指针的 Folder 中删除这个 Message 指针</strong>，这需要遍历当前 Message 的 folders 序列，对每个 Folder 执行删除 Message 指针操作。析构函数与拷贝赋值运算符都需要这个操作，因此定义为工具函数</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 从对应的 Folder 中删除指向本 Message 的指针</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Message::remove_from_Folders</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> f : folders) &#123;    <span class="hljs-comment">// 对 folders 中的每个指针</span><br>        f-&gt;<span class="hljs-built_in">remMsg</span>(*<span class="hljs-keyword">this</span>);       <span class="hljs-comment">// 从该 Folder 中删除指向本 Message 的指针</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">Message::~<span class="hljs-built_in">Message</span>() &#123;<br>    <span class="hljs-built_in">remove_from_Folders</span>();<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="Message-的拷贝赋值运算符"><a href="#Message-的拷贝赋值运算符" class="headerlink" title="Message 的拷贝赋值运算符"></a>Message 的拷贝赋值运算符</h3><ul>
+<li><strong>拷贝赋值运算符</strong>必须执行<strong>析构函数</strong>和<strong>拷贝构造函数</strong>的工作</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">Message &amp; Message::<span class="hljs-keyword">operator</span>=(<span class="hljs-type">const</span> Message &amp;rhs) &#123;<br>    <span class="hljs-built_in">remove_from_Folders</span>();  <span class="hljs-comment">// 从包含左侧运算对象的 Folder 中删除指向左侧 Message 的指针</span><br>    contents = rhs.contents;    <span class="hljs-comment">// 拷贝右侧 Message 的内容</span><br>    folders = rhs.folders;      <span class="hljs-comment">// 拷贝右侧 Message 的 folders 集合</span><br>    <span class="hljs-built_in">add_to_Folders</span>(rhs);    <span class="hljs-comment">// 向每个包含 rhs 的 Folder 添加指向本 Message 的指针</span><br>    <span class="hljs-keyword">return</span> *<span class="hljs-keyword">this</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>add_to_Folders 必须在 remove_from_Folders 之后执行<ul>
+<li>原因：如果左侧运算对象与右侧运算对象是相同的 Message (<strong>自赋值情况</strong>)，则它们具有相同的地址，<strong>如果在 add_to_Folders 之后调用 remove_from_Folders ，就会将此 Message 从它所在的所有 Folder 中删除（Folder 中保存 Message 指针的方式是 set）</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="Message-的-swap-函数"><a href="#Message-的-swap-函数" class="headerlink" title="Message 的 swap 函数"></a>Message 的 swap 函数</h3><ul>
+<li>通过定义一个 Message 自定义版本的 swap，可以避免对 contents 和 folders 成员进行不必要的拷贝</li>
+<li>swap 函数必须管理<strong>指向被交换 Message 的 Folder 指针</strong>。在调用 swap(m1, m2) 后，原来保存 m1 的 Folder 必须保存 m2, 反之亦然</li>
+<li>通过两边扫描 folders 中的元素来正确处理 Folder 指针。<ul>
+<li>第一遍扫描，将 Message 从它们所在的 Folder 中删除</li>
+<li>然后调用 swap 交换数据成员</li>
+<li>第二遍扫描 folders 将交换过的 Message 添加到 Folder 中</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Message::swap</span><span class="hljs-params">(Message &amp;lhs, Message &amp;rhs)</span> </span>&#123;<br>    <span class="hljs-keyword">using</span> std::swap;<br>    <span class="hljs-comment">// 将每个 Message 的指针从它原来所在的 Folder 中删除</span><br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> f : lhs.folders) &#123;<br>        f-&gt;<span class="hljs-built_in">remMsg</span>(&amp;lhs);<br>    &#125;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> f : rhs.folders) &#123;<br>        f-&gt;<span class="hljs-built_in">remMsg</span>(&amp;rhs);<br>    &#125;<br>    <span class="hljs-built_in">swap</span>(lhs.contents, rhs.contents);   <span class="hljs-comment">// 交换 message 内容, 使用 swap(string &amp;, string &amp;)</span><br>    <span class="hljs-built_in">swap</span>(lhs.folders, rhs.folders);     <span class="hljs-comment">// 交换 folders 元素，使用 swap(set&amp;, set&amp;)</span><br><br>    <span class="hljs-comment">// 将每个交换内容后的 Message 指针添加到它的新 Folder 中</span><br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> f : lhs.folders) &#123;<br>        f-&gt;<span class="hljs-built_in">addMsg</span>(&amp;lhs);<br>    &#125;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> f : rhs.folders) &#123;<br>        f-&gt;<span class="hljs-built_in">addMsg</span>(&amp;rhs);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
             </article>
             
 	<aside class="rightside">
@@ -455,8 +489,8 @@
             </div>
             <div class="post-paging-next">
                 
-                    <a href="/2025/04/17/12.%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98/12.3%20%E4%BD%BF%E7%94%A8%E6%A0%87%E5%87%86%E5%BA%93%EF%BC%9A%E6%96%87%E6%9C%AC%E6%9F%A5%E8%AF%A2%E7%A8%8B%E5%BA%8F/">
-                        下一篇：12.3 使用标准库：文本查询程序
+                    <a href="/2025/04/18/13.%20%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6/13.5%20%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%B1%BB/">
+                        下一篇：13.5 动态内存管理类
                     </a>
                 
             </div>
@@ -494,11 +528,11 @@
                 </a>
                 <a href="/tags" class="aside-top-about-site-item">
                     <span class="title">标签</span>
-                    <span class="count">52</span>
+                    <span class="count">95</span>
                 </a>
                 <a href="/archives" class="aside-top-about-site-item">
                     <span class="title">归档</span>
-                    <span class="count">35</span>
+                    <span class="count">55</span>
                 </a>
             </div>
             <div class="aside-top-about-contact">

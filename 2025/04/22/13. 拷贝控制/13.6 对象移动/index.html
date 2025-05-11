@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang=zh-CN data-theme="light">
+	
+<script src="/js/plugins/toggleTheme.js"></script>
+
+	<script>
+		setTheme();
+	</script>
+	<head>
+		
+<title>13.6 对象移动 | The technology-sea for kin12138</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" type="image/x-icon" href="/images/icon/favicon.ico">
+<link href="/css/plugins/print.css" media="print" rel="stylesheet" />
+
+<link rel="stylesheet" href="/css/index.css">
+
+
+
+<meta name="keywords" content="c++,c++ primer,右值引用,移动构造函数,移动赋值运算符,std::move,">
+<meta name="description" content="">
+
+
+
+<script src="/js/plugins/jquery.min.js"></script>
+
+
+<script src="/js/plugins/hljs.min.js"></script>
+
+
+<script src="/js/plugins/init.js"></script>
+
+
+<script src="/js/plugins/hide.js"></script>
+
+
+<script src="/js/plugins/tabs.js"></script>
+
+
+
+    
+
+
+
+
+
+
+
+    
+
+	<meta name="generator" content="Hexo 7.3.0"></head>
+
+	<body>
+		<header class="sticky-header">
+	<nav>
+		<div class="nav-left">
+			<a href="/" class="logo">
+				<img no-lazy src="/images/headers_icon/logo.webp" alt="Quieter">
+			</a>
+			<ul class="breadcrumb" id="breadcrumb"></ul>
+		</div>
+		<div class="nav-right">
+			<ul>
+				
+					<li>
+						<a href="/">
+						  主页
+						</a>
+					</li>
+				
+					<li>
+						<a href="/categories">
+						  类别
+						</a>
+					</li>
+				
+					<li>
+						<a href="/tags">
+						  标签
+						</a>
+					</li>
+				
+					<li>
+						<a href="/archives">
+						  归档
+						</a>
+					</li>
+				
+					<li>
+						<a href="/galleries">
+						  相册
+						</a>
+					</li>
+				
+					<li>
+						<a href="/links">
+						  链接
+						</a>
+					</li>
+				
+					<li>
+						<a href="/about">
+						  关于
+						</a>
+					</li>
+								  
+			</ul>
+		</div>
+		<div class="nav-right-close">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+				<path fill="none" d="M0 0h24v24H0z" />
+				<path d="M3 4h18v2H3V4zm0 7h18v2H3v-2zm0 7h18v2H3v-2z" fill="rgba(68,68,68,1)" />
+			</svg>
+		</div>
+
+		<div class="sidebar">
+    <div class="topo">
+        <p>The technology-sea for kin12138</p>
+    </div>
+    <ul>
+        
+        <li>
+            <a href="/">
+                主页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories">
+                类别
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags">
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives">
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/galleries">
+                相册
+            </a>
+        </li>
+        
+        <li>
+            <a href="/links">
+                链接
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about">
+                关于
+            </a>
+        </li>
+        
+    </ul>
+    <div class="sidebar-footer">
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/Weibo.webp" alt="Quieter">
+        </a>
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/Tieba.webp" alt="Quieter">
+        </a>
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/Bilibili.webp" alt="Quieter">
+        </a>
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/github.webp" alt="Quieter">
+        </a>
+        
+    </div>
+</div>
+<div class='shelter'>
+    <script>
+        $(function() {
+            $('.nav-right-close > svg').click(function() {
+                $('.sidebar').animate({
+                    right: "0"
+                }, 500);
+                $('.shelter').fadeIn("slow");
+            
+                var element = $('.topo');
+                element.addClass('custom-style');
+            
+                var links = null;
+                if ("") {
+                    links = "".split(',');
+                } else {
+                    links = "/images/random_top_img/01.webp,/images/random_top_img/02.webp,/images/random_top_img/03.webp,/images/random_top_img/04.webp,/images/random_top_img/05.webp,/images/random_top_img/06.webp,/images/random_top_img/07.webp".split(',');
+                }
+            
+                var randomLink = links[Math.floor(Math.random() * links.length)];
+                element.css('background-image', "url('" + randomLink + "')");
+            });
+          
+            $('.shelter').click(function(e) {
+                $('.sidebar').animate({
+                    right: "-100%"
+                }, 500);
+                $('.shelter').fadeOut("slow");
+            });
+        });      
+    </script>
+</div>
+	</nav>
+
+	
+		<div class="header-background"></div>
+	
+
+	<script>
+		const name = 'post';
+		const ul = document.querySelectorAll('.nav-right ul')[0];
+		const lis = ul.querySelectorAll('li');
+
+		if (name == 'home') {
+			lis[0].classList.add('select');
+		} else {
+			for (let i = 0; i < lis.length; i++) {
+				const li = lis[i];
+				const a = li.querySelector('a');
+				if (name === a.href.split('/')[3]) {
+					li.classList.add('select');
+				}
+			}
+		}
+	</script>
+	
+	<script>
+		var element = document.querySelector('.header-background');
+		if(element) {
+			element.classList.add('custom-style');
+			var links = null;
+			if("")
+			{
+				links = "".split(',');
+			} else
+			{
+				links = "/images/random_top_img/01.webp,/images/random_top_img/02.webp,/images/random_top_img/03.webp,/images/random_top_img/04.webp,/images/random_top_img/05.webp,/images/random_top_img/06.webp,/images/random_top_img/07.webp".split(',');
+			}
+			var randomLink = links[Math.floor(Math.random() * links.length)];
+			element.style.backgroundImage = "url('" + randomLink + "')";
+		}
+	</script>
+
+	
+<script src="/js/plugins/breadcrumb.js"></script>
+
+	<script>
+		var menus_title = [];
+		
+			menus_title.push({home: '主页'});
+		
+			menus_title.push({categories: '类别'});
+		
+			menus_title.push({tags: '标签'});
+		
+			menus_title.push({archives: '归档'});
+		
+			menus_title.push({galleries: '相册'});
+		
+			menus_title.push({links: '链接'});
+		
+			menus_title.push({about: '关于'});
+		
+		
+			
+				postsBreadcrumb(
+					document.getElementById('breadcrumb'),
+					"类别",
+					"/categories",
+					"technology",
+					"/categories/technology"
+				);
+			
+		
+	</script>
+</header>
+
+<div class="main-wrapper">
+    <main class="post">
+        <header class="main-header">
+	
+		
+			
+				
+<link rel="stylesheet" href="/css/plugins/fancybox.css">
+
+				
+<script src="/js/plugins/fancybox.umd.js"></script>
+
+				
+<script src="/js/plugins/fancybox.js"></script>
+
+			
+			<div class="post-header-background-content">
+				<ul class="post-header-tag">
+					
+						
+							<li><a href="/tags/c++"><span>c++</span></a></li>
+						
+							<li><a href="/tags/c++ primer"><span>c++ primer</span></a></li>
+						
+							<li><a href="/tags/右值引用"><span>右值引用</span></a></li>
+						
+							<li><a href="/tags/移动构造函数"><span>移动构造函数</span></a></li>
+						
+							<li><a href="/tags/移动赋值运算符"><span>移动赋值运算符</span></a></li>
+						
+							<li><a href="/tags/std::move"><span>std::move</span></a></li>
+						
+					
+				</ul>
+				
+				<h1>13.6 对象移动</h1>
+		
+				
+		
+				<div class="post-header-info">
+					<svg t="1604839279282" class="icon" viewBox="0 0 1024 1024" version="1.1"
+					xmlns="http://www.w3.org/2000/svg" p-id="2901" width="20" height="20">
+						<path
+							d="M513 956.3c-247.7 0-448-200.3-448-448S265.3 66.2 513 66.2s448 200.3 448 448-200.3 442.1-448 442.1z m0-830.9c-212.2 0-388.8 170.7-388.8 388.8C124.2 726.3 294.9 903 513 903c212.2 0 388.8-170.7 388.8-388.8S725.2 125.4 513 125.4z m0 430.2c-94.2 0-170.7-76.5-170.7-170.7S418.8 207.8 513 207.8s170.7 76.5 170.7 170.7S607.2 555.6 513 555.6z m0-289.1c-64.6 0-112 52.8-112 112s47.4 117.9 112 117.9 112-52.8 112-112-47.4-117.9-112-117.9z m0 689.8c-135.7 0-259-58.7-341.9-158.9l-11.8-17.8 11.8-17.8c76.5-117.9 206.2-188.5 347.8-188.5 135.7 0 265 64.6 341.9 182.6l11.8 17.8-11.8 17.8C778 897.1 648.7 956.3 513 956.3zM230.3 773.2C300.9 849.7 406.9 897 513 897c112 0 218.1-47.4 288.6-129.8-70.5-88.2-170.7-135.6-282.7-135.6s-218.1 53.3-288.6 141.6z"
+							p-id="2902" fill="#ffffff"></path>
+					</svg>
+					<div class="post-header-info-author">
+						<a href="/about">kin12138</a>
+					</div>
+					
+						<div class="post-header-info-categories">
+							
+								<a href="/categories/technology">technology</a>
+							
+						</div>
+					
+					<time>2025/04/22 00:00:00</time>
+				</div>
+		
+				
+					<div class="post-header-stat">
+						<svg version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+						viewBox="0 0 200 200" enable-background="new 0 0 200 200" xml:space="preserve" width="20" height="20">
+							<path fill="#FFFFFF" d="M187.2,165.6c0,2.6-2.1,4.7-4.7,4.7H17.5c-2.6,0-4.7-2.1-4.7-4.7s2.1-4.7,4.7-4.7h165.1
+								C185.2,160.9,187.2,163,187.2,165.6z"/>
+							<path fill="#FFFFFF" d="M17.5,29.7c2.6,0,4.7,2.1,4.7,4.7v131.2c0,2.6-2.1,4.7-4.7,4.7s-4.7-2.1-4.7-4.7V34.4
+								C12.8,31.8,14.9,29.7,17.5,29.7z M77.9,91.5c1.8,1.8,1.8,4.8,0,6.6l-39.8,39.8c-1.9,1.8-4.9,1.7-6.6-0.2c-1.7-1.8-1.7-4.6,0-6.4
+								l39.8-39.8C73.1,89.6,76,89.6,77.9,91.5z M169.9,70.2c1.6,2.1,1.1,5-0.9,6.5c0,0,0,0,0,0l-64.2,48.2c-2.1,1.5-5,1.1-6.6-0.9
+								c-1.6-2.1-1.1-5,0.9-6.5c0,0,0,0,0,0l64.2-48.2C165.4,67.7,168.3,68.1,169.9,70.2L169.9,70.2z"/>
+							<path fill="#FFFFFF" d="M104.6,124.5c-1.8,1.8-4.8,1.8-6.6,0L71.6,98.1c-1.8-1.8-1.8-4.8,0-6.6c1.8-1.8,4.8-1.8,6.6,0l26.3,26.3
+								C106.4,119.6,106.4,122.6,104.6,124.5C104.6,124.4,104.6,124.4,104.6,124.5z"/>
+						</svg>
+		
+						
+							
+<script src="/js/plugins/wordCount.js"></script>
+
+							<p class="post-count">文字数：---</p>
+						
+		
+						
+							<p id="busuanzi_container_page_pv" style='display:none;'>阅读数：<span id="busuanzi_value_page_pv"></span></p>
+						
+					</div>
+				
+			</div>
+		
+	
+</header>
+        <div class="post-content article-container">
+            <article class="post-content-info">
+                <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
+<li>新标准提供了<strong>移动而非拷贝对象</strong>的能力</li>
+<li>在某些情况下，<strong>对象拷贝后就被立即销毁，在重新分配内存的过程中，从旧内存空间将元素拷贝到新内存是不必要的</strong>，移动元素会大幅提升性能</li>
+<li><strong>IO 类和 unique_ptr 这样的类，都包含不能被共享的资源(如指针和 IO 缓冲)</strong>, 这些类型的对象不能被拷贝但<strong>可以被移动</strong></li>
+<li>新标准中，<strong>标准库容器、string、shared_ptr 类既支持拷贝也支持移动，IO 类和 unique_ptr 类可以移动但不能拷贝</strong></li>
+</ul>
+<h2 id="右值引用-rvalue-reference"><a href="#右值引用-rvalue-reference" class="headerlink" title="右值引用(rvalue reference)"></a>右值引用(rvalue reference)</h2><h3 id="左值与右值的概念"><a href="#左值与右值的概念" class="headerlink" title="左值与右值的概念"></a>左值与右值的概念</h3><ul>
+<li>当一个<strong>对象被用作右值</strong>时，用的是<strong>对象的值(内容)</strong>，当<strong>对象被用作左值</strong>时，用的是<strong>对象的身份(在内存中的位置)</strong></li>
+<li>一个重要原则：<ul>
+<li><strong>在需要右值的地方可以使用左值来代替</strong>，但是<strong>不能将右值当成左值(也就是位置) 来使用</strong></li>
+<li>当一个<strong>左值被当成右值</strong>时，<strong>实际使用的是它的内容(值)</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="右值引用概念"><a href="#右值引用概念" class="headerlink" title="右值引用概念"></a>右值引用概念</h3><ul>
+<li>所谓右值引用，就是<strong>必须绑定到右值的引用</strong></li>
+<li><strong>通过 <code>&amp;&amp;</code> 获取右值引用</strong></li>
+<li>一个<strong>重要性质</strong>：<strong>只能绑定到一个将要销毁的对象</strong></li>
+</ul>
+<h3 id="左值引用与右值引用"><a href="#左值引用与右值引用" class="headerlink" title="左值引用与右值引用"></a>左值引用与右值引用</h3><ul>
+<li><strong>左值引用</strong>(常规引用，<strong>使用 <code>&amp;</code> 获取</strong>)：<strong>不能将其绑定到要求转换的表达式、字面常量、返回右值的表达式</strong></li>
+<li><strong>右值引用</strong>：对象的另一个名字，绑定特性与左值引用完全相反<ul>
+<li><strong>可以将右值引用绑定到要求转换的表达式、字面常量、返回右值的表达式</strong></li>
+<li>但是不能绑定到左值</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-type">int</span> i = <span class="hljs-number">42</span>;<br><span class="hljs-type">int</span> &amp; r = i;     <span class="hljs-comment">// 正确，r 引用 i</span><br><span class="hljs-type">int</span> &amp;&amp; rr = i;   <span class="hljs-comment">// 错误，不能将右值引用绑定到左值</span><br><br><span class="hljs-type">int</span> &amp; r2 = i * <span class="hljs-number">42</span>;  <span class="hljs-comment">// 错误，不能将左值引用绑定到右值表达式</span><br><span class="hljs-type">const</span> <span class="hljs-type">int</span> &amp; r3 = i * <span class="hljs-number">42</span>;    <span class="hljs-comment">// 正确，可以将一个 const 引用绑定到右值表达式</span><br><span class="hljs-type">int</span> &amp;&amp; rr2 = i * <span class="hljs-number">42</span>;    <span class="hljs-comment">// 正确，右值引用 rr2 绑定到了右值表达式</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>返回左值引用的函数：</strong><ul>
+<li>例如<strong>赋值、下标、解引用、前置递增/递减运算符</strong>，<strong>都返回左值表达式</strong></li>
+<li>可以将一个左值引用绑定到这类表达式的结果上</li>
+</ul>
+</li>
+<li><strong>返回非引用类型的函数：</strong><ul>
+<li>例如<strong>算数、关系、位、后置递增/递减运算符</strong>，<strong>都生成右值</strong></li>
+<li>不能将左值引用绑定到此类表达式</li>
+<li><strong>可以将一个 const 的左值引用</strong>或<strong>一个右值引用</strong>绑定到这类表达式</li>
+</ul>
+</li>
+</ul>
+<h3 id="左值持久，右值短暂"><a href="#左值持久，右值短暂" class="headerlink" title="左值持久，右值短暂"></a>左值持久，右值短暂</h3><ul>
+<li>左值拥有持久的状态，而<strong>右值要么是字面常量，要么是在表达式求值过程中创建的临时对象</strong></li>
+<li>由于右值只能绑定到临时对象：<ul>
+<li>右值所引用的对象即将被销毁</li>
+<li>该对象没有其他用户</li>
+</ul>
+</li>
+<li><strong>使用右值引用的代码可以自由接管所引用对象的资源</strong></li>
+</ul>
+<h3 id="变量是左值"><a href="#变量是左值" class="headerlink" title="变量是左值"></a>变量是左值</h3><ul>
+<li>变量表达式是左值，因此<strong>不能将右值引用绑定到变量上</strong>，<strong>即使这个变量是右值引用类型也不行</strong></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-type">int</span> &amp;&amp; rr1 = <span class="hljs-number">42</span>;    <span class="hljs-comment">// 正确，字面常量是右值</span><br><span class="hljs-type">int</span> &amp;&amp; rr2 = rr1;   <span class="hljs-comment">// 错误，表达式 rr1 是左值</span><br></code></pre></td></tr></table></figure>
+<h3 id="标准库-move-函数"><a href="#标准库-move-函数" class="headerlink" title="标准库 move 函数"></a>标准库 move 函数</h3><ul>
+<li><strong>右值引用不能直接绑定到左值上</strong>，<strong>但可以显式的将一个左值转换为对应的右值引用类型</strong></li>
+<li>还可以使用 <strong>move 函数</strong>获取绑定到左值上的右值引用</li>
+<li>move 函数定义在<strong>头文件 utility</strong> 中</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-type">int</span> &amp;&amp; rr3 = std::<span class="hljs-built_in">move</span>(rr1); <span class="hljs-comment">// 正确</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>调用 std::move 意味着：可以销毁移后源对象，也可以对它赋予新值，但是不能使用移后源对象的值</strong></li>
+<li>使用 move 的代码应该直接使用 <strong><code>std::move</code></strong> 而不是 <code>move</code>, 避免潜在的名字冲突</li>
+</ul>
+<h2 id="移动构造函数与移动赋值运算符"><a href="#移动构造函数与移动赋值运算符" class="headerlink" title="移动构造函数与移动赋值运算符"></a>移动构造函数与移动赋值运算符</h2><ul>
+<li>这两个成员类似对应的拷贝操作，<strong>但它们从给定对象“窃取”资源而不是拷贝资源</strong></li>
+<li>移动构造函数：<ul>
+<li><strong>第一个参数是该类类型的右值引用</strong></li>
+<li><strong>其他额外参数都必须有默认实参</strong></li>
+</ul>
+</li>
+<li>除了完成资源移动，移动构造函数还必须确保<strong>移后源对象处于这样一个状态——销毁它是无害的</strong>。特别是，一旦完成移动操作，<strong>源对象必须不再指向被移动的资源——这些资源的所有权已归属于新创建的对象</strong></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">StrVec::<span class="hljs-built_in">StrVec</span>(StrVec &amp;&amp;s) <span class="hljs-keyword">noexcept</span>     <span class="hljs-comment">// 移动构造函数不应该抛出任何异常</span><br>        <span class="hljs-comment">// 成员初始化器接管 s 中的资源</span><br>        :<span class="hljs-built_in">elements</span>(s.elements), <span class="hljs-built_in">first_free</span>(s.first_free), <span class="hljs-built_in">cap</span>(s.cap)&#123;<br>    <span class="hljs-comment">// 令 s 进入这样一种状态——对其运行析构函数是安全的</span><br>    s.elements = s.first_free = s.cap = <span class="hljs-literal">nullptr</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>与拷贝构造函数不同，<strong>移动构造函数不分配任何新内存</strong>，它接管给定 StrVec 中的内存</li>
+<li><strong>接管给定内存之后，将给定对象中的指针都设为 nullptr</strong>，这样就完成了从给定对象的移动操作，此对象将继续存在</li>
+<li>最终移后源对象将被销毁，在其上执行析构函数</li>
+</ul>
+<h3 id="移动操作、标准库容器和异常"><a href="#移动操作、标准库容器和异常" class="headerlink" title="移动操作、标准库容器和异常"></a>移动操作、标准库容器和异常</h3><ul>
+<li>移动操作不分配新内存，因此通常不抛出任何异常</li>
+<li><strong>不抛出异常的移动构造函数与移动赋值运算符必须标记为 <code>noexcept</code></strong></li>
+</ul>
+<h4 id="异常安全-Exception-Safety"><a href="#异常安全-Exception-Safety" class="headerlink" title="异常安全(Exception Safety)"></a>异常安全(Exception Safety)</h4><ul>
+<li>标准库容器对异常发生提供<strong>强异常安全性(strong guarantee)</strong>：<ul>
+<li>即当调用 vector 的 push_back 时，要么操作成功，vector 发生修改，要么发生异常，此操作不改变原 vector</li>
+<li><strong>实现 strong guarantee 的前提是 vector 能够“回滚”到异常发生前状态</strong>。它会释放为此次操作额外分配的内存，而保留原来那块内存和里面的元素</li>
+</ul>
+</li>
+</ul>
+<h4 id="搬运元素的两种方式"><a href="#搬运元素的两种方式" class="headerlink" title="搬运元素的两种方式"></a>搬运元素的两种方式</h4><ul>
+<li><strong>拷贝构造(copy):</strong> 每个元素都会使用拷贝构造函数在新内存中重新构造；如果其中某次构造元素出现异常，这时旧元素仍然没有被动过，安全回滚即可</li>
+<li><p><strong>移动构造(move):</strong> 如果元素类型提供了移动构造函数，新元素就可以“窃取”源对象的内部资源，比拷贝更高效。但是如果其中某次移动时出现异常，就会遇到“部分修改”问题：</p>
+<ul>
+<li>已经移动过的旧元素：状态被改变(资源被抽走了)</li>
+<li>尚未构造的新元素：根本不存在。</li>
+</ul>
+<p>此时就无法回滚到操作之前的状态了</p>
+</li>
+</ul>
+<h4 id="noexcept-的作用"><a href="#noexcept-的作用" class="headerlink" title="noexcept 的作用"></a>noexcept 的作用</h4><ul>
+<li><strong>除非标准库知道元素类型的移动构造函数不会抛出异常，否则在重新分配内存的过程中，它就必须使用拷贝构造函数而不是移动构造函数</strong></li>
+<li><strong>如果希望标准库在重新分配内存这类情况下，对自定义类型的对象使用移动构造函数而不是拷贝</strong>，<strong>就必须显式的告诉标准库自定义类型的移动构造函数可以安全使用</strong>，通过将移动构造函数与移动赋值运算符<strong>标记为 noexcept</strong> 来做到这一点</li>
+</ul>
+<h3 id="移动赋值运算符"><a href="#移动赋值运算符" class="headerlink" title="移动赋值运算符"></a>移动赋值运算符</h3><ul>
+<li><strong>移动赋值运算符</strong>执行与<strong>析构函数</strong>和<strong>移动构造函数</strong>相同的工作<ul>
+<li>与移动构造函数一样，移动赋值运算符<strong>不能抛出任何异常</strong>，标记为 noexcept</li>
+<li>类似拷贝赋值运算符，移动赋值运算符<strong>必须正确处理自赋值</strong></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">StrVec &amp; StrVec::<span class="hljs-keyword">operator</span>=(StrVec &amp;&amp;rhs) <span class="hljs-keyword">noexcept</span> &#123;<br>    <span class="hljs-comment">// 直接进行自赋值检测</span><br>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span> != &amp;rhs) &#123;<br>        <span class="hljs-built_in">free</span>();     <span class="hljs-comment">// 释放已有元素</span><br>        <span class="hljs-comment">// 从 rhs 接管资源</span><br>        elements = rhs.elements;<br>        first_free = rhs.first_free;<br>        cap = rhs.cap;<br>        <span class="hljs-comment">// 将 rhs 置于可析构状态</span><br>        rhs.elements = rhs.first_free = rhs.cap = <span class="hljs-literal">nullptr</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> *<span class="hljs-keyword">this</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>上例中，直接检查 <strong>this 指针与 rhs 的地址是否相同</strong>来<strong>判断是否是自赋值</strong></li>
+<li>进行自赋值检查的原因：<ul>
+<li><strong>此右值可能是调用 std::move 返回的结果</strong></li>
+<li>与其他赋值运算符一样，<strong>不能在使用右侧运算对象的资源之前就释放左侧运算对象的资源，因为可能是同一块资源</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="移后源对象必须可析构"><a href="#移后源对象必须可析构" class="headerlink" title="移后源对象必须可析构"></a>移后源对象必须可析构</h3><ul>
+<li><strong>移动操作必须确保移后源对象进入可析构状态</strong></li>
+<li><strong>移动操作还必须保证资源被“窃取”后，对象仍然是有效的</strong>(可以安全赋新值或者可以安全地使用而不依赖当前值)</li>
+<li><strong>移动操作对移后源对象中留下的值没有任何要求</strong></li>
+</ul>
+<h3 id="合成的移动操作"><a href="#合成的移动操作" class="headerlink" title="合成的移动操作"></a>合成的移动操作</h3><ul>
+<li>只有当一个<strong>类没有定义任何拷贝控制成员</strong>，<strong>且它的数据成员都能使用移动构造或移动赋值时，编译器才会为它合成移动构造函数或移动赋值运算符</strong></li>
+<li><strong>移动操作永远不会被隐式定义为删除的函数(deleted function)</strong>: 但是有例外情况，如果显式的要求编译器生成 =default 的移动操作，且编译器不能移动所有成员，则编译器会将此移动操作定义为 deleted function</li>
+<li>除了上述例外情况，编译器什么时候将合成的移动操作定义为 deleted function 与 定义 deleted 合成拷贝操作类似：<ul>
+<li><em>如果一个类<strong>有数据成员不能被移动</strong>，<strong>则类的移动构造函数与移动赋值运算符将被定义为 deleted function</strong></em></li>
+</ul>
+</li>
+<li><strong>定义了一个移动构造函数或移动赋值运算符的类必须定义自己的拷贝操作，否则这些成员被默认定义为 deleted function</strong></li>
+</ul>
+<h3 id="移动右值，拷贝左值"><a href="#移动右值，拷贝左值" class="headerlink" title="移动右值，拷贝左值"></a>移动右值，拷贝左值</h3><ul>
+<li>编译器使用普通的函数匹配来确定使用哪个构造函数</li>
+</ul>
+<h3 id="如果没有移动构造函数，右值也会被拷贝"><a href="#如果没有移动构造函数，右值也会被拷贝" class="headerlink" title="如果没有移动构造函数，右值也会被拷贝"></a>如果没有移动构造函数，右值也会被拷贝</h3><ul>
+<li>如果一个类没有定义移动构造函数，<strong>函数匹配规则保证该类型的对象会被拷贝，即使传递的对象是 std::move 的返回值(右值引用)</strong></li>
+</ul>
+<h3 id="拷贝并交换赋值运算符和移动操作"><a href="#拷贝并交换赋值运算符和移动操作" class="headerlink" title="拷贝并交换赋值运算符和移动操作"></a>拷贝并交换赋值运算符和移动操作</h3><figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">HasPtr</span>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-comment">// 添加的移动构造函数</span><br>    <span class="hljs-built_in">HasPtr</span>(HasPtr &amp;&amp;rhs) <span class="hljs-keyword">noexcept</span> : <span class="hljs-built_in">ps</span>(rhs.ps), <span class="hljs-built_in">i</span>(rhs.i) &#123; rhs.ps = <span class="hljs-literal">nullptr</span>; &#125;<br>    <span class="hljs-comment">// 赋值运算符既是移动赋值运算符，也是拷贝赋值运算符</span><br>    HasPtr &amp; <span class="hljs-keyword">operator</span>=(<span class="hljs-type">const</span> HasPtr rhs);<br><span class="hljs-comment">// 其他成员</span><br><br>&#125;;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">HasPtr &amp; HasPtr::<span class="hljs-keyword">operator</span>=(HasPtr rhs) &#123;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;executed the copy-assignment operator&quot;</span> &lt;&lt; std::endl;<br>    <span class="hljs-built_in">swap</span>(*<span class="hljs-keyword">this</span>, rhs);<br>    <span class="hljs-keyword">return</span> *<span class="hljs-keyword">this</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="新的-三-五法则"><a href="#新的-三-五法则" class="headerlink" title="新的 三/五法则"></a>新的 三/五法则</h3><ul>
+<li><strong>所有五个拷贝控制成员都应该看成一个整体：如果一个类定义了任何一个拷贝操作，它就应该定义所有的五个操作</strong></li>
+<li>这些类通常拥有一个资源，而拷贝成员必须拷贝此资源，一般拷贝一个资源需要一些额外开销，使用移动构造函数与移动赋值运算符就可以提高性能</li>
+</ul>
+<h3 id="Message-类的移动操作"><a href="#Message-类的移动操作" class="headerlink" title="Message 类的移动操作"></a>Message 类的移动操作</h3><ul>
+<li>Message 的移动成员除了需要移动 folders 成员之外，还需更新每个包含原 Message 的 Folder。必须删除指向旧 Message 的指针，并添加指向新 Message 的指针。</li>
+<li>移动构造函数与移动赋值运算符都需要完成这个工作，将这个操作定义为一个工具函数</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Message::move_Folders</span><span class="hljs-params">(Message *m)</span> </span>&#123;<br>    folders = std::<span class="hljs-built_in">move</span>(m-&gt;folders);    <span class="hljs-comment">// 调用 set 的移动赋值运算符</span><br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> f : folders) &#123;<br>        f-&gt;<span class="hljs-built_in">remMsg</span>(m);   <span class="hljs-comment">// 从 Folder 中删除旧 Message 指针</span><br>        f-&gt;<span class="hljs-built_in">addMsg</span>(<span class="hljs-keyword">this</span>);    <span class="hljs-comment">// 向 Folder 中添加新 Message 指针</span><br>    &#125;<br>    m-&gt;folders.<span class="hljs-built_in">clear</span>();     <span class="hljs-comment">// 确保销毁 m 是无害的</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>移动构造函数<ul>
+<li>由于向 set 中插入元素可能抛出异常：向容器中添加元素要求分配内存，可能会抛出 bad_alloc 异常，所以不会将移动构造函数与移动赋值运算符标记为 noexcept</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">Message::<span class="hljs-built_in">Message</span>(Message &amp;&amp;rhs) : <span class="hljs-built_in">contents</span>(std::<span class="hljs-built_in">move</span>(rhs.contents))&#123;<br>    <span class="hljs-built_in">move_Folders</span>(&amp;rhs);     <span class="hljs-comment">// 移动 folders 并更新 Folder 指针</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>移动赋值运算符</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">Message &amp; Message::<span class="hljs-keyword">operator</span>=(Message &amp;&amp;rhs) &#123;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span> != &amp;rhs) &#123;                 <span class="hljs-comment">// 检查自赋值</span><br><span class="hljs-comment">//        remove_from_Folders();</span><br>        contents = std::<span class="hljs-built_in">move</span>(rhs.contents);<br>        <span class="hljs-built_in">move_Folders</span>(&amp;rhs);<br>    &#125;<br>    <span class="hljs-keyword">return</span> *<span class="hljs-keyword">this</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="移动迭代器"><a href="#移动迭代器" class="headerlink" title="移动迭代器"></a>移动迭代器</h3><ul>
+<li>标准库中定义了一种<strong>移动迭代器(move iterator)适配器</strong><ul>
+<li>一般迭代器的解引用运算符返回一个指向元素的左值</li>
+<li><strong>移动迭代器返回一个右值引用</strong></li>
+</ul>
+</li>
+<li>通过标准库的 <strong>make_move_iterator 将一个普通迭代器转换为一个移动迭代器</strong><ul>
+<li>此函数接受一个迭代器参数，返回一个移动迭代器</li>
+</ul>
+</li>
+<li>移动迭代器支持正常的迭代器操作，可以将一对移动迭代器传递给算法</li>
+<li><p>重写 StrVec 的 alloc_n_move 成员</p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">StrVec::alloc_n_move</span><span class="hljs-params">(<span class="hljs-type">size_t</span> newCap)</span> </span>&#123;<br>    <span class="hljs-comment">// 分配空间</span><br>    <span class="hljs-keyword">auto</span> first = alloc.<span class="hljs-built_in">allocate</span>(newCap);<br>    <span class="hljs-comment">// 移动元素</span><br>    <span class="hljs-keyword">auto</span> last = std::<span class="hljs-built_in">uninitialized_copy</span>(std::<span class="hljs-built_in">make_move_iterator</span>(<span class="hljs-built_in">begin</span>()),<br>                                        std::<span class="hljs-built_in">make_move_iterator</span>(<span class="hljs-built_in">end</span>()),<br>                                        first);<br>    <span class="hljs-built_in">free</span>();     <span class="hljs-comment">// 释放旧空间</span><br>    <span class="hljs-comment">// 更新指针</span><br>    elements = first;<br>    first_free = last;<br>    cap = first + newCap;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>uninitialized_copy 对输入序列的每个元素调用 construct，当给它传递移动迭代器时，意味着 construct 调用将使用移动构造函数来构造元素</p>
+</li>
+<li>移动一个对象可能会销毁原对象，因此<strong>只有确定算法在为一个元素赋值或者将其传递给一个用户定义的函数后不再访问它，才能将移动迭代器传递给算法</strong></li>
+<li><strong>在移动构造函数与移动赋值运算符这些类实现代码之外的地方，只有确定需要进行移动操作且移动操作是安全的，才可以使用 std::move</strong></li>
+</ul>
+<h2 id="右值引用和成员函数"><a href="#右值引用和成员函数" class="headerlink" title="右值引用和成员函数"></a>右值引用和成员函数</h2><ul>
+<li>一个成员函数也可以同时提供拷贝和移动两个版本<ul>
+<li>一个版本接受一个指向 const 的左值引用 <code>const T&amp;</code></li>
+<li>一个版本接受一个指向非 const 的右值引用 <code>T &amp;&amp;</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="StrVec-的两个版本的-push-back"><a href="#StrVec-的两个版本的-push-back" class="headerlink" title="StrVec 的两个版本的 push_back"></a>StrVec 的两个版本的 push_back</h3><figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">StrVec::push_back</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string &amp; str)</span> </span>&#123;<br>    <span class="hljs-built_in">chk_n_alloc</span>();  <span class="hljs-comment">// 确保有足够空间容纳新元素</span><br>    <span class="hljs-comment">// 在 first_free 指向的内存中构造 str 的副本</span><br>    alloc.<span class="hljs-built_in">construct</span>(first_free++, str);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">StrVec::push_back</span><span class="hljs-params">(std::string &amp;&amp; str)</span> </span>&#123;<br>    <span class="hljs-built_in">chk_n_alloc</span>();<br>    alloc.<span class="hljs-built_in">construct</span>(first_free++, std::<span class="hljs-built_in">move</span>(str));<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="右值和左值引用成员函数"><a href="#右值和左值引用成员函数" class="headerlink" title="右值和左值引用成员函数"></a>右值和左值引用成员函数</h3><ul>
+<li>c++ 标准中，允许向右值进行赋值</li>
+<li>可以<strong>强制左侧运算对象(即 this 指向的对象) 是一个左值，或右值</strong></li>
+<li><p>指出 this 对象的左值/右值属性的方法与定义 const 成员函数相同：<strong>在参数列表后放置运一个引用限定符(reference qualifier)</strong></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Foo</span>&#123;<br><span class="hljs-keyword">public</span>:<br>    Foo &amp; <span class="hljs-keyword">operator</span>=(<span class="hljs-type">const</span> Foo &amp;) &amp;;   <span class="hljs-comment">// 只能向可修改的左值赋值</span><br>&#125;;<br><br>Foo &amp; Foo::<span class="hljs-keyword">operator</span>=(<span class="hljs-type">const</span> Foo &amp; rhs) &amp; &#123;<br>    <span class="hljs-comment">// ...</span><br>    <span class="hljs-keyword">return</span> *<span class="hljs-keyword">this</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>引用限定符可以是 <strong><code>&amp;</code> 或 <code>&amp;&amp;</code></strong>, 分别指出 this 可以指向一个左值或右值</p>
+</li>
+<li><strong>类似于 const 限定符，引用限定符只能用于(非 static)成员函数，且必须同时出现在函数的声明和定义中</strong></li>
+<li>一个成员函数可以<strong>同时有 const 限定和 &amp; 限定</strong>，<strong>引用限定必须跟在 const 限定符之后</strong></li>
+</ul>
+<h3 id="重载和引用函数"><a href="#重载和引用函数" class="headerlink" title="重载和引用函数"></a>重载和引用函数</h3><ul>
+<li>与 const 限定符一样，<strong>一个成员函数可以根据引用限定符来重载成员函数版本</strong></li>
+<li>还可以<strong>综合使用 const 和 &amp; 来重载成员函数</strong></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Foo</span>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function">Foo <span class="hljs-title">sorted</span><span class="hljs-params">()</span> &amp;&amp;</span>;<br>    <span class="hljs-function">Foo <span class="hljs-title">sorted</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> &amp;</span>;<br><span class="hljs-keyword">private</span>:<br>    std::vector&lt;<span class="hljs-type">int</span>&gt; data;<br>&#125;;<br><br><span class="hljs-comment">// 本对象为右值，因此可以原址排序</span><br><span class="hljs-function">Foo <span class="hljs-title">Foo::sorted</span><span class="hljs-params">()</span> &amp;&amp; </span>&#123;<br>  <span class="hljs-built_in">sort</span>(data.<span class="hljs-built_in">begin</span>(), data.<span class="hljs-built_in">end</span>());<br>  <span class="hljs-keyword">return</span> *<span class="hljs-keyword">this</span>;<br>&#125;<br><br><span class="hljs-comment">// 本对象是 const 或是左值，都不能对其进行原址排序</span><br><span class="hljs-function">Foo <span class="hljs-title">Foo::sorted</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> &amp; </span>&#123;<br>  <span class="hljs-function">Foo <span class="hljs-title">ret</span><span class="hljs-params">(*<span class="hljs-keyword">this</span>)</span></span>;   <span class="hljs-comment">// 拷贝一个副本</span><br>  <span class="hljs-built_in">sort</span>(ret.data.<span class="hljs-built_in">begin</span>(), ret.data.<span class="hljs-built_in">end</span>());<br>  <span class="hljs-keyword">return</span> *<span class="hljs-keyword">this</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>对右值执行 sorted 时，可以安全的直接对 data 成员进行排序。右值意味着对象没有其他用户，因此可以改变对象</li>
+<li>当对一个 const 右值或一个左值执行 sorted 时，不能改变对象，因此需要再排序前拷贝 data</li>
+<li>当定义 <strong>const 成员函数</strong>时，可以有两个版本，<strong>唯一区别就是一个有 const 限定符，一个没有</strong></li>
+<li><strong>如果一个成员函数有引用限定符，则具有相同参数列表的其他所有版本都必须有引用限定符</strong>，即 对于重载成员函数，要么都加引用限定符，要么都不加</li>
+</ul>
+
+            </article>
+            
+	<aside class="rightside">
+	
+		<div class="rightside-button" id="js-aside">
+			<span>
+				<img no-lazy src="/images/icon/aside.png" class="rightside-button-icon" alt="Icon">
+			</span>
+		</div>
+		<script>
+			$("#js-aside").click(function () {
+				onShowAsideButton();
+			});
+		</script>
+	
+	<div class="rightside-button" id="js-toggle_theme">
+		<span>
+			<img no-lazy src="/images/icon/toggle_theme.png" class="rightside-button-icon" alt="Icon">
+		</span>
+	</div>
+
+	
+<script src="/js/plugins/goto_position.js"></script>
+
+	
+	<div class="rightside-button" id="js-go_top">
+		<span>
+			<img no-lazy src="/images/icon/go_top.png" class="rightside-button-icon" alt="Icon">
+		</span>
+	</div>
+	<div class="rightside-button" id="js-go_bottom">
+		<span>
+			<img no-lazy src="/images/icon/go_bottom.png" class="rightside-button-icon" alt="Icon">
+		</span>
+	</div>
+
+	<script>
+		setToggleThemeButtonListener();
+	</script>
+	<script>
+		$('#js-go_top')
+		.gotoPosition( {
+			speed: 300,
+			target: 'top',
+		} );
+		$('#js-go_bottom')
+		.gotoPosition( {
+			speed: 300,
+			target: 'bottom',
+		} );
+	</script>
+</aside>
+
+
+<div class="post-bottom">
+    
+        <div class="post-paging">     
+            <div class="post-paging-last">
+                
+                    <a href="/2025/04/23/14.%20%E9%87%8D%E8%BD%BD%E8%BF%90%E7%AE%97%E5%92%8C%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/14.6%20%E9%80%92%E5%A2%9E%E5%92%8C%E9%80%92%E5%87%8F%E8%BF%90%E7%AE%97%E7%AC%A6/">
+                        上一篇：14.6 递增和递减运算符
+                    </a>
+                
+            </div>
+            <div class="post-paging-next">
+                
+                    <a href="/2025/04/18/13.%20%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6/13.1%20%E6%8B%B7%E8%B4%9D%E3%80%81%E8%B5%8B%E5%80%BC%E4%B8%8E%E9%94%80%E6%AF%81/">
+                        下一篇：13.1 拷贝、赋值与销毁
+                    </a>
+                
+            </div>
+        </div>
+    
+    
+    
+        
+    
+</div>
+        </div>
+    </main>
+    
+        <aside class="main-aside">
+    
+<script src="/js/widgets/aside.js"></script>
+
+    <script>
+        showAside();
+    </script>
+
+    <div class="aside-top">
+        <div class="aside-top-about aside-card">
+            <a href="/about" class="aside-top-about-portrait">
+                <img no-lazy src="/images/about_icon/about_icon.webp" alt="Q">
+            </a>
+            <div class="aside-top-about-info">
+                <span class="author"> kin12138</span>
+                <span class="description">This is life, it's suck, but i love it</span>
+            </div>              
+            <div class="aside-top-about-site">
+                <a href="/categories" class="aside-top-about-site-item">
+                    <span class="title">类别</span>
+                    <span class="count">2</span>
+                </a>
+                <a href="/tags" class="aside-top-about-site-item">
+                    <span class="title">标签</span>
+                    <span class="count">95</span>
+                </a>
+                <a href="/archives" class="aside-top-about-site-item">
+                    <span class="title">归档</span>
+                    <span class="count">55</span>
+                </a>
+            </div>
+            <div class="aside-top-about-contact">
+                
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/Weibo.webp" alt="Quieter">
+                        </a>
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/Tieba.webp" alt="Quieter">
+                        </a>
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/Bilibili.webp" alt="Quieter">
+                        </a>
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/github.webp" alt="Quieter">
+                        </a>
+                    
+                
+            </div>
+        </div> 
+
+        
+    </div>
+
+    <div class="aside-bottom">
+        
+            <script>
+                
+                    const tocCollapsed = true;
+                
+                
+                    const tocDepth = 6;
+                
+                var headerString = '';
+                for (let i = 1; i <= tocDepth; i++) {
+                    if (i === 1) {
+                        headerString += 'h1';
+                    } else {
+                        headerString += ', h' + i;
+                    }
+                }
+                hbeToc();
+            </script>
+            <div class="aside-bottom-toc aside-card">
+                <div class="aside-bottom-toc-title">
+                    <h1>目录</h1>
+                    <span class="toc-percentage"></span>
+                </div>
+                <ol class="aside-bottom-toc-content"></ol>
+            </div>
+        
+    </div>
+</aside>
+    
+</div>
+		<footer>
+	<div class="content">
+		
+			<span>©2025&nbsp;By&nbsp;<a href="/about">kin12138</a>.</span>
+		
+		<span><a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> theme by <a target="_blank" rel="noopener" href="https://github.com/GZ-Metal-Cell/hexo-theme-quieter">Quieter</a>.</span>
+		
+	</div>
+
+	
+<script src="/js/plugins/ref.js"></script>
+
+	
+<script src="/js/plugins/highlight_tools.js"></script>
+
+	<script>
+		var copyIcon = "/images/icon/copy.png";
+		var closeCodeBlockIcon = "/images/icon/close_code_block.png";
+		var highlightShrink = "";
+		var HighlightHeightLimit = "";
+	</script>
+	
+	<!-- Analytics -->
+
+    
+        <!-- Busuanzi Analytics -->
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+
+
+	
+
+	
+
+    
+		
+<script src="/js/plugins/replaceSpacesWithNbsp.js"></script>
+
+	
+
+	
+	
+	
+		<script>
+			if (typeof init === 'function') {
+				init();
+			}
+		</script>
+	
+
+	
+		
+	
+
+	
+
+	<!--
+		
+<script src="/js/plugins/jquery.pjax.min.js"></script>
+
+		<script>
+			$(document).pjax('a[target!=_blank]', 'main', {
+				fragment: 'main',
+				timeout: 8000
+			});
+
+			$(document).on('pjax:complete', function() {
+			});
+		</script> 
+	-->
+	<script>
+		console.log('\n %c Hexo-Quieter 主题 %c https://github.com/GZ-Metal-Cell/hexo-theme-quieter \n', 'color: #fadfa3; background: #030307; padding:5px 0;', 'background: #fadfa3; padding:5px 0;')
+	</script>
+</footer>
+	</body>
+
+	<!-- Hexo-Quieter 主题  https://github.com/GZ-Metal-Cell/hexo-theme-quieter -->
+</html>
+

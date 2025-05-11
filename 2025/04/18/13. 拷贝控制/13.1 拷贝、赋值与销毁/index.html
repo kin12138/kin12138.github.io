@@ -502,7 +502,7 @@
 <li>通过将拷贝构造函数和拷贝赋值运算符定义为<strong>删除的函数(deleted function)</strong> 来阻止拷贝</li>
 <li><strong>删除的函数(deleted function):</strong><ul>
 <li><strong>虽然声明了函数，但是不能以任何方式使用它</strong></li>
-<li>在函数参数列表后加上 <strong><code>=default</code></strong> 指明函数被定义为 deleted function</li>
+<li>在函数参数列表后加上 <strong><code>=delete</code></strong> 指明函数被定义为 deleted function</li>
 </ul>
 </li>
 <li>与 <code>=default</code> 不同， <strong><code>=delete</code> 必须出现在函数第一次声明的时候</strong><ul>
@@ -512,7 +512,7 @@
 </li>
 <li><strong>可以对任何函数使用 <code>=delete</code></strong>，而只<strong>能对编译器可以合成的默认构造函数或拷贝控制成员使用 <code>=default</code></strong></li>
 </ul>
-<h3 id="析构函数不能时-deleted-function"><a href="#析构函数不能时-deleted-function" class="headerlink" title="析构函数不能时 deleted function"></a>析构函数不能时 deleted function</h3><ul>
+<h3 id="析构函数不能是-deleted-function"><a href="#析构函数不能是-deleted-function" class="headerlink" title="析构函数不能是 deleted function"></a>析构函数不能是 deleted function</h3><ul>
 <li>删除析构函数，就无法销毁此类型的对象</li>
 <li>对于<strong>析构函数已经删除</strong>的类型<ul>
 <li><strong>不能定义该类型的变量</strong></li>
@@ -616,6 +616,10 @@
         <div class="post-paging">     
             <div class="post-paging-last">
                 
+                    <a href="/2025/04/22/13.%20%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6/13.6%20%E5%AF%B9%E8%B1%A1%E7%A7%BB%E5%8A%A8/">
+                        上一篇：13.6 对象移动
+                    </a>
+                
             </div>
             <div class="post-paging-next">
                 
@@ -658,11 +662,11 @@
                 </a>
                 <a href="/tags" class="aside-top-about-site-item">
                     <span class="title">标签</span>
-                    <span class="count">52</span>
+                    <span class="count">95</span>
                 </a>
                 <a href="/archives" class="aside-top-about-site-item">
                     <span class="title">归档</span>
-                    <span class="count">35</span>
+                    <span class="count">55</span>
                 </a>
             </div>
             <div class="aside-top-about-contact">

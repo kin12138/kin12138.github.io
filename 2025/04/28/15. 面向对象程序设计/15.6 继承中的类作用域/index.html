@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang=zh-CN data-theme="light">
+	
+<script src="/js/plugins/toggleTheme.js"></script>
+
+	<script>
+		setTheme();
+	</script>
+	<head>
+		
+<title>15.6 继承中的类作用域 | The technology-sea for kin12138</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" type="image/x-icon" href="/images/icon/favicon.ico">
+<link href="/css/plugins/print.css" media="print" rel="stylesheet" />
+
+<link rel="stylesheet" href="/css/index.css">
+
+
+
+<meta name="keywords" content="c++,c++ primer,继承中的作用域,名字查找,虚函数与作用域,">
+<meta name="description" content="">
+
+
+
+<script src="/js/plugins/jquery.min.js"></script>
+
+
+<script src="/js/plugins/hljs.min.js"></script>
+
+
+<script src="/js/plugins/init.js"></script>
+
+
+<script src="/js/plugins/hide.js"></script>
+
+
+<script src="/js/plugins/tabs.js"></script>
+
+
+
+    
+
+
+
+    <script src='https://cdn.jsdelivr.net/npm/mermaid@11.4.0/dist/mermaid.min.js'></script>
+    <script>mermaid.initialize({startOnLoad:false});</script>
+    
+<link rel="stylesheet" href="/css/plugins/mermaid.css">
+
+    
+<script src="/js/plugins/mermaid.js"></script>
+
+
+
+
+
+
+    
+
+	<meta name="generator" content="Hexo 7.3.0"></head>
+
+	<body>
+		<header class="sticky-header">
+	<nav>
+		<div class="nav-left">
+			<a href="/" class="logo">
+				<img no-lazy src="/images/headers_icon/logo.webp" alt="Quieter">
+			</a>
+			<ul class="breadcrumb" id="breadcrumb"></ul>
+		</div>
+		<div class="nav-right">
+			<ul>
+				
+					<li>
+						<a href="/">
+						  主页
+						</a>
+					</li>
+				
+					<li>
+						<a href="/categories">
+						  类别
+						</a>
+					</li>
+				
+					<li>
+						<a href="/tags">
+						  标签
+						</a>
+					</li>
+				
+					<li>
+						<a href="/archives">
+						  归档
+						</a>
+					</li>
+				
+					<li>
+						<a href="/galleries">
+						  相册
+						</a>
+					</li>
+				
+					<li>
+						<a href="/links">
+						  链接
+						</a>
+					</li>
+				
+					<li>
+						<a href="/about">
+						  关于
+						</a>
+					</li>
+								  
+			</ul>
+		</div>
+		<div class="nav-right-close">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+				<path fill="none" d="M0 0h24v24H0z" />
+				<path d="M3 4h18v2H3V4zm0 7h18v2H3v-2zm0 7h18v2H3v-2z" fill="rgba(68,68,68,1)" />
+			</svg>
+		</div>
+
+		<div class="sidebar">
+    <div class="topo">
+        <p>The technology-sea for kin12138</p>
+    </div>
+    <ul>
+        
+        <li>
+            <a href="/">
+                主页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories">
+                类别
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags">
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives">
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/galleries">
+                相册
+            </a>
+        </li>
+        
+        <li>
+            <a href="/links">
+                链接
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about">
+                关于
+            </a>
+        </li>
+        
+    </ul>
+    <div class="sidebar-footer">
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/Weibo.webp" alt="Quieter">
+        </a>
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/Tieba.webp" alt="Quieter">
+        </a>
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/Bilibili.webp" alt="Quieter">
+        </a>
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/github.webp" alt="Quieter">
+        </a>
+        
+    </div>
+</div>
+<div class='shelter'>
+    <script>
+        $(function() {
+            $('.nav-right-close > svg').click(function() {
+                $('.sidebar').animate({
+                    right: "0"
+                }, 500);
+                $('.shelter').fadeIn("slow");
+            
+                var element = $('.topo');
+                element.addClass('custom-style');
+            
+                var links = null;
+                if ("") {
+                    links = "".split(',');
+                } else {
+                    links = "/images/random_top_img/01.webp,/images/random_top_img/02.webp,/images/random_top_img/03.webp,/images/random_top_img/04.webp,/images/random_top_img/05.webp,/images/random_top_img/06.webp,/images/random_top_img/07.webp".split(',');
+                }
+            
+                var randomLink = links[Math.floor(Math.random() * links.length)];
+                element.css('background-image', "url('" + randomLink + "')");
+            });
+          
+            $('.shelter').click(function(e) {
+                $('.sidebar').animate({
+                    right: "-100%"
+                }, 500);
+                $('.shelter').fadeOut("slow");
+            });
+        });      
+    </script>
+</div>
+	</nav>
+
+	
+		<div class="header-background"></div>
+	
+
+	<script>
+		const name = 'post';
+		const ul = document.querySelectorAll('.nav-right ul')[0];
+		const lis = ul.querySelectorAll('li');
+
+		if (name == 'home') {
+			lis[0].classList.add('select');
+		} else {
+			for (let i = 0; i < lis.length; i++) {
+				const li = lis[i];
+				const a = li.querySelector('a');
+				if (name === a.href.split('/')[3]) {
+					li.classList.add('select');
+				}
+			}
+		}
+	</script>
+	
+	<script>
+		var element = document.querySelector('.header-background');
+		if(element) {
+			element.classList.add('custom-style');
+			var links = null;
+			if("")
+			{
+				links = "".split(',');
+			} else
+			{
+				links = "/images/random_top_img/01.webp,/images/random_top_img/02.webp,/images/random_top_img/03.webp,/images/random_top_img/04.webp,/images/random_top_img/05.webp,/images/random_top_img/06.webp,/images/random_top_img/07.webp".split(',');
+			}
+			var randomLink = links[Math.floor(Math.random() * links.length)];
+			element.style.backgroundImage = "url('" + randomLink + "')";
+		}
+	</script>
+
+	
+<script src="/js/plugins/breadcrumb.js"></script>
+
+	<script>
+		var menus_title = [];
+		
+			menus_title.push({home: '主页'});
+		
+			menus_title.push({categories: '类别'});
+		
+			menus_title.push({tags: '标签'});
+		
+			menus_title.push({archives: '归档'});
+		
+			menus_title.push({galleries: '相册'});
+		
+			menus_title.push({links: '链接'});
+		
+			menus_title.push({about: '关于'});
+		
+		
+			
+				postsBreadcrumb(
+					document.getElementById('breadcrumb'),
+					"类别",
+					"/categories",
+					"technology",
+					"/categories/technology"
+				);
+			
+		
+	</script>
+</header>
+
+<div class="main-wrapper">
+    <main class="post">
+        <header class="main-header">
+	
+		
+			
+				
+<link rel="stylesheet" href="/css/plugins/fancybox.css">
+
+				
+<script src="/js/plugins/fancybox.umd.js"></script>
+
+				
+<script src="/js/plugins/fancybox.js"></script>
+
+			
+			<div class="post-header-background-content">
+				<ul class="post-header-tag">
+					
+						
+							<li><a href="/tags/c++"><span>c++</span></a></li>
+						
+							<li><a href="/tags/c++ primer"><span>c++ primer</span></a></li>
+						
+							<li><a href="/tags/继承中的作用域"><span>继承中的作用域</span></a></li>
+						
+							<li><a href="/tags/名字查找"><span>名字查找</span></a></li>
+						
+							<li><a href="/tags/虚函数与作用域"><span>虚函数与作用域</span></a></li>
+						
+					
+				</ul>
+				
+				<h1>15.6 继承中的类作用域</h1>
+		
+				
+		
+				<div class="post-header-info">
+					<svg t="1604839279282" class="icon" viewBox="0 0 1024 1024" version="1.1"
+					xmlns="http://www.w3.org/2000/svg" p-id="2901" width="20" height="20">
+						<path
+							d="M513 956.3c-247.7 0-448-200.3-448-448S265.3 66.2 513 66.2s448 200.3 448 448-200.3 442.1-448 442.1z m0-830.9c-212.2 0-388.8 170.7-388.8 388.8C124.2 726.3 294.9 903 513 903c212.2 0 388.8-170.7 388.8-388.8S725.2 125.4 513 125.4z m0 430.2c-94.2 0-170.7-76.5-170.7-170.7S418.8 207.8 513 207.8s170.7 76.5 170.7 170.7S607.2 555.6 513 555.6z m0-289.1c-64.6 0-112 52.8-112 112s47.4 117.9 112 117.9 112-52.8 112-112-47.4-117.9-112-117.9z m0 689.8c-135.7 0-259-58.7-341.9-158.9l-11.8-17.8 11.8-17.8c76.5-117.9 206.2-188.5 347.8-188.5 135.7 0 265 64.6 341.9 182.6l11.8 17.8-11.8 17.8C778 897.1 648.7 956.3 513 956.3zM230.3 773.2C300.9 849.7 406.9 897 513 897c112 0 218.1-47.4 288.6-129.8-70.5-88.2-170.7-135.6-282.7-135.6s-218.1 53.3-288.6 141.6z"
+							p-id="2902" fill="#ffffff"></path>
+					</svg>
+					<div class="post-header-info-author">
+						<a href="/about">kin12138</a>
+					</div>
+					
+						<div class="post-header-info-categories">
+							
+								<a href="/categories/technology">technology</a>
+							
+						</div>
+					
+					<time>2025/04/28 00:00:00</time>
+				</div>
+		
+				
+					<div class="post-header-stat">
+						<svg version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+						viewBox="0 0 200 200" enable-background="new 0 0 200 200" xml:space="preserve" width="20" height="20">
+							<path fill="#FFFFFF" d="M187.2,165.6c0,2.6-2.1,4.7-4.7,4.7H17.5c-2.6,0-4.7-2.1-4.7-4.7s2.1-4.7,4.7-4.7h165.1
+								C185.2,160.9,187.2,163,187.2,165.6z"/>
+							<path fill="#FFFFFF" d="M17.5,29.7c2.6,0,4.7,2.1,4.7,4.7v131.2c0,2.6-2.1,4.7-4.7,4.7s-4.7-2.1-4.7-4.7V34.4
+								C12.8,31.8,14.9,29.7,17.5,29.7z M77.9,91.5c1.8,1.8,1.8,4.8,0,6.6l-39.8,39.8c-1.9,1.8-4.9,1.7-6.6-0.2c-1.7-1.8-1.7-4.6,0-6.4
+								l39.8-39.8C73.1,89.6,76,89.6,77.9,91.5z M169.9,70.2c1.6,2.1,1.1,5-0.9,6.5c0,0,0,0,0,0l-64.2,48.2c-2.1,1.5-5,1.1-6.6-0.9
+								c-1.6-2.1-1.1-5,0.9-6.5c0,0,0,0,0,0l64.2-48.2C165.4,67.7,168.3,68.1,169.9,70.2L169.9,70.2z"/>
+							<path fill="#FFFFFF" d="M104.6,124.5c-1.8,1.8-4.8,1.8-6.6,0L71.6,98.1c-1.8-1.8-1.8-4.8,0-6.6c1.8-1.8,4.8-1.8,6.6,0l26.3,26.3
+								C106.4,119.6,106.4,122.6,104.6,124.5C104.6,124.4,104.6,124.4,104.6,124.5z"/>
+						</svg>
+		
+						
+							
+<script src="/js/plugins/wordCount.js"></script>
+
+							<p class="post-count">文字数：---</p>
+						
+		
+						
+							<p id="busuanzi_container_page_pv" style='display:none;'>阅读数：<span id="busuanzi_value_page_pv"></span></p>
+						
+					</div>
+				
+			</div>
+		
+	
+</header>
+        <div class="post-content article-container">
+            <article class="post-content-info">
+                <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><ul>
+<li>每个类定义自己的作用域，在作用域内定义自己的成员</li>
+<li>当类之间有继承关系时，<strong>派生类的作用域嵌套在其基类的作用域之内</strong>，如果一个名字在派生类的作用域内无法正确解析，编译器将会继续在其基类的作用域内寻找该名字的定义</li>
+</ul>
+<h2 id="在编译时进行名字查找"><a href="#在编译时进行名字查找" class="headerlink" title="在编译时进行名字查找"></a>在编译时进行名字查找</h2><ul>
+<li>一个对象、引用、指针的<strong>静态类型决定了该对象的哪些成员是可见的</strong></li>
+<li>即使静态类型和动态类型可能不一致(当使用基类的指针或引用时会发生这种情况), 但是能用户代码能<strong>使用哪些成员仍是由静态类型决定的</strong></li>
+<li>名字的查找先从静态类型所定义的作用域开始，如果找不到，就到其所嵌套的上层作用域中寻找</li>
+</ul>
+<h2 id="名字冲突与继承"><a href="#名字冲突与继承" class="headerlink" title="名字冲突与继承"></a>名字冲突与继承</h2><ul>
+<li><strong>派生类的成员将隐藏基类的同名成员</strong></li>
+</ul>
+<h2 id="通过作用域运算符来使用隐藏的成员"><a href="#通过作用域运算符来使用隐藏的成员" class="headerlink" title="通过作用域运算符来使用隐藏的成员"></a>通过作用域运算符来使用隐藏的成员</h2><ul>
+<li>使用作用域运算符 <code>::</code> 可以使用被隐藏的成员</li>
+<li>但是除了覆盖继承而来的虚函数之外，派生类最好不要重用其他定义在基类中的名字</li>
+</ul>
+<h2 id="名字查找与继承"><a href="#名字查找与继承" class="headerlink" title="名字查找与继承"></a>名字查找与继承</h2><ul>
+<li>函数调用解析过程：假定调用 <code>p-&gt;mem()</code> (或者 <code>p.mem()</code> ), 则依次执行以下四个步骤：<ul>
+<li><strong>首先确定 p 的静态类型。</strong> 因为调用的是一个成员，所以 p 的类型必然是一个类类型</li>
+<li><strong>在 p 的静态类型对应的类中查找 mem</strong>。如果找不到，则依次在其直接基类中不断查找，直至继承链的顶端。如果找遍了该类及其基类仍然找不到，则编译器将报错</li>
+<li><strong>一旦找到 mem，就进行常规的类型检查，以确认对于当前找到的 mem ，本次调用是否合法</strong></li>
+<li><strong>假设调用合法，编译器将根据调用的是否是虚函数而产生不同的代码</strong>：<ul>
+<li>假设 mem 是虚函数且通过引用或指针调用的它，则编译器产生的代码将在运行时确定到底执行该虚函数的哪个版本，依据是对象的动态类型</li>
+<li>反之如果 mem 不是虚函数或者是通过对象(而非引用或指针)进行的调用，则编译器将产生一个常规函数调用</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="名字查找先于类型检查"><a href="#名字查找先于类型检查" class="headerlink" title="名字查找先于类型检查"></a>名字查找先于类型检查</h2><ul>
+<li><strong>声明在内层作用域中的函数并不会重载声明在外层作用域中的函数</strong>（重名的函数）</li>
+<li>如果派生类中的某个成员与基类中的某个成员重名，则派生类在其作用域内会隐藏该基类的成员，<strong>即使派生类成员的参数列表与基类成员的参数列表不一致，基类成员也会被隐藏</strong></li>
+</ul>
+<h2 id="虚函数与作用域"><a href="#虚函数与作用域" class="headerlink" title="虚函数与作用域"></a>虚函数与作用域</h2><ul>
+<li>为什么基类与派生类的虚函数必须有形同的参数列表：<ul>
+<li><strong>假如基类与派生类虚函数接受的实参不同，就无法通过基类的引用或指针调用派生类的虚函数了</strong></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Base</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">virtual</span> <span class="hljs-type">int</span> fcn<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">D1</span> : <span class="hljs-keyword">public</span> Base &#123;<br><span class="hljs-keyword">public</span>:<br><span class="hljs-comment">// 隐藏基类的 fcn , 这里的 fcn 不是虚函数</span><br><span class="hljs-comment">// D1 成绩继承了 Base::fcn() 的定义</span><br>    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">fcn</span><span class="hljs-params">(<span class="hljs-type">int</span>)</span></span>;   <span class="hljs-comment">// 形参列表与 Base 中的 fcn() 不一致</span><br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">f2</span><span class="hljs-params">()</span></span>;  <span class="hljs-comment">// 这是一个新的虚函数，在 Base 中并不存在</span><br>&#125;;<br><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">D2</span> : <span class="hljs-keyword">public</span> D1 &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">fcn</span><span class="hljs-params">(<span class="hljs-type">int</span>)</span></span>;   <span class="hljs-comment">// 是一个非虚函数，隐藏了 D1::fcn(int)</span><br>    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">fcn</span><span class="hljs-params">()</span></span>;      <span class="hljs-comment">// 覆盖了 Base 中的虚函数 fcn()</span><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f2</span><span class="hljs-params">()</span></span>;      <span class="hljs-comment">// 覆盖了 D1 中的虚函数 f2()</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+<h3 id="通过基类调用隐藏的虚函数"><a href="#通过基类调用隐藏的虚函数" class="headerlink" title="通过基类调用隐藏的虚函数"></a>通过基类调用隐藏的虚函数</h3><figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">Base bobj;  D1 d1obj; D2 d2obj;<br><br>Base *bp1 = &amp;bobj, *bp2 = &amp;d1obj, *bp3 = &amp;d2obj;<br><br>bp1-&gt;<span class="hljs-built_in">fcn</span>(); <span class="hljs-comment">// 虚调用，在运行时调用 Base::fcn()</span><br>bp2-&gt;<span class="hljs-built_in">fcn</span>(); <span class="hljs-comment">// 虚调用，在运行时调用 Base::fcn()</span><br>bp3-&gt;<span class="hljs-built_in">fcn</span>(); <span class="hljs-comment">// 虚调用，在运行时调用 D2::fcn()   </span><br><br>D1 *d1p = &amp;d1obj;   D2 *d2p = &amp;d2obj;<br><br>bp2-&gt;<span class="hljs-built_in">f2</span>();      <span class="hljs-comment">// 错误，Base 中没有 f2() 成员</span><br>d1p-&gt;<span class="hljs-built_in">f2</span>();      <span class="hljs-comment">// 虚调用，在运行时调用 D1::f2()</span><br>d2p-&gt;<span class="hljs-built_in">f2</span>();      <span class="hljs-comment">// 虚调用，在运行时调用 D2::f2()</span><br><br>Base *p1 = &amp;b1obj;  D1 *p2 = &amp;d2obj;    D2 *p3 = &amp;d2obj;<br><br>p1-&gt;<span class="hljs-built_in">fcn</span>(<span class="hljs-number">42</span>);    <span class="hljs-comment">// 错误，Base 中没有接受 int 的 fcn</span><br>p2-&gt;<span class="hljs-built_in">fcn</span>(<span class="hljs-number">42</span>);    <span class="hljs-comment">// 静态绑定，调用 D1::fcn(int)</span><br>p3-&gt;<span class="hljs-built_in">fcn</span>(<span class="hljs-number">42</span>);    <span class="hljs-comment">// 静态绑定，调用 D2::fcn(int)</span><br></code></pre></td></tr></table></figure>
+<h2 id="覆盖重载的函数"><a href="#覆盖重载的函数" class="headerlink" title="覆盖重载的函数"></a>覆盖重载的函数</h2><ul>
+<li><strong>成员函数无论是否是虚函数都可以被重载，派生类可以覆盖重载函数的 0 个或多个实例</strong></li>
+<li><strong>如果派生类希望所有的重载版本对于它来说都是可见的，那么它需要覆盖所有版本，或者一个也不覆盖</strong></li>
+<li><strong>为重载成员提供一条 <code>using</code> 语句，可以避免覆盖基类中的每个重载版本</strong>了。using 声明语句指定一个名字而不指定参数列表，所以一条基类成员函数的 using 声明语句就可以把该函数的所有重载实例添加到派生类作用域中。此时，派生类只需要定义其特有的函数即可，而无需为其他继承而来的函数重新定义</li>
+</ul>
+
+            </article>
+            
+	<aside class="rightside">
+	
+		<div class="rightside-button" id="js-aside">
+			<span>
+				<img no-lazy src="/images/icon/aside.png" class="rightside-button-icon" alt="Icon">
+			</span>
+		</div>
+		<script>
+			$("#js-aside").click(function () {
+				onShowAsideButton();
+			});
+		</script>
+	
+	<div class="rightside-button" id="js-toggle_theme">
+		<span>
+			<img no-lazy src="/images/icon/toggle_theme.png" class="rightside-button-icon" alt="Icon">
+		</span>
+	</div>
+
+	
+<script src="/js/plugins/goto_position.js"></script>
+
+	
+	<div class="rightside-button" id="js-go_top">
+		<span>
+			<img no-lazy src="/images/icon/go_top.png" class="rightside-button-icon" alt="Icon">
+		</span>
+	</div>
+	<div class="rightside-button" id="js-go_bottom">
+		<span>
+			<img no-lazy src="/images/icon/go_bottom.png" class="rightside-button-icon" alt="Icon">
+		</span>
+	</div>
+
+	<script>
+		setToggleThemeButtonListener();
+	</script>
+	<script>
+		$('#js-go_top')
+		.gotoPosition( {
+			speed: 300,
+			target: 'top',
+		} );
+		$('#js-go_bottom')
+		.gotoPosition( {
+			speed: 300,
+			target: 'bottom',
+		} );
+	</script>
+</aside>
+
+
+<div class="post-bottom">
+    
+        <div class="post-paging">     
+            <div class="post-paging-last">
+                
+                    <a href="/2025/04/28/15.%20%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/15.2%20%E5%AE%9A%E4%B9%89%E5%9F%BA%E7%B1%BB%E5%92%8C%E6%B4%BE%E7%94%9F%E7%B1%BB/">
+                        上一篇：15.2 定义基类和派生类
+                    </a>
+                
+            </div>
+            <div class="post-paging-next">
+                
+                    <a href="/2025/04/27/15.%20%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/15.1%20OPP%20%E6%A6%82%E8%BF%B0/">
+                        下一篇：15.1 OPP 概述
+                    </a>
+                
+            </div>
+        </div>
+    
+    
+    
+        
+    
+</div>
+        </div>
+    </main>
+    
+        <aside class="main-aside">
+    
+<script src="/js/widgets/aside.js"></script>
+
+    <script>
+        showAside();
+    </script>
+
+    <div class="aside-top">
+        <div class="aside-top-about aside-card">
+            <a href="/about" class="aside-top-about-portrait">
+                <img no-lazy src="/images/about_icon/about_icon.webp" alt="Q">
+            </a>
+            <div class="aside-top-about-info">
+                <span class="author"> kin12138</span>
+                <span class="description">This is life, it's suck, but i love it</span>
+            </div>              
+            <div class="aside-top-about-site">
+                <a href="/categories" class="aside-top-about-site-item">
+                    <span class="title">类别</span>
+                    <span class="count">2</span>
+                </a>
+                <a href="/tags" class="aside-top-about-site-item">
+                    <span class="title">标签</span>
+                    <span class="count">95</span>
+                </a>
+                <a href="/archives" class="aside-top-about-site-item">
+                    <span class="title">归档</span>
+                    <span class="count">55</span>
+                </a>
+            </div>
+            <div class="aside-top-about-contact">
+                
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/Weibo.webp" alt="Quieter">
+                        </a>
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/Tieba.webp" alt="Quieter">
+                        </a>
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/Bilibili.webp" alt="Quieter">
+                        </a>
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/github.webp" alt="Quieter">
+                        </a>
+                    
+                
+            </div>
+        </div> 
+
+        
+    </div>
+
+    <div class="aside-bottom">
+        
+            <script>
+                
+                    const tocCollapsed = true;
+                
+                
+                    const tocDepth = 6;
+                
+                var headerString = '';
+                for (let i = 1; i <= tocDepth; i++) {
+                    if (i === 1) {
+                        headerString += 'h1';
+                    } else {
+                        headerString += ', h' + i;
+                    }
+                }
+                hbeToc();
+            </script>
+            <div class="aside-bottom-toc aside-card">
+                <div class="aside-bottom-toc-title">
+                    <h1>目录</h1>
+                    <span class="toc-percentage"></span>
+                </div>
+                <ol class="aside-bottom-toc-content"></ol>
+            </div>
+        
+    </div>
+</aside>
+    
+</div>
+		<footer>
+	<div class="content">
+		
+			<span>©2025&nbsp;By&nbsp;<a href="/about">kin12138</a>.</span>
+		
+		<span><a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> theme by <a target="_blank" rel="noopener" href="https://github.com/GZ-Metal-Cell/hexo-theme-quieter">Quieter</a>.</span>
+		
+	</div>
+
+	
+<script src="/js/plugins/ref.js"></script>
+
+	
+<script src="/js/plugins/highlight_tools.js"></script>
+
+	<script>
+		var copyIcon = "/images/icon/copy.png";
+		var closeCodeBlockIcon = "/images/icon/close_code_block.png";
+		var highlightShrink = "";
+		var HighlightHeightLimit = "";
+	</script>
+	
+	<!-- Analytics -->
+
+    
+        <!-- Busuanzi Analytics -->
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+
+
+	
+
+	
+
+    
+		
+<script src="/js/plugins/replaceSpacesWithNbsp.js"></script>
+
+	
+
+	
+	
+	
+		<script>
+			if (typeof init === 'function') {
+				init();
+			}
+		</script>
+	
+
+	
+		
+	
+
+	
+
+	<!--
+		
+<script src="/js/plugins/jquery.pjax.min.js"></script>
+
+		<script>
+			$(document).pjax('a[target!=_blank]', 'main', {
+				fragment: 'main',
+				timeout: 8000
+			});
+
+			$(document).on('pjax:complete', function() {
+			});
+		</script> 
+	-->
+	<script>
+		console.log('\n %c Hexo-Quieter 主题 %c https://github.com/GZ-Metal-Cell/hexo-theme-quieter \n', 'color: #fadfa3; background: #030307; padding:5px 0;', 'background: #fadfa3; padding:5px 0;')
+	</script>
+</footer>
+	</body>
+
+	<!-- Hexo-Quieter 主题  https://github.com/GZ-Metal-Cell/hexo-theme-quieter -->
+</html>
+

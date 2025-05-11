@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang=zh-CN data-theme="light">
+	
+<script src="/js/plugins/toggleTheme.js"></script>
+
+	<script>
+		setTheme();
+	</script>
+	<head>
+		
+<title>15.2 定义基类和派生类 | The technology-sea for kin12138</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" type="image/x-icon" href="/images/icon/favicon.ico">
+<link href="/css/plugins/print.css" media="print" rel="stylesheet" />
+
+<link rel="stylesheet" href="/css/index.css">
+
+
+
+<meta name="keywords" content="c++,c++ primer,基类,派生类,派生类向基类的类型转换,">
+<meta name="description" content="">
+
+
+
+<script src="/js/plugins/jquery.min.js"></script>
+
+
+<script src="/js/plugins/hljs.min.js"></script>
+
+
+<script src="/js/plugins/init.js"></script>
+
+
+<script src="/js/plugins/hide.js"></script>
+
+
+<script src="/js/plugins/tabs.js"></script>
+
+
+
+    
+
+
+
+    <script src='https://cdn.jsdelivr.net/npm/mermaid@11.4.0/dist/mermaid.min.js'></script>
+    <script>mermaid.initialize({startOnLoad:false});</script>
+    
+<link rel="stylesheet" href="/css/plugins/mermaid.css">
+
+    
+<script src="/js/plugins/mermaid.js"></script>
+
+
+
+
+
+
+    
+
+	<meta name="generator" content="Hexo 7.3.0"></head>
+
+	<body>
+		<header class="sticky-header">
+	<nav>
+		<div class="nav-left">
+			<a href="/" class="logo">
+				<img no-lazy src="/images/headers_icon/logo.webp" alt="Quieter">
+			</a>
+			<ul class="breadcrumb" id="breadcrumb"></ul>
+		</div>
+		<div class="nav-right">
+			<ul>
+				
+					<li>
+						<a href="/">
+						  主页
+						</a>
+					</li>
+				
+					<li>
+						<a href="/categories">
+						  类别
+						</a>
+					</li>
+				
+					<li>
+						<a href="/tags">
+						  标签
+						</a>
+					</li>
+				
+					<li>
+						<a href="/archives">
+						  归档
+						</a>
+					</li>
+				
+					<li>
+						<a href="/galleries">
+						  相册
+						</a>
+					</li>
+				
+					<li>
+						<a href="/links">
+						  链接
+						</a>
+					</li>
+				
+					<li>
+						<a href="/about">
+						  关于
+						</a>
+					</li>
+								  
+			</ul>
+		</div>
+		<div class="nav-right-close">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+				<path fill="none" d="M0 0h24v24H0z" />
+				<path d="M3 4h18v2H3V4zm0 7h18v2H3v-2zm0 7h18v2H3v-2z" fill="rgba(68,68,68,1)" />
+			</svg>
+		</div>
+
+		<div class="sidebar">
+    <div class="topo">
+        <p>The technology-sea for kin12138</p>
+    </div>
+    <ul>
+        
+        <li>
+            <a href="/">
+                主页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories">
+                类别
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags">
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives">
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/galleries">
+                相册
+            </a>
+        </li>
+        
+        <li>
+            <a href="/links">
+                链接
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about">
+                关于
+            </a>
+        </li>
+        
+    </ul>
+    <div class="sidebar-footer">
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/Weibo.webp" alt="Quieter">
+        </a>
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/Tieba.webp" alt="Quieter">
+        </a>
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/Bilibili.webp" alt="Quieter">
+        </a>
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/github.webp" alt="Quieter">
+        </a>
+        
+    </div>
+</div>
+<div class='shelter'>
+    <script>
+        $(function() {
+            $('.nav-right-close > svg').click(function() {
+                $('.sidebar').animate({
+                    right: "0"
+                }, 500);
+                $('.shelter').fadeIn("slow");
+            
+                var element = $('.topo');
+                element.addClass('custom-style');
+            
+                var links = null;
+                if ("") {
+                    links = "".split(',');
+                } else {
+                    links = "/images/random_top_img/01.webp,/images/random_top_img/02.webp,/images/random_top_img/03.webp,/images/random_top_img/04.webp,/images/random_top_img/05.webp,/images/random_top_img/06.webp,/images/random_top_img/07.webp".split(',');
+                }
+            
+                var randomLink = links[Math.floor(Math.random() * links.length)];
+                element.css('background-image', "url('" + randomLink + "')");
+            });
+          
+            $('.shelter').click(function(e) {
+                $('.sidebar').animate({
+                    right: "-100%"
+                }, 500);
+                $('.shelter').fadeOut("slow");
+            });
+        });      
+    </script>
+</div>
+	</nav>
+
+	
+		<div class="header-background"></div>
+	
+
+	<script>
+		const name = 'post';
+		const ul = document.querySelectorAll('.nav-right ul')[0];
+		const lis = ul.querySelectorAll('li');
+
+		if (name == 'home') {
+			lis[0].classList.add('select');
+		} else {
+			for (let i = 0; i < lis.length; i++) {
+				const li = lis[i];
+				const a = li.querySelector('a');
+				if (name === a.href.split('/')[3]) {
+					li.classList.add('select');
+				}
+			}
+		}
+	</script>
+	
+	<script>
+		var element = document.querySelector('.header-background');
+		if(element) {
+			element.classList.add('custom-style');
+			var links = null;
+			if("")
+			{
+				links = "".split(',');
+			} else
+			{
+				links = "/images/random_top_img/01.webp,/images/random_top_img/02.webp,/images/random_top_img/03.webp,/images/random_top_img/04.webp,/images/random_top_img/05.webp,/images/random_top_img/06.webp,/images/random_top_img/07.webp".split(',');
+			}
+			var randomLink = links[Math.floor(Math.random() * links.length)];
+			element.style.backgroundImage = "url('" + randomLink + "')";
+		}
+	</script>
+
+	
+<script src="/js/plugins/breadcrumb.js"></script>
+
+	<script>
+		var menus_title = [];
+		
+			menus_title.push({home: '主页'});
+		
+			menus_title.push({categories: '类别'});
+		
+			menus_title.push({tags: '标签'});
+		
+			menus_title.push({archives: '归档'});
+		
+			menus_title.push({galleries: '相册'});
+		
+			menus_title.push({links: '链接'});
+		
+			menus_title.push({about: '关于'});
+		
+		
+			
+				postsBreadcrumb(
+					document.getElementById('breadcrumb'),
+					"类别",
+					"/categories",
+					"technology",
+					"/categories/technology"
+				);
+			
+		
+	</script>
+</header>
+
+<div class="main-wrapper">
+    <main class="post">
+        <header class="main-header">
+	
+		
+			
+				
+<link rel="stylesheet" href="/css/plugins/fancybox.css">
+
+				
+<script src="/js/plugins/fancybox.umd.js"></script>
+
+				
+<script src="/js/plugins/fancybox.js"></script>
+
+			
+			<div class="post-header-background-content">
+				<ul class="post-header-tag">
+					
+						
+							<li><a href="/tags/c++"><span>c++</span></a></li>
+						
+							<li><a href="/tags/c++ primer"><span>c++ primer</span></a></li>
+						
+							<li><a href="/tags/基类"><span>基类</span></a></li>
+						
+							<li><a href="/tags/派生类"><span>派生类</span></a></li>
+						
+							<li><a href="/tags/派生类向基类的类型转换"><span>派生类向基类的类型转换</span></a></li>
+						
+					
+				</ul>
+				
+				<h1>15.2 定义基类和派生类</h1>
+		
+				
+		
+				<div class="post-header-info">
+					<svg t="1604839279282" class="icon" viewBox="0 0 1024 1024" version="1.1"
+					xmlns="http://www.w3.org/2000/svg" p-id="2901" width="20" height="20">
+						<path
+							d="M513 956.3c-247.7 0-448-200.3-448-448S265.3 66.2 513 66.2s448 200.3 448 448-200.3 442.1-448 442.1z m0-830.9c-212.2 0-388.8 170.7-388.8 388.8C124.2 726.3 294.9 903 513 903c212.2 0 388.8-170.7 388.8-388.8S725.2 125.4 513 125.4z m0 430.2c-94.2 0-170.7-76.5-170.7-170.7S418.8 207.8 513 207.8s170.7 76.5 170.7 170.7S607.2 555.6 513 555.6z m0-289.1c-64.6 0-112 52.8-112 112s47.4 117.9 112 117.9 112-52.8 112-112-47.4-117.9-112-117.9z m0 689.8c-135.7 0-259-58.7-341.9-158.9l-11.8-17.8 11.8-17.8c76.5-117.9 206.2-188.5 347.8-188.5 135.7 0 265 64.6 341.9 182.6l11.8 17.8-11.8 17.8C778 897.1 648.7 956.3 513 956.3zM230.3 773.2C300.9 849.7 406.9 897 513 897c112 0 218.1-47.4 288.6-129.8-70.5-88.2-170.7-135.6-282.7-135.6s-218.1 53.3-288.6 141.6z"
+							p-id="2902" fill="#ffffff"></path>
+					</svg>
+					<div class="post-header-info-author">
+						<a href="/about">kin12138</a>
+					</div>
+					
+						<div class="post-header-info-categories">
+							
+								<a href="/categories/technology">technology</a>
+							
+						</div>
+					
+					<time>2025/04/28 00:00:00</time>
+				</div>
+		
+				
+					<div class="post-header-stat">
+						<svg version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+						viewBox="0 0 200 200" enable-background="new 0 0 200 200" xml:space="preserve" width="20" height="20">
+							<path fill="#FFFFFF" d="M187.2,165.6c0,2.6-2.1,4.7-4.7,4.7H17.5c-2.6,0-4.7-2.1-4.7-4.7s2.1-4.7,4.7-4.7h165.1
+								C185.2,160.9,187.2,163,187.2,165.6z"/>
+							<path fill="#FFFFFF" d="M17.5,29.7c2.6,0,4.7,2.1,4.7,4.7v131.2c0,2.6-2.1,4.7-4.7,4.7s-4.7-2.1-4.7-4.7V34.4
+								C12.8,31.8,14.9,29.7,17.5,29.7z M77.9,91.5c1.8,1.8,1.8,4.8,0,6.6l-39.8,39.8c-1.9,1.8-4.9,1.7-6.6-0.2c-1.7-1.8-1.7-4.6,0-6.4
+								l39.8-39.8C73.1,89.6,76,89.6,77.9,91.5z M169.9,70.2c1.6,2.1,1.1,5-0.9,6.5c0,0,0,0,0,0l-64.2,48.2c-2.1,1.5-5,1.1-6.6-0.9
+								c-1.6-2.1-1.1-5,0.9-6.5c0,0,0,0,0,0l64.2-48.2C165.4,67.7,168.3,68.1,169.9,70.2L169.9,70.2z"/>
+							<path fill="#FFFFFF" d="M104.6,124.5c-1.8,1.8-4.8,1.8-6.6,0L71.6,98.1c-1.8-1.8-1.8-4.8,0-6.6c1.8-1.8,4.8-1.8,6.6,0l26.3,26.3
+								C106.4,119.6,106.4,122.6,104.6,124.5C104.6,124.4,104.6,124.4,104.6,124.5z"/>
+						</svg>
+		
+						
+							
+<script src="/js/plugins/wordCount.js"></script>
+
+							<p class="post-count">文字数：---</p>
+						
+		
+						
+							<p id="busuanzi_container_page_pv" style='display:none;'>阅读数：<span id="busuanzi_value_page_pv"></span></p>
+						
+					</div>
+				
+			</div>
+		
+	
+</header>
+        <div class="post-content article-container">
+            <article class="post-content-info">
+                <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
+<li>定义一个 Qutoe 类，作为基类。Quote 类表示原价销售的书籍</li>
+<li>Quote 类派生出一个名为 Bulk_quote 的类，表示可以打折销售的书籍</li>
+<li>这些类包含两个成员函数<ul>
+<li>isbn(), 返回书籍的 ISBN 编号。该操作不涉及派生类的特殊性，因此只定义在基类中</li>
+<li>net_price(size_t) ，返回书籍的实际销售价格，前提是用户购买该书的数量达到一定标准。这个操作类型相关，Quote 类和 Bulk_quote 类都应包含该函数</li>
+</ul>
+</li>
+</ul>
+<h2 id="定义基类"><a href="#定义基类" class="headerlink" title="定义基类"></a>定义基类</h2><figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Quote</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">Quote</span>() = <span class="hljs-keyword">default</span>;<br>    <span class="hljs-function">std::string <span class="hljs-title">isbn</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>&#123; <span class="hljs-keyword">return</span> bookNo; &#125;<br>    <span class="hljs-built_in">Quote</span>(<span class="hljs-type">const</span> std::string &amp; book, <span class="hljs-type">double</span> sale_price) :<br>            <span class="hljs-built_in">bookNo</span>(book), <span class="hljs-built_in">price</span>(sale_price) &#123; &#125;<br><br>    <span class="hljs-comment">// 返回给定数量的书籍的销售总额</span><br>    <span class="hljs-comment">// 派生类负责改写并使用不同的折扣计算算法</span><br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">double</span> <span class="hljs-title">net_price</span><span class="hljs-params">(std::<span class="hljs-type">size_t</span> n)</span> <span class="hljs-type">const</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> n * price;<br>    &#125;<br>    <span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">Quote</span>() = <span class="hljs-keyword">default</span>;     <span class="hljs-comment">// 对析构函数进行动态绑定</span><br><br><span class="hljs-keyword">private</span>:<br>    std::string bookNo;         <span class="hljs-comment">// 书籍的 ISBN 编号</span><br><span class="hljs-keyword">protected</span>:<br>    <span class="hljs-type">double</span> price = <span class="hljs-number">0.0</span>;         <span class="hljs-comment">// 代表普通状态下不打折的价格</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>基类通常定义一个<strong>虚析构函数</strong>，即使该函数不执行任何操作</li>
+</ul>
+<h3 id="成员函数与继承"><a href="#成员函数与继承" class="headerlink" title="成员函数与继承"></a>成员函数与继承</h3><ul>
+<li>基类必须将它的两种成员函数区分开：<ul>
+<li>一类是基类希望派生类进行 <strong>覆盖(override)</strong> 基类中旧定义的函数，基类通常将其定义为虚函数(virtual function)</li>
+<li>一类是基类希望派生类直接继承而不要改变的函数</li>
+</ul>
+</li>
+<li><strong>使用引用或指针调用虚函数时，该调用被动态绑定</strong>。<strong>根据引用或指针所绑定的对象的类型不同，该调用选取基类版本执行或者派生类版本执行</strong></li>
+<li>任何<strong>构造函数之外的非静态函数</strong>都可以是虚函数</li>
+<li><strong>关键字 virtual 只能出现在类内部的声明语句之前而不能用于类外部的函数定义</strong></li>
+<li><strong>基类将一个函数声明为虚函数，则该函数在派生类中隐式的也是虚函数</strong></li>
+<li>如果函数<strong>没有被声明为虚函数，则其解析过程发生在编译时而不是运行时</strong></li>
+</ul>
+<h3 id="访问控制与继承"><a href="#访问控制与继承" class="headerlink" title="访问控制与继承"></a>访问控制与继承</h3><ul>
+<li><strong>派生类可以继承定义基类的成员，但是派生类的成员函数不一定有权限访问从基类继承来的成员</strong><ul>
+<li>派生类<strong>可以访问基类的 public 成员</strong>，<strong>不能访问 private 成员</strong></li>
+<li>还有一种成员，基类希望派生类有权访问而禁止其他用户访问，使用<strong>受保护的 (protected) 访问运算符</strong>声明这样的成员</li>
+</ul>
+</li>
+</ul>
+<h2 id="定义派生类"><a href="#定义派生类" class="headerlink" title="定义派生类"></a>定义派生类</h2><ul>
+<li>派生类必须通过 <strong>派生类列表(class derivation list)</strong> 明确指出继承自哪个(哪些)基类<ul>
+<li>形式是冒号后根以逗号分隔的基类列表</li>
+<li>每个基类前可以有三种访问运算符的其中一种：<strong>public, private, protected</strong></li>
+</ul>
+</li>
+<li>派生类必须将从基类继承的成员函数中的<strong>虚函数重新声明</strong></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Bulk_quote</span> : <span class="hljs-keyword">public</span> Quote&#123;        <span class="hljs-comment">// Bulk_quote 继承自 Quote</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">Bulk_quote</span>() = <span class="hljs-keyword">default</span>;<br>    <span class="hljs-built_in">Bulk_quote</span>(<span class="hljs-type">const</span> std::string &amp;, <span class="hljs-type">double</span> , std::<span class="hljs-type">size_t</span> , <span class="hljs-type">double</span> );<br>    <span class="hljs-comment">// 覆盖基类的函数版本以实现基于大量购买的折扣政策</span><br>    <span class="hljs-function"><span class="hljs-type">double</span> <span class="hljs-title">net_price</span><span class="hljs-params">(std::<span class="hljs-type">size_t</span> n)</span> <span class="hljs-type">const</span> <span class="hljs-keyword">override</span></span>;<br><span class="hljs-keyword">private</span>:<br>    std::<span class="hljs-type">size_t</span> min_qty = <span class="hljs-number">0</span>;        <span class="hljs-comment">// 适用折扣政策的最低限购量</span><br>    <span class="hljs-type">double</span> discount = <span class="hljs-number">0.0</span>;          <span class="hljs-comment">// 用小数表示的折扣额</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>访问说明符的作用是<strong>控制派生类从基类继承来的成员是否对派生类的用户可见</strong><ul>
+<li>如果一个<strong>派生是 public 的</strong>，则<strong>基类的公有成员也是派生类接口的组成部分</strong></li>
+<li><strong>可以将 public 派生类型的对象绑定到其基类的引用或指针</strong></li>
+</ul>
+</li>
+<li>大多数类只继承自一个基类，这种形式的继承称为<strong>单继承</strong></li>
+</ul>
+<h3 id="派生类中的虚函数"><a href="#派生类中的虚函数" class="headerlink" title="派生类中的虚函数"></a>派生类中的虚函数</h3><ul>
+<li>派生类经常（但不总是）覆盖它所继承的虚函数</li>
+<li><strong>如果派生类中没有覆盖虚函数，则派生类会直接继承其在基类中的版本</strong></li>
+<li>新标准中允许派生类显式的注明它使用了某个成员函数覆盖了继承的虚函数：<ul>
+<li>在<strong>形参列表后</strong>或 <strong>const 成员函数的 const 关键字之后</strong>或者<strong>引用成员函数的引用限定符之后</strong>加上 <strong><code>override</code></strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="派生类对象及派生类向基类的类型转换"><a href="#派生类对象及派生类向基类的类型转换" class="headerlink" title="派生类对象及派生类向基类的类型转换"></a>派生类对象及派生类向基类的类型转换</h3><ul>
+<li>一个派生类对象包含多个组成部分：<ul>
+<li>一个含有派生类自己定义的非静态成员的子对象</li>
+<li>一个与该派生类继承的基类对应的子对象，如果有多个基类，那么这样的子对象也有多个</li>
+</ul>
+</li>
+</ul>
+<pre class="mermaid">classDiagram
+direction LR
+    class Bulk_quote {
+        +string bookNo
+        +double price
+        +size_t min_qty
+        +double discount
+    }
+
+    note for Bulk_quote "bookNo, price: inherit from Quote"
+    note for Bulk_quote "min_qty, discount: custom"</pre>
+
+<ul>
+<li>在一个派生类对象中，<strong>继承自基类的部分与派生类自定义的部分不一定是连续存储的</strong></li>
+<li><p>因为在派生类中含有与其基类对应的部分</p>
+<ul>
+<li>所以<strong>可以将派生类的对象当成基类对象来使用</strong></li>
+<li><p>也能<strong>将基类的指针或引用绑定到派生类对象中的基类部分上</strong></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">Quote item;         <span class="hljs-comment">// 基类对象</span><br>Bulk_quote bulk;    <span class="hljs-comment">// 派生类对象</span><br>Quote *p = &amp;item;   <span class="hljs-comment">// p 指向 Quote 对象</span><br>p = bulk;           <span class="hljs-comment">// p 指向 bulk 的 Quote 部分</span><br>Quote &amp; r = bulk;   <span class="hljs-comment">// r 绑定到 bulk 的 Quote 部分</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>这种转换通常称为<strong>派生类到基类(derived-to-base)</strong> 的类型转换，<strong>编译器会隐式的执行派生类到基类的转换</strong></p>
+<ul>
+<li>可以将派生类对象的引用用在需要基类引用的地方</li>
+<li>也可以将派生类对象的指针用在需要基类指针的地方</li>
+</ul>
+</li>
+<li><strong>派生类对象中含有与其基类对应的组成部分，这一事实是继承的关键</strong></li>
+</ul>
+<h3 id="派生类的构造函数"><a href="#派生类的构造函数" class="headerlink" title="派生类的构造函数"></a>派生类的构造函数</h3><ul>
+<li><strong>每个类控制自己的成员初始化过程</strong><ul>
+<li>尽管派生类对象中含有从基类继承而来的成员，但是派生类并不能直接初始化这些成员，<strong>派生类必须使用基类的构造函数来初始化它的基类部分</strong></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">Bulk_quote::<span class="hljs-built_in">Bulk_quote</span>(<span class="hljs-type">const</span> std::string &amp;book, <span class="hljs-type">double</span> p, std::<span class="hljs-type">size_t</span> qty, <span class="hljs-type">double</span> disc) :<br>                <span class="hljs-built_in">Quote</span>(book, p), <span class="hljs-built_in">min_qty</span>(qty), <span class="hljs-built_in">discount</span>(disc) &#123; &#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>除非特别指出，否则派生类对象的基类部分会像数据成员一样执行默认初始化</strong></li>
+<li>如果想使用基类的其他构造函数，需要以类名加圆括号内的实参列表形式为构造函数提供初始值</li>
+<li><strong>首先初始化基类部分，然后按声明的顺序依次初始化派生类的数据成员</strong></li>
+</ul>
+<h3 id="派生类使用基类的成员"><a href="#派生类使用基类的成员" class="headerlink" title="派生类使用基类的成员"></a>派生类使用基类的成员</h3><ul>
+<li><strong>派生类可以访问基类的 public 成员和 protected 成员</strong></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 如果达到购买书籍的某个最低限量值，就可以使用折扣</span><br><span class="hljs-function"><span class="hljs-type">double</span> <span class="hljs-title">Bulk_quote::net_price</span><span class="hljs-params">(std::<span class="hljs-type">size_t</span> cnt)</span> <span class="hljs-type">const</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (cnt &gt;= min_qty)<br>        <span class="hljs-keyword">return</span> cnt * (<span class="hljs-number">1</span> - discount) * price;<br>    <span class="hljs-keyword">else</span><br>        <span class="hljs-keyword">return</span> cnt * price;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>派生类的作用域嵌套在基类的作用域之内</strong>。因此，对于派生类的一个成员来说，它使用派生类成员和基类成员的方式没区别</li>
+</ul>
+<h3 id="遵循基类的接口"><a href="#遵循基类的接口" class="headerlink" title="遵循基类的接口"></a>遵循基类的接口</h3><ul>
+<li>必须明确：<strong>每个类负责定义各自的接口。要想与类的对象交互必须使用该类的接口，即使这个对象是派生类对象的基类部分</strong><ul>
+<li><strong>派生类对象不能直接初始化基类的成员</strong>。派生类应该遵循基类的接口，并且<strong>通过调用基类的构造函数来初始化从基类继承过来的成员</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="继承与静态成员"><a href="#继承与静态成员" class="headerlink" title="继承与静态成员"></a>继承与静态成员</h3><ul>
+<li><strong>如果基类定义了一个静态成员，则在整个继承体系中只存在该成员的唯一定义</strong>。不论从基类派生出多少派生类，对于静态成员来说都只存在唯一实例</li>
+<li>静态成员遵循通用的访问控制规则：<ul>
+<li>如果<strong>基类中的静态成员是 private，则派生类无法访问</strong>。</li>
+<li>如果<strong>静态成员是可访问的，则既可以通过基类访问，也可以通过派生类访问</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="派生类的声明"><a href="#派生类的声明" class="headerlink" title="派生类的声明"></a>派生类的声明</h3><ul>
+<li>与其他类相同，<strong>声明中包含类名但是不包含它的派生列表</strong></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Bulk_quote</span> : <span class="hljs-keyword">public</span> Quote;        <span class="hljs-comment">// 错误</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Bulk_quote</span>;                       <span class="hljs-comment">// 正确</span><br></code></pre></td></tr></table></figure>
+<h3 id="被用作基类的类"><a href="#被用作基类的类" class="headerlink" title="被用作基类的类"></a>被用作基类的类</h3><ul>
+<li><strong>如果想将某个类作为基类，该类必须已经被定义而不仅仅只是声明</strong><ul>
+<li>原因是派生类中包含并且可以使用它从基类继承而来的成员</li>
+<li>该规定还有一层意思：<strong>一个类不能派生它本身</strong></li>
+</ul>
+</li>
+<li>一个类是基类，同时也可以是派生类</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Base</span> &#123; ... &#125;;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">D1</span> : <span class="hljs-keyword">public</span> Base &#123; ... &#125;;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">D2</span> : <span class="hljs-keyword">public</span> D1 &#123; ... &#125;;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>在这个继承关系中，Base 是 D1 的<strong>直接基类(direct base)</strong> ，是 D2 的<strong>间接基类(indirect base)</strong></li>
+<li><strong>每个类都会继承直接基类的所有成员</strong>。对于一个<strong>最终的派生类，它将包含它的直接基类的子对象以及每个间接基类的子对象</strong></li>
+</ul>
+<h3 id="防止继承的发生"><a href="#防止继承的发生" class="headerlink" title="防止继承的发生"></a>防止继承的发生</h3><ul>
+<li>对于一个<strong>不希望其他类继承</strong>或者<strong>不考虑作为其他类的基类</strong>的类，在<strong>类名后跟关键字 final</strong> ，防止继承的发生</li>
+</ul>
+<h2 id="类型转换与继承"><a href="#类型转换与继承" class="headerlink" title="类型转换与继承"></a>类型转换与继承</h2><ul>
+<li><strong><em>理解基类和派生类之间的类型转换是理解 C++ 面向对象编程的关键</em></strong></li>
+<li>通常情况下，要把指针或引用绑定到一个对象上，需要指针或引用的类型与所绑对象类型一致，或者对象的类型含有一个可接受的 const 类型转换规则</li>
+<li><strong>存在继承关系的类是个重要例外：可以将基类的指针或引用绑定到派生类对象上</strong><ul>
+<li>这意味着：  <strong>当使用基类的指针或引用时，实际上不清楚该指针或引用所绑对象的真实类型</strong>。该对象可能是基类对象，也可能是派生类对象</li>
+</ul>
+</li>
+<li>智能指针也支持派生类向基类的类型转换，可以将一个派生类对象存储到一个基类的智能指针中</li>
+</ul>
+<h3 id="静态类型与动态类型"><a href="#静态类型与动态类型" class="headerlink" title="静态类型与动态类型"></a>静态类型与动态类型</h3><ul>
+<li>当使用存在继承关系的类型时，<strong>必须将一个变量或表达式的静态类型(static type)与该表达式表示对象的动态类型(dynamic type)区分开：</strong><ul>
+<li><strong>表达式的静态类型在编译时总是已知的</strong>，它是变量声明时的类型或表达式生成的类型；</li>
+<li>动态类型则是变量或表达式表示的内存中的对象的类型，<strong>动态类型直到运行时才可知</strong></li>
+</ul>
+</li>
+<li>例如在 print_total 中调用 net_price 时：<code>double ret = item.net_price(n);</code><ul>
+<li><strong>item 的静态类型是 Quote &amp;，它的动态类型依赖于 item 绑定的实参，动态类型直到在运行时调用该函数才会知道</strong></li>
+</ul>
+</li>
+<li>如果<strong>表达式不是指针也不是引用，则它的动态类型和静态类型一致</strong></li>
+</ul>
+<h3 id="不存在从基类向派生类的隐式类型转换"><a href="#不存在从基类向派生类的隐式类型转换" class="headerlink" title="不存在从基类向派生类的隐式类型转换"></a>不存在从基类向派生类的隐式类型转换</h3><ul>
+<li>之所以存在<strong>派生类向基类的类型转换</strong>，是因为<strong>每个派生类对象都包含一个基类部分，而基类的指针或引用可以绑定该基类部分</strong></li>
+<li>一个<strong>基类对象既可以独立存在</strong>，<strong>也可以作为派生类对象的一部分存在</strong>，<strong>所以不存在从基类向派生类的类型转换</strong></li>
+<li><p>还有一个特别情况，即使一个基类指针或引用绑定到派生类对象，也不能执行从基类向派生类的转换</p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">Bulk_quote bulk;<br>Quote * itemP = &amp;bulk;      <span class="hljs-comment">// 基类指针绑定到派生类，动态类型是 Bulk_quote</span><br>Bulk_quote * bulkP = itemP; <span class="hljs-comment">// 错误：不能将基类转换为派生类</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>编译器只能通过检查引用或指针的静态类型来推断该转换是否合法，无法确定某个特定的转换在运行时是否安全</strong></p>
+</li>
+<li>如果基类中含有一个或多个虚函数，可以<strong>使用 <code>dynamic_cast</code> 请求一个类型转换, 该转换的安全检查在运行时执行</strong></li>
+<li>如果<strong>已知某个基类向派生类的转换是安全的，则可以使用 <code>static_cast</code> 来强制覆盖掉编译器的检查工作</strong></li>
+</ul>
+<h3 id="在对象之间不存在类型转换"><a href="#在对象之间不存在类型转换" class="headerlink" title="在对象之间不存在类型转换"></a>在对象之间不存在类型转换</h3><ul>
+<li>派生类到基类的<strong>自动类型转换只存在于指针或引用</strong>，在派生类类型对象与基类类型对象之间不存在这样的转换</li>
+<li>当<strong>初始化或赋值一个基类对象</strong>时，实际调用的是某个函数，<strong>这些成员函数接受引用作为参数，所以派生类向基类的转换允许给某个基类的拷贝/赋值操作传递一个派生类的对象</strong>，这些操作不是虚函数，当给基类的构造函数传递一个派生类对象时，实际运行的是基类的构造函数，基类的构造函数只能处理基类自己的成员</li>
+<li><strong>当用一个派生类对象为一个基类对象初始化或赋值时，只有派生类对象中基类的部分被拷贝、移动、赋值，它的派生类部分将被忽略掉</strong></li>
+</ul>
+<h3 id="存在继承关系的类型之间的转换规则"><a href="#存在继承关系的类型之间的转换规则" class="headerlink" title="存在继承关系的类型之间的转换规则"></a>存在继承关系的类型之间的转换规则</h3><ul>
+<li><strong>从派生类向基类的类型转换只对指针或引用有效</strong></li>
+<li><strong>基类向派生类不存在隐式类型转换</strong></li>
+<li>和其他成员一样，<strong>派生类向基类的类型转换也可能由于访问权限的限制而变得不可行</strong></li>
+</ul>
+
+            </article>
+            
+	<aside class="rightside">
+	
+		<div class="rightside-button" id="js-aside">
+			<span>
+				<img no-lazy src="/images/icon/aside.png" class="rightside-button-icon" alt="Icon">
+			</span>
+		</div>
+		<script>
+			$("#js-aside").click(function () {
+				onShowAsideButton();
+			});
+		</script>
+	
+	<div class="rightside-button" id="js-toggle_theme">
+		<span>
+			<img no-lazy src="/images/icon/toggle_theme.png" class="rightside-button-icon" alt="Icon">
+		</span>
+	</div>
+
+	
+<script src="/js/plugins/goto_position.js"></script>
+
+	
+	<div class="rightside-button" id="js-go_top">
+		<span>
+			<img no-lazy src="/images/icon/go_top.png" class="rightside-button-icon" alt="Icon">
+		</span>
+	</div>
+	<div class="rightside-button" id="js-go_bottom">
+		<span>
+			<img no-lazy src="/images/icon/go_bottom.png" class="rightside-button-icon" alt="Icon">
+		</span>
+	</div>
+
+	<script>
+		setToggleThemeButtonListener();
+	</script>
+	<script>
+		$('#js-go_top')
+		.gotoPosition( {
+			speed: 300,
+			target: 'top',
+		} );
+		$('#js-go_bottom')
+		.gotoPosition( {
+			speed: 300,
+			target: 'bottom',
+		} );
+	</script>
+</aside>
+
+
+<div class="post-bottom">
+    
+        <div class="post-paging">     
+            <div class="post-paging-last">
+                
+                    <a href="/2025/04/28/15.%20%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/15.4%20%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB/">
+                        上一篇：15.4 抽象基类
+                    </a>
+                
+            </div>
+            <div class="post-paging-next">
+                
+                    <a href="/2025/04/28/15.%20%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/15.6%20%E7%BB%A7%E6%89%BF%E4%B8%AD%E7%9A%84%E7%B1%BB%E4%BD%9C%E7%94%A8%E5%9F%9F/">
+                        下一篇：15.6 继承中的类作用域
+                    </a>
+                
+            </div>
+        </div>
+    
+    
+    
+        
+    
+</div>
+        </div>
+    </main>
+    
+        <aside class="main-aside">
+    
+<script src="/js/widgets/aside.js"></script>
+
+    <script>
+        showAside();
+    </script>
+
+    <div class="aside-top">
+        <div class="aside-top-about aside-card">
+            <a href="/about" class="aside-top-about-portrait">
+                <img no-lazy src="/images/about_icon/about_icon.webp" alt="Q">
+            </a>
+            <div class="aside-top-about-info">
+                <span class="author"> kin12138</span>
+                <span class="description">This is life, it's suck, but i love it</span>
+            </div>              
+            <div class="aside-top-about-site">
+                <a href="/categories" class="aside-top-about-site-item">
+                    <span class="title">类别</span>
+                    <span class="count">2</span>
+                </a>
+                <a href="/tags" class="aside-top-about-site-item">
+                    <span class="title">标签</span>
+                    <span class="count">95</span>
+                </a>
+                <a href="/archives" class="aside-top-about-site-item">
+                    <span class="title">归档</span>
+                    <span class="count">55</span>
+                </a>
+            </div>
+            <div class="aside-top-about-contact">
+                
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/Weibo.webp" alt="Quieter">
+                        </a>
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/Tieba.webp" alt="Quieter">
+                        </a>
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/Bilibili.webp" alt="Quieter">
+                        </a>
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/github.webp" alt="Quieter">
+                        </a>
+                    
+                
+            </div>
+        </div> 
+
+        
+    </div>
+
+    <div class="aside-bottom">
+        
+            <script>
+                
+                    const tocCollapsed = true;
+                
+                
+                    const tocDepth = 6;
+                
+                var headerString = '';
+                for (let i = 1; i <= tocDepth; i++) {
+                    if (i === 1) {
+                        headerString += 'h1';
+                    } else {
+                        headerString += ', h' + i;
+                    }
+                }
+                hbeToc();
+            </script>
+            <div class="aside-bottom-toc aside-card">
+                <div class="aside-bottom-toc-title">
+                    <h1>目录</h1>
+                    <span class="toc-percentage"></span>
+                </div>
+                <ol class="aside-bottom-toc-content"></ol>
+            </div>
+        
+    </div>
+</aside>
+    
+</div>
+		<footer>
+	<div class="content">
+		
+			<span>©2025&nbsp;By&nbsp;<a href="/about">kin12138</a>.</span>
+		
+		<span><a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> theme by <a target="_blank" rel="noopener" href="https://github.com/GZ-Metal-Cell/hexo-theme-quieter">Quieter</a>.</span>
+		
+	</div>
+
+	
+<script src="/js/plugins/ref.js"></script>
+
+	
+<script src="/js/plugins/highlight_tools.js"></script>
+
+	<script>
+		var copyIcon = "/images/icon/copy.png";
+		var closeCodeBlockIcon = "/images/icon/close_code_block.png";
+		var highlightShrink = "";
+		var HighlightHeightLimit = "";
+	</script>
+	
+	<!-- Analytics -->
+
+    
+        <!-- Busuanzi Analytics -->
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+
+
+	
+
+	
+
+    
+		
+<script src="/js/plugins/replaceSpacesWithNbsp.js"></script>
+
+	
+
+	
+	
+	
+		<script>
+			if (typeof init === 'function') {
+				init();
+			}
+		</script>
+	
+
+	
+		
+	
+
+	
+
+	<!--
+		
+<script src="/js/plugins/jquery.pjax.min.js"></script>
+
+		<script>
+			$(document).pjax('a[target!=_blank]', 'main', {
+				fragment: 'main',
+				timeout: 8000
+			});
+
+			$(document).on('pjax:complete', function() {
+			});
+		</script> 
+	-->
+	<script>
+		console.log('\n %c Hexo-Quieter 主题 %c https://github.com/GZ-Metal-Cell/hexo-theme-quieter \n', 'color: #fadfa3; background: #030307; padding:5px 0;', 'background: #fadfa3; padding:5px 0;')
+	</script>
+</footer>
+	</body>
+
+	<!-- Hexo-Quieter 主题  https://github.com/GZ-Metal-Cell/hexo-theme-quieter -->
+</html>
+

@@ -19,7 +19,7 @@
 
 
 
-<meta name="keywords" content="c++,c++ primer,动态数组,">
+<meta name="keywords" content="c++,c++ primer,动态数组,new 和数组,allocator 类,">
 <meta name="description" content="">
 
 
@@ -317,6 +317,10 @@
 						
 							<li><a href="/tags/动态数组"><span>动态数组</span></a></li>
 						
+							<li><a href="/tags/new 和数组"><span>new 和数组</span></a></li>
+						
+							<li><a href="/tags/allocator 类"><span>allocator 类</span></a></li>
+						
 					
 				</ul>
 				
@@ -451,8 +455,8 @@
 <h2 id="allocator-类"><a href="#allocator-类" class="headerlink" title="allocator 类"></a>allocator 类</h2><ul>
 <li><strong>new 将内存分配与对象构造组合在一起</strong>，<strong>delete 将对象析构与内存释放组合在一起</strong>，有一定的局限性</li>
 <li>当分配一大块内存，计划在这块内存上按需构造对象，此时就需要将内存分配与对象构造分开，当真正需要对象时，才进行构造（付出一定的开销）</li>
-<li>allocator 类将内存分配与对象构造分离开</li>
-<li>allocator 类分配的内存是原始的，未构造的</li>
+<li><strong>allocator 类将内存分配与对象构造分离开</strong></li>
+<li><strong>allocator 类分配的内存是原始的，未构造的</strong></li>
 <li>allocator 是模板类型</li>
 </ul>
 <h3 id="allocator-类及其算法"><a href="#allocator-类及其算法" class="headerlink" title="allocator 类及其算法"></a>allocator 类及其算法</h3><div class="table-container">
@@ -518,7 +522,7 @@
 <tbody>
 <tr>
 <td><strong>uninitialized_copy(b, e, b2)</strong></td>
-<td><strong>从迭代器 b, e 指定的输入范围</strong>中拷贝元素到<strong>迭代器 b2 指定的未构造的原始内存中</strong> <br> b2 指向的内存必须足够容纳输入序列中元素的拷贝 <br> 返回（递增后）目的位置迭代器</td>
+<td><strong>从迭代器 b, e 指定的输入范围</strong>中拷贝元素到<strong>迭代器 b2 指定的未构造的原始内存中</strong> <br> b2 指向的内存必须足够容纳输入序列中元素的拷贝 <br> <strong>返回（递增后）目的位置迭代器</strong></td>
 </tr>
 <tr>
 <td><strong>uninitialized_copy_n(b, n, b2)</strong></td>
@@ -641,11 +645,11 @@
                 </a>
                 <a href="/tags" class="aside-top-about-site-item">
                     <span class="title">标签</span>
-                    <span class="count">52</span>
+                    <span class="count">95</span>
                 </a>
                 <a href="/archives" class="aside-top-about-site-item">
                     <span class="title">归档</span>
-                    <span class="count">35</span>
+                    <span class="count">55</span>
                 </a>
             </div>
             <div class="aside-top-about-contact">

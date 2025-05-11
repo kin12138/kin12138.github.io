@@ -8,7 +8,7 @@
 	</script>
 	<head>
 		
-<title>7.2 访问控制与封装 | The technology-sea for kin12138</title>
+<title>15.5 访问控制与继承 | The technology-sea for kin12138</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -19,7 +19,7 @@
 
 
 
-<meta name="keywords" content="c++,c++ primer,封装,访问控制,">
+<meta name="keywords" content="c++,c++ primer,public 继承,protected 继承,private 继承,">
 <meta name="description" content="">
 
 
@@ -42,6 +42,15 @@
 
     
 
+
+
+    <script src='https://cdn.jsdelivr.net/npm/mermaid@11.4.0/dist/mermaid.min.js'></script>
+    <script>mermaid.initialize({startOnLoad:false});</script>
+    
+<link rel="stylesheet" href="/css/plugins/mermaid.css">
+
+    
+<script src="/js/plugins/mermaid.js"></script>
 
 
 
@@ -315,14 +324,16 @@
 						
 							<li><a href="/tags/c++ primer"><span>c++ primer</span></a></li>
 						
-							<li><a href="/tags/封装"><span>封装</span></a></li>
+							<li><a href="/tags/public 继承"><span>public 继承</span></a></li>
 						
-							<li><a href="/tags/访问控制"><span>访问控制</span></a></li>
+							<li><a href="/tags/protected 继承"><span>protected 继承</span></a></li>
+						
+							<li><a href="/tags/private 继承"><span>private 继承</span></a></li>
 						
 					
 				</ul>
 				
-				<h1>7.2 访问控制与封装</h1>
+				<h1>15.5 访问控制与继承</h1>
 		
 				
 		
@@ -343,7 +354,7 @@
 							
 						</div>
 					
-					<time>2025/04/02 23:35:06</time>
+					<time>2025/04/28 00:00:00</time>
 				</div>
 		
 				
@@ -378,28 +389,69 @@
 </header>
         <div class="post-content article-container">
             <article class="post-content-info">
-                <h2 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h2><p>使用 <strong>访问说明符(access specifiers)</strong>加强类的封装：</p>
-<ul>
-<li><strong>public</strong>: public 成员在<strong>整个程序内可访问</strong>，public 成员定义类的接口</li>
-<li><strong>private</strong>: private 成员可以被<strong>类的成员函数访问</strong>，但<strong>不能被使用该类的代码访问</strong>，private 部分封装了类的实现细节</li>
+                <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><ul>
+<li>每个类控制自己的成员初始化过程</li>
+<li>每个类分别控制自己的成员对于派生类来说是否<strong>可访问(accessible)</strong></li>
 </ul>
-<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Sale_data</span>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-comment">// 构造函数</span><br>    <span class="hljs-built_in">Sale_data</span>() = <span class="hljs-keyword">default</span>;<br>    <span class="hljs-built_in">Sale_data</span>(<span class="hljs-type">const</span> std::string &amp;s) : <span class="hljs-built_in">bookNo</span>(s) &#123; &#125;<br>    <span class="hljs-built_in">Sale_data</span>(std::string &amp;s, <span class="hljs-type">unsigned</span> n, <span class="hljs-type">double</span> p) :<br>        <span class="hljs-built_in">bookNo</span>(s), <span class="hljs-built_in">units_sold</span>(n), <span class="hljs-built_in">revenue</span>(p) &#123; &#125;<br>    <span class="hljs-built_in">Sale_data</span> (std::istream &amp;);<br><br>    <span class="hljs-comment">// 成员函数：关于 Sale_data 对象的操作</span><br>    <span class="hljs-function">std::string <span class="hljs-title">isbn</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>&#123; <span class="hljs-keyword">return</span> bookNo; &#125;<br>    <span class="hljs-function">Sale_data &amp; <span class="hljs-title">combine</span><span class="hljs-params">( <span class="hljs-type">const</span> Sale_data&amp;)</span></span>;<br><br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-function"><span class="hljs-type">double</span> <span class="hljs-title">avg_price</span><span class="hljs-params">()</span> <span class="hljs-type">const</span></span>&#123;<br>        <span class="hljs-keyword">return</span> units_sold ? revenue / units_sold : <span class="hljs-number">0</span>;<br>    &#125;<br><br>    <span class="hljs-comment">// data member</span><br>    std::string bookNo; <span class="hljs-comment">// ISBN 编号</span><br>    <span class="hljs-type">unsigned</span> units_sold = <span class="hljs-number">0</span>;    <span class="hljs-comment">// 某本书的销量</span><br>    <span class="hljs-type">double</span> revenue = <span class="hljs-number">0.0</span>;   <span class="hljs-comment">// 这本书的总销售收入</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+<h2 id="受保护的成员"><a href="#受保护的成员" class="headerlink" title="受保护的成员"></a>受保护的成员</h2><ul>
+<li><p>使用 <strong><code>protected</code> 关键字</strong>声明那些希望<strong>与派生类共享，但不想被其他公共访问使用的成员</strong></p>
 <ul>
-<li><strong>struct</strong> 定义类：在第一个访问说明符之前的成员是 <strong>public</strong></li>
-<li><strong>class</strong> 定义了：在第一个访问说明符之前的成员是 <strong>private</strong></li>
-</ul>
-<h2 id="友元"><a href="#友元" class="headerlink" title="友元"></a>友元</h2><p>类允许其他类或函数访问非公有成员的方法是<strong>友元(friend)</strong>, 使用 <strong>friend</strong> 关键字可将函数或类声明为<strong>友元</strong></p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Sale_data</span>&#123;<br>    <span class="hljs-comment">// 为 Sale_data 的非成员函数做友元声明</span><br>    <span class="hljs-function"><span class="hljs-keyword">friend</span> Sale_data <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">const</span> Sale_data &amp;, <span class="hljs-type">const</span> Sale_data &amp;)</span></span>;<br>    <span class="hljs-function"><span class="hljs-keyword">friend</span> std::istream &amp; <span class="hljs-title">read</span><span class="hljs-params">(std::istream &amp;, Sale_data &amp;)</span></span>;<br>    <span class="hljs-function"><span class="hljs-keyword">friend</span> std::ostream &amp; <span class="hljs-title">print</span><span class="hljs-params">(std::ostream &amp;, <span class="hljs-type">const</span> Sale_data &amp;)</span></span>;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-comment">// 构造函数</span><br>    <span class="hljs-built_in">Sale_data</span>() = <span class="hljs-keyword">default</span>;<br>    <span class="hljs-built_in">Sale_data</span>(<span class="hljs-type">const</span> std::string &amp;s) : <span class="hljs-built_in">bookNo</span>(s) &#123; &#125;<br>    <span class="hljs-built_in">Sale_data</span>(std::string &amp;s, <span class="hljs-type">unsigned</span> n, <span class="hljs-type">double</span> p) :<br>        <span class="hljs-built_in">bookNo</span>(s), <span class="hljs-built_in">units_sold</span>(n), <span class="hljs-built_in">revenue</span>(p) &#123; &#125;<br>    <span class="hljs-built_in">Sale_data</span> (std::istream &amp;);<br><br>    <span class="hljs-comment">// 成员函数：关于 Sale_data 对象的操作</span><br>    <span class="hljs-function">std::string <span class="hljs-title">isbn</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>&#123; <span class="hljs-keyword">return</span> bookNo; &#125;<br>    <span class="hljs-function">Sale_data &amp; <span class="hljs-title">combine</span><span class="hljs-params">( <span class="hljs-type">const</span> Sale_data&amp;)</span></span>;<br><br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-function"><span class="hljs-type">double</span> <span class="hljs-title">avg_price</span><span class="hljs-params">()</span> <span class="hljs-type">const</span></span>&#123;<br>        <span class="hljs-keyword">return</span> units_sold ? revenue / units_sold : <span class="hljs-number">0</span>;<br>    &#125;<br><br>    <span class="hljs-comment">// data member</span><br>    std::string bookNo; <span class="hljs-comment">// ISBN 编号</span><br>    <span class="hljs-type">unsigned</span> units_sold = <span class="hljs-number">0</span>;    <span class="hljs-comment">// 某本书的销量</span><br>    <span class="hljs-type">double</span> revenue = <span class="hljs-number">0.0</span>;   <span class="hljs-comment">// 这本书的总销售收入</span><br>&#125;;<br><br><span class="hljs-comment">// Sale_data 的非成员接口函数</span><br><span class="hljs-function">Sale_data <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">const</span> Sale_data &amp;, <span class="hljs-type">const</span> Sale_data &amp;)</span></span>;<br><span class="hljs-function">std::ostream &amp; <span class="hljs-title">print</span><span class="hljs-params">(std::ostream &amp;, <span class="hljs-type">const</span> Sale_data &amp;)</span></span>;<br><span class="hljs-function">std::istream &amp; <span class="hljs-title">read</span><span class="hljs-params">(std::istream &amp;, Sale_data &amp;)</span></span>;<br></code></pre></td></tr></table></figure>
-<ul>
-<li>一般在类定义开始或结束时定义友元</li>
-<li>友元函数的声明<strong>不是</strong>通常意义的<strong>函数声明</strong>，在进行友元声明之后<strong>需对函数进行一次专门的声明</strong></li>
-</ul>
-<h2 id="封装的好处"><a href="#封装的好处" class="headerlink" title="封装的好处"></a>封装的好处</h2><ul>
-<li>确保用户代码不会无意间破坏封装对象的状态</li>
-<li>被封装的类的具体实现细节可以随时改变，而无需调整用户级代码<ul>
-<li>只要类的接口，用户代码就无需改变</li>
+<li>和 private 成员类似，protected 成员<strong>对于类的用户来说不可访问</strong></li>
+<li>和 public 成员类似，protected 成员<strong>对于派生类的成员和友元来说是可访问的</strong></li>
+<li><font size=5>**派生类的成员或友元只能通过派生类对象来访问基类的受保护成员**。**派生类对于一个基类对象中的受保护成员没有访问权限**</font>
+
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Base</span>&#123;<br><span class="hljs-keyword">protected</span>:<br>    <span class="hljs-type">int</span> prot_mem;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Sneaky</span> : <span class="hljs-keyword">public</span> Base &#123;<br><span class="hljs-function"><span class="hljs-keyword">friend</span> <span class="hljs-type">void</span> <span class="hljs-title">clobber</span><span class="hljs-params">(Sneaky&amp;)</span></span>;   <span class="hljs-comment">// 可以访问 Sneaky::prot_mem</span><br><span class="hljs-function"><span class="hljs-keyword">friend</span> <span class="hljs-type">void</span> <span class="hljs-title">clobber</span><span class="hljs-params">(Base&amp;)</span></span>;     <span class="hljs-comment">// 不能访问 Base::prot_mem</span><br><span class="hljs-type">int</span> j;      <span class="hljs-comment">// 默认是 private</span><br>&#125;;<br><br><span class="hljs-comment">// 正确，clobber 能访问 Sneaky 对象的 private 成员和 protected 成员</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">clobber</span><span class="hljs-params">(Sneaky &amp; s)</span> </span>&#123; s.j = s.prot_mem = <span class="hljs-number">0</span>; &#125;<br><span class="hljs-comment">// 错误，clobber 不能访问 Base 的 protected 成员</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">clobber</span><span class="hljs-params">(Base &amp; b)</span>  </span>&#123; b.prot_mem = <span class="hljs-number">0</span>; &#125;<br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
+</ul>
+<h2 id="公有、私有、受保护继承"><a href="#公有、私有、受保护继承" class="headerlink" title="公有、私有、受保护继承"></a>公有、私有、受保护继承</h2><ul>
+<li>某个类对继承而来的成员的访问权限受两个因素影响：<ul>
+<li>基类中该成员的访问说明符</li>
+<li>派生类的派生列表中的访问说明符</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Base</span>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">pub_mem</span><span class="hljs-params">()</span></span>;<br><span class="hljs-keyword">protected</span>:<br>    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">prot_mem</span><span class="hljs-params">()</span></span>;<br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-function"><span class="hljs-type">char</span> <span class="hljs-title">priv_mem</span><span class="hljs-params">()</span></span>;<br>&#125;;<br><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Pub_Derv</span> : <span class="hljs-keyword">public</span> Base &#123;<br>    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">f</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-keyword">return</span> <span class="hljs-built_in">prot_mem</span>();&#125;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">p</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-built_in">pub_mem</span>(); &#125;<br>    <span class="hljs-comment">// 错误，基类的 private 成员对于派生类来说是不可访问的 </span><br>    <span class="hljs-function"><span class="hljs-type">char</span> <span class="hljs-title">g</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-keyword">return</span> <span class="hljs-built_in">priv_mem</span>(); &#125;<br>&#125;;<br><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Priv_Derv</span> : <span class="hljs-keyword">private</span> Base &#123;<br>    <span class="hljs-comment">// 派生列表的 private 不影响派生类对基类的访问权限</span><br>    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">f</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-keyword">return</span> <span class="hljs-built_in">prot_mem</span>(); &#125;<br>&#125;;<br><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Prot_Derb</span> : <span class="hljs-keyword">protected</span> Base &#123;<br>    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">f</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-keyword">return</span> <span class="hljs-built_in">prot_mem</span>();&#125;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">k</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-built_in">pub_mem</span>(); &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>派生访问说明符对于派生类的成员(及友元)访问其直接基类的成员没影响。对基类成员的访问权限只与基类中的访问说明符有关</strong></li>
+<li>派生访问说明符的<strong>目的是控制派生类的用户（包括派生类的派生类在内）对于基类成员的访问权限</strong></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">Pub_Derv d1;        <span class="hljs-comment">// 继承自 Base 的成员是 public 的</span><br>Priv_Derv d2;       <span class="hljs-comment">// 继承自 Base 的成员是 private 的</span><br>d<span class="hljs-number">1.</span><span class="hljs-built_in">pub_mem</span>();        <span class="hljs-comment">// 正确， pub_mem 在派生类中是 public 的</span><br>d<span class="hljs-number">2.</span><span class="hljs-built_in">pub_mem</span>();       <span class="hljs-comment">//  错误， pub_mem 在派生类中是 private 的</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>派生访问说明符还可以控制继承自派生类的新类的访问权限</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Derived_from_Private</span> : <span class="hljs-keyword">public</span> Priv_Derv &#123;<br>    <span class="hljs-comment">// 错误，Base::prot_mem() 在 Priv_Derv 中是 private 的</span><br>    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">use_base</span><span class="hljs-params">()</span> </span>&#123;<span class="hljs-keyword">return</span> <span class="hljs-built_in">prot_mem</span>(); &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>派生类如果是 <strong>protected 继承</strong>，<strong>基类的所有 public 成员和 protected 成员在后续所有新定义的派生类中都是 protected</strong> ; 派生类的<strong>用户不能访问</strong>基类的 public 成员和 protected 成员， 但它的成员和友元可以访问。</li>
+</ul>
+<h2 id="派生类向基类转换的可访问性"><a href="#派生类向基类转换的可访问性" class="headerlink" title="派生类向基类转换的可访问性"></a>派生类向基类转换的可访问性</h2><ul>
+<li>派生类向基类转换的可访问性由使用该转换的代码决定，同时派生类的派生访问说明符也会有影响：</li>
+<li>假定 D 继承自 B：<ul>
+<li><strong>只有当 D public 继承 B 时，用户代码才可以使用派生类向基类的转换</strong>。如果是 private 继承或 protected 继承，则用户代码不能使用该转换</li>
+<li><strong>无论 D 以什么方式继承 B，D 的成员和友元都可以使用派生类向基类的转换</strong>；派生类向其直接基类的转换对于派生类的成员和友元来说是永远可访问的</li>
+<li><strong>如果 D 以 public 或 protected 方式继承 B，则 D 的派生类可以使用 D 向 B 的转换。</strong> 反之，如果 D 是以 private 方式继承 B ，则 D 的派生类不能使用该转换</li>
+</ul>
+</li>
+</ul>
+<h2 id="友元与继承"><a href="#友元与继承" class="headerlink" title="友元与继承"></a>友元与继承</h2><ul>
+<li><strong>友元关系不能传递，同样也不能继承</strong></li>
+</ul>
+<h2 id="改变个别成员的可访问性"><a href="#改变个别成员的可访问性" class="headerlink" title="改变个别成员的可访问性"></a>改变个别成员的可访问性</h2><ul>
+<li>通过 using 声明可以改变派生类继承的某个名字的访问级别</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Base</span>&#123;<br><span class="hljs-keyword">public</span>: <br>    <span class="hljs-function">std::<span class="hljs-type">size_t</span> <span class="hljs-title">size</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>&#123;<span class="hljs-keyword">return</span> n;&#125;<br><span class="hljs-keyword">protected</span>:<br>    std::<span class="hljs-type">size_t</span> n;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Derived</span> : <span class="hljs-keyword">private</span> Base &#123;      <span class="hljs-comment">// 这里是 private 继承</span><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">using</span> Base::size;<br><span class="hljs-keyword">protected</span>:<br>    <span class="hljs-keyword">using</span> Base::n;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>Derived 使用了 private 继承，默认情况下，size 和 n 是 Derived 的私有成员</li>
+<li>使用 using 声明之后，Derived 的用户可以使用 size, 而 Derived 的派生类可以使用 n</li>
+<li>如果一条 <strong>using 语句出现在 public 部分</strong>，则该名字<strong>可以被类的所有用户使用</strong></li>
+<li>如果 <strong>using 语句出现在 private 部分</strong>，则改名字<strong>只能被类的成员和友元使用</strong></li>
+<li>如果 <strong>using 语句出现在 protected 部分</strong>，则该名字<strong>对于成员、友元和派生类是可访问的</strong></li>
+<li><strong>注意：派生类只能为它可以访问的名字提供 using 声明</strong></li>
+</ul>
+<h2 id="默认的继承保护级别"><a href="#默认的继承保护级别" class="headerlink" title="默认的继承保护级别"></a>默认的继承保护级别</h2><ul>
+<li>默认情况下，使用 <strong><code>class</code> 关键字</strong>定义的派生类是 <strong>private 继承</strong>；</li>
+<li>使用 <strong><code>struct</code> 关键字</strong>定义的派生类是 <strong>public 继承</strong></li>
 </ul>
 
             </article>
@@ -461,15 +513,15 @@
         <div class="post-paging">     
             <div class="post-paging-last">
                 
-                    <a href="/2025/04/05/11.%20%E5%85%B3%E8%81%94%E5%AE%B9%E5%99%A8/11.1%20%E4%BD%BF%E7%94%A8%E5%85%B3%E8%81%94%E5%AE%B9%E5%99%A8/">
-                        上一篇：11.1 使用关联容器
+                    <a href="/2025/04/28/15.%20%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/15.3%20%E8%99%9A%E5%87%BD%E6%95%B0/">
+                        上一篇：15.3 虚函数
                     </a>
                 
             </div>
             <div class="post-paging-next">
                 
-                    <a href="/2025/04/02/10.%20%E6%B3%9B%E5%9E%8B%E7%AE%97%E6%B3%95/10.4%20%E5%86%8D%E6%8E%A2%E8%BF%AD%E4%BB%A3%E5%99%A8/">
-                        下一篇：10.4 再探迭代器
+                    <a href="/2025/04/28/15.%20%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/15.4%20%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB/">
+                        下一篇：15.4 抽象基类
                     </a>
                 
             </div>
@@ -507,11 +559,11 @@
                 </a>
                 <a href="/tags" class="aside-top-about-site-item">
                     <span class="title">标签</span>
-                    <span class="count">52</span>
+                    <span class="count">95</span>
                 </a>
                 <a href="/archives" class="aside-top-about-site-item">
                     <span class="title">归档</span>
-                    <span class="count">35</span>
+                    <span class="count">55</span>
                 </a>
             </div>
             <div class="aside-top-about-contact">
