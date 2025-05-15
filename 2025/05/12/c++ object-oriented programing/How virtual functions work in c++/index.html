@@ -401,7 +401,8 @@
 <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Base</span>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">func_1</span><span class="hljs-params">()</span> </span>&#123; &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">func_2</span><span class="hljs-params">()</span> </span>&#123; &#125;<br>    <span class="hljs-type">int</span> b;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Derive</span> : <span class="hljs-keyword">public</span> Base &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">func_1</span><span class="hljs-params">()</span> <span class="hljs-keyword">override</span> </span>&#123; &#125;<br>    <span class="hljs-type">int</span> d;<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    Derive obj;<br>    Base *p = &amp;obj;<br>    p-&gt;<span class="hljs-built_in">func</span>();<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 <ul>
 <li><p>在这个例子中，Derive 对象实例在内存中的分布如下图所示：</p>
-
+<p><a data-fancybox="gallery" href="/c++ object-oriented programing/img/虚函数内存分布-2025-05-12-2003.png"><br>  <img src="/c++ object-oriented programing/img/虚函数内存分布-2025-05-12-2003.png" alt="虚函数内存分布">
+</a></p>
 </li>
 <li><p>其中，Derive 的数据成员包括</p>
 <ul>
