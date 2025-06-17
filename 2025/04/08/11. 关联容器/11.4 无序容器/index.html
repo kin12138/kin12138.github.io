@@ -465,7 +465,7 @@
 </table>
 </div>
 <h2 id="无序容器对关键字类型的要求"><a href="#无序容器对关键字类型的要求" class="headerlink" title="无序容器对关键字类型的要求"></a>无序容器对关键字类型的要求</h2><ul>
-<li>默认情况下，无序容器使用关键字类型的 <code>==</code> 运算符来比较元素，还使用一个 hash<key_type> 类型的对象来生成每个元素的哈希值</key_type></li>
+<li>默认情况下，无序容器使用关键字类型的 <code>==</code> 运算符来比较元素，还使用一个 hash<key_type> 类型的对象来生成每个元素的哈希值</li>
 <li>不能直接定义自定义类类型的无序容器，必须提供自己的 hash 模板版本</li>
 <li><p>不使用默认 hash，而使用一种类似于有序容器重载关键字类型的默认比较操作</p>
   <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">size_t</span> <span class="hljs-title">hasher</span><span class="hljs-params">(<span class="hljs-type">const</span> Sale_data &amp;sd)</span> </span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">hash</span>&lt;string&gt; () (sd.<span class="hljs-built_in">isbn</span>());<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">eqOp</span><span class="hljs-params">(<span class="hljs-type">const</span> Sale_data &amp; lhs, <span class="hljs-type">const</span> Sale_data &amp; rhs)</span> </span>&#123;<br>    <span class="hljs-keyword">return</span> lhs.<span class="hljs-built_in">isbn</span>() == rhs.<span class="hljs-built_in">isbn</span>();<br>&#125;<br></code></pre></td></tr></table></figure>

@@ -389,7 +389,7 @@
 <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Base</span>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">func_1</span><span class="hljs-params">()</span> </span>&#123; &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">func_2</span><span class="hljs-params">()</span> </span>&#123; &#125;<br>    <span class="hljs-type">int</span> b;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Derive</span> : <span class="hljs-keyword">public</span> Base &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">func_1</span><span class="hljs-params">()</span> <span class="hljs-keyword">override</span> </span>&#123; &#125;<br>    <span class="hljs-type">int</span> d;<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    Derive obj;<br>    Base *p = &amp;obj;<br>    p-&gt;<span class="hljs-built_in">func</span>();<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 <ul>
 <li><p>在这个例子中，Derive 对象实例在内存中的分布如下图所示：</p>
-<p><a data-fancybox="gallery" href="/c++ object-oriented programing/img/虚函数内存分布-2025-05-12-2003.png"><br>  <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSI0IiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgaWQ9InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAiIGF0dHJpYnV0ZU5hbWU9InIiIGJlZ2luPSIwO3N2Z1NwaW5uZXJzM0RvdHNTY2FsZTEuZW5kLTAuMjVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjMiIGZpbGw9ImN1cnJlbnRDb2xvciI+PGFuaW1hdGUgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNnMiIGR1cj0iMC43NXMiIHZhbHVlcz0iMzsuMjszIi8+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMjAiIGN5PSIxMiIgcj0iMyIgZmlsbD0iY3VycmVudENvbG9yIj48YW5pbWF0ZSBpZD0ic3ZnU3Bpbm5lcnMzRG90c1NjYWxlMSIgYXR0cmlidXRlTmFtZT0iciIgYmVnaW49InN2Z1NwaW5uZXJzM0RvdHNTY2FsZTAuZW5kLTAuNDVzIiBkdXI9IjAuNzVzIiB2YWx1ZXM9IjM7LjI7MyIvPjwvY2lyY2xlPjwvc3ZnPg==" data-original="/2025/05/12/c++%20object-oriented%20programing/How%20virtual%20functions%20work%20in%20c++/How virtual functions work in c++/虚函数内存分布-2025-05-12-2003.png" alt="继承中的内存分布">
+<p><a data-fancybox="gallery" href="/c++ object-oriented programing/img/虚函数内存分布-2025-05-12-2003.png"><br>  <img src="/images/loading.gif" data-original="/c++ object-oriented programing/How virtual functions work in c++/虚函数内存分布-2025-05-12-2003.png" alt="继承中的内存分布">
 </a></p>
 </li>
 <li><p>其中，Derive 的数据成员包括</p>
@@ -466,15 +466,15 @@
         <div class="post-paging">     
             <div class="post-paging-last">
                 
-                    <a href="/2025/05/12/c++%20object-oriented%20programing/SOLID%20%E5%8E%9F%E5%88%99/">
-                        上一篇：SOLID 原则
+                    <a href="/2025/06/13/Chap4-Synchronize-Concurrent-Operations/4-2-%E4%BD%BF%E7%94%A8%E6%9C%9F%E6%9C%9B%E7%AD%89%E5%BE%85%E4%B8%80%E6%AC%A1%E6%80%A7%E4%BA%8B%E4%BB%B6/">
+                        上一篇：4.2 使用期望等待一次性事件
                     </a>
                 
             </div>
             <div class="post-paging-next">
                 
-                    <a href="/2025/05/10/15.%20%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/15.9%20%E6%96%87%E6%9C%AC%E6%9F%A5%E8%AF%A2%E7%A8%8B%E5%BA%8F%E5%86%8D%E6%8E%A2/">
-                        下一篇：15.9 文本查询程序再探
+                    <a href="/2025/05/12/c++%20object-oriented%20programing/SOLID%20%E5%8E%9F%E5%88%99/">
+                        下一篇：SOLID 原则
                     </a>
                 
             </div>
