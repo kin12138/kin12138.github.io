@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang=zh-CN data-theme="light">
+	
+<script src="/js/plugins/toggleTheme.js"></script>
+
+	<script>
+		setTheme();
+	</script>
+	<head>
+		
+<title>2. 线程管理 | The technology-sea for kin12138</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" type="image/x-icon" href="/images/icon/favicon.ico">
+<link href="/css/plugins/print.css" media="print" rel="stylesheet" />
+
+<link rel="stylesheet" href="/css/index.css">
+
+
+
+<meta name="keywords" content="c++,concurrency,multithreading,">
+<meta name="description" content="">
+
+
+
+<script src="/js/plugins/jquery.min.js"></script>
+
+
+<script src="/js/plugins/hljs.min.js"></script>
+
+
+<script src="/js/plugins/init.js"></script>
+
+
+<script src="/js/plugins/hide.js"></script>
+
+
+<script src="/js/plugins/tabs.js"></script>
+
+
+
+    
+
+
+
+    <script src='https://cdn.jsdelivr.net/npm/mermaid@11.4.0/dist/mermaid.min.js'></script>
+    <script>mermaid.initialize({startOnLoad:false});</script>
+    
+<link rel="stylesheet" href="/css/plugins/mermaid.css">
+
+    
+<script src="/js/plugins/mermaid.js"></script>
+
+
+
+
+
+
+    
+
+	<meta name="generator" content="Hexo 7.3.0"></head>
+
+	<body>
+		<header class="sticky-header">
+	<nav>
+		<div class="nav-left">
+			<a href="/" class="logo">
+				<img no-lazy src="/images/headers_icon/logo.webp" alt="Quieter">
+			</a>
+			<ul class="breadcrumb" id="breadcrumb"></ul>
+		</div>
+		<div class="nav-right">
+			<ul>
+				
+					<li>
+						<a href="/">
+						  主页
+						</a>
+					</li>
+				
+					<li>
+						<a href="/categories">
+						  类别
+						</a>
+					</li>
+				
+					<li>
+						<a href="/tags">
+						  标签
+						</a>
+					</li>
+				
+					<li>
+						<a href="/archives">
+						  归档
+						</a>
+					</li>
+				
+					<li>
+						<a href="/about">
+						  关于
+						</a>
+					</li>
+								  
+			</ul>
+		</div>
+		<div class="nav-right-close">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+				<path fill="none" d="M0 0h24v24H0z" />
+				<path d="M3 4h18v2H3V4zm0 7h18v2H3v-2zm0 7h18v2H3v-2z" fill="rgba(68,68,68,1)" />
+			</svg>
+		</div>
+
+		<div class="sidebar">
+    <div class="topo">
+        <p>The technology-sea for kin12138</p>
+    </div>
+    <ul>
+        
+        <li>
+            <a href="/">
+                主页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories">
+                类别
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags">
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives">
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about">
+                关于
+            </a>
+        </li>
+        
+    </ul>
+    <div class="sidebar-footer">
+        
+        <a target="_blank" rel="noopener" href="https://space.bilibili.com/568645801?spm_id_from=333.1007.0.0">
+            <img no-lazy src="/images/bottom_icon/Bilibili.webp" alt="Quieter">
+        </a>
+        
+        <a target="_blank" rel="noopener" href="https://github.com/kin12138">
+            <img no-lazy src="/images/bottom_icon/github.webp" alt="Quieter">
+        </a>
+        
+    </div>
+</div>
+<div class='shelter'>
+    <script>
+        $(function() {
+            $('.nav-right-close > svg').click(function() {
+                $('.sidebar').animate({
+                    right: "0"
+                }, 500);
+                $('.shelter').fadeIn("slow");
+            
+                var element = $('.topo');
+                element.addClass('custom-style');
+            
+                var links = null;
+                if ("") {
+                    links = "".split(',');
+                } else {
+                    links = "/images/random_top_img/01.webp,/images/random_top_img/02.webp,/images/random_top_img/03.webp,/images/random_top_img/04.webp,/images/random_top_img/05.webp,/images/random_top_img/07.webp,/images/random_top_img/08.webp,/images/random_top_img/09.webp,/images/random_top_img/10.webp,/images/random_top_img/11.webp,/images/random_top_img/12.webp,/images/random_top_img/13.webp".split(',');
+                }
+            
+                var randomLink = links[Math.floor(Math.random() * links.length)];
+                element.css('background-image', "url('" + randomLink + "')");
+            });
+          
+            $('.shelter').click(function(e) {
+                $('.sidebar').animate({
+                    right: "-100%"
+                }, 500);
+                $('.shelter').fadeOut("slow");
+            });
+        });      
+    </script>
+</div>
+	</nav>
+
+	
+		<div class="header-background"></div>
+	
+
+	<script>
+		const name = 'post';
+		const ul = document.querySelectorAll('.nav-right ul')[0];
+		const lis = ul.querySelectorAll('li');
+
+		if (name == 'home') {
+			lis[0].classList.add('select');
+		} else {
+			for (let i = 0; i < lis.length; i++) {
+				const li = lis[i];
+				const a = li.querySelector('a');
+				if (name === a.href.split('/')[3]) {
+					li.classList.add('select');
+				}
+			}
+		}
+	</script>
+	
+	<script>
+		var element = document.querySelector('.header-background');
+		if(element) {
+			element.classList.add('custom-style');
+			var links = null;
+			if("")
+			{
+				links = "".split(',');
+			} else
+			{
+				links = "/images/random_top_img/01.webp,/images/random_top_img/02.webp,/images/random_top_img/03.webp,/images/random_top_img/04.webp,/images/random_top_img/05.webp,/images/random_top_img/07.webp,/images/random_top_img/08.webp,/images/random_top_img/09.webp,/images/random_top_img/10.webp,/images/random_top_img/11.webp,/images/random_top_img/12.webp,/images/random_top_img/13.webp".split(',');
+			}
+			var randomLink = links[Math.floor(Math.random() * links.length)];
+			element.style.backgroundImage = "url('" + randomLink + "')";
+		}
+	</script>
+
+	
+<script src="/js/plugins/breadcrumb.js"></script>
+
+	<script>
+		var menus_title = [];
+		
+			menus_title.push({home: '主页'});
+		
+			menus_title.push({categories: '类别'});
+		
+			menus_title.push({tags: '标签'});
+		
+			menus_title.push({archives: '归档'});
+		
+			menus_title.push({galleries: '相册'});
+		
+			menus_title.push({links: '链接'});
+		
+			menus_title.push({about: '关于'});
+		
+		
+			
+				postsBreadcrumb(
+					document.getElementById('breadcrumb'),
+					"类别",
+					"/categories",
+					"C++ concurrency",
+					"/categories/C++ concurrency"
+				);
+			
+		
+	</script>
+</header>
+
+<div class="main-wrapper">
+    <main class="post">
+        <header class="main-header">
+	
+		
+			
+				
+<link rel="stylesheet" href="/css/plugins/fancybox.css">
+
+				
+<script src="/js/plugins/fancybox.umd.js"></script>
+
+				
+<script src="/js/plugins/fancybox.js"></script>
+
+			
+			<div class="post-header-background-content">
+				<ul class="post-header-tag">
+					
+						
+							<li><a href="/tags/c++"><span>c++</span></a></li>
+						
+							<li><a href="/tags/concurrency"><span>concurrency</span></a></li>
+						
+							<li><a href="/tags/multithreading"><span>multithreading</span></a></li>
+						
+					
+				</ul>
+				
+				<h1>2. 线程管理</h1>
+		
+				
+		
+				<div class="post-header-info">
+					<svg t="1604839279282" class="icon" viewBox="0 0 1024 1024" version="1.1"
+					xmlns="http://www.w3.org/2000/svg" p-id="2901" width="20" height="20">
+						<path
+							d="M513 956.3c-247.7 0-448-200.3-448-448S265.3 66.2 513 66.2s448 200.3 448 448-200.3 442.1-448 442.1z m0-830.9c-212.2 0-388.8 170.7-388.8 388.8C124.2 726.3 294.9 903 513 903c212.2 0 388.8-170.7 388.8-388.8S725.2 125.4 513 125.4z m0 430.2c-94.2 0-170.7-76.5-170.7-170.7S418.8 207.8 513 207.8s170.7 76.5 170.7 170.7S607.2 555.6 513 555.6z m0-289.1c-64.6 0-112 52.8-112 112s47.4 117.9 112 117.9 112-52.8 112-112-47.4-117.9-112-117.9z m0 689.8c-135.7 0-259-58.7-341.9-158.9l-11.8-17.8 11.8-17.8c76.5-117.9 206.2-188.5 347.8-188.5 135.7 0 265 64.6 341.9 182.6l11.8 17.8-11.8 17.8C778 897.1 648.7 956.3 513 956.3zM230.3 773.2C300.9 849.7 406.9 897 513 897c112 0 218.1-47.4 288.6-129.8-70.5-88.2-170.7-135.6-282.7-135.6s-218.1 53.3-288.6 141.6z"
+							p-id="2902" fill="#ffffff"></path>
+					</svg>
+					<div class="post-header-info-author">
+						<a href="/about">kin12138</a>
+					</div>
+					
+						<div class="post-header-info-categories">
+							
+								<a href="/categories/C++ concurrency">C++ concurrency</a>
+							
+						</div>
+					
+					<time>2025/06/05 00:00:00</time>
+				</div>
+		
+				
+					<div class="post-header-stat">
+						<svg version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+						viewBox="0 0 200 200" enable-background="new 0 0 200 200" xml:space="preserve" width="20" height="20">
+							<path fill="#FFFFFF" d="M187.2,165.6c0,2.6-2.1,4.7-4.7,4.7H17.5c-2.6,0-4.7-2.1-4.7-4.7s2.1-4.7,4.7-4.7h165.1
+								C185.2,160.9,187.2,163,187.2,165.6z"/>
+							<path fill="#FFFFFF" d="M17.5,29.7c2.6,0,4.7,2.1,4.7,4.7v131.2c0,2.6-2.1,4.7-4.7,4.7s-4.7-2.1-4.7-4.7V34.4
+								C12.8,31.8,14.9,29.7,17.5,29.7z M77.9,91.5c1.8,1.8,1.8,4.8,0,6.6l-39.8,39.8c-1.9,1.8-4.9,1.7-6.6-0.2c-1.7-1.8-1.7-4.6,0-6.4
+								l39.8-39.8C73.1,89.6,76,89.6,77.9,91.5z M169.9,70.2c1.6,2.1,1.1,5-0.9,6.5c0,0,0,0,0,0l-64.2,48.2c-2.1,1.5-5,1.1-6.6-0.9
+								c-1.6-2.1-1.1-5,0.9-6.5c0,0,0,0,0,0l64.2-48.2C165.4,67.7,168.3,68.1,169.9,70.2L169.9,70.2z"/>
+							<path fill="#FFFFFF" d="M104.6,124.5c-1.8,1.8-4.8,1.8-6.6,0L71.6,98.1c-1.8-1.8-1.8-4.8,0-6.6c1.8-1.8,4.8-1.8,6.6,0l26.3,26.3
+								C106.4,119.6,106.4,122.6,104.6,124.5C104.6,124.4,104.6,124.4,104.6,124.5z"/>
+						</svg>
+		
+						
+							
+<script src="/js/plugins/wordCount.js"></script>
+
+							<p class="post-count">文字数：---</p>
+						
+		
+						
+							<p id="busuanzi_container_page_pv" style='display:none;'>阅读数：<span id="busuanzi_value_page_pv"></span></p>
+						
+					</div>
+				
+			</div>
+		
+	
+</header>
+        <div class="post-content article-container">
+            <article class="post-content-info">
+                <h2 id="线程管理基础"><a href="#线程管理基础" class="headerlink" title="线程管理基础"></a>线程管理基础</h2><ul>
+<li>每个线程至少有一个线程：执行 <code>main()</code> 函数的线程， 其余线程各自有其入口函数</li>
+</ul>
+<h2 id="启动线程"><a href="#启动线程" class="headerlink" title="启动线程"></a>启动线程</h2><ul>
+<li>线程在 <code>std::thread</code> 对象创建时启动</li>
+<li><p><code>std::thread</code> 可以接受<strong>可调用对象</strong>作为构造参数</p>
+<ul>
+<li><p>接受一个重载了调用运算符的类类型，需要<strong>避免语法解析问题</strong></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-function">std::thread <span class="hljs-title">my_thread</span><span class="hljs-params">(background_task())</span></span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>这里会被解析为：声明一个名为 <code>my_thread</code> 的函数，带有一个参数（函数指针指向没有参数并且返回 background_task 对象的函数），返回一个 <code>std::thread</code> 对象</p>
+</li>
+<li><p>避免这个问题的方法有三种：</p>
+<ul>
+<li>多括号</li>
+<li>统一的列表初始化方式</li>
+<li>lambda 表达式</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-function">std::thread <span class="hljs-title">my_thread</span><span class="hljs-params">((background_task()))</span></span>;<br>std::thread my_thread&#123; <span class="hljs-built_in">background_task</span>()&#125;;<br><span class="hljs-function">std::thread <span class="hljs-title">my_thread</span><span class="hljs-params">( []() </span></span><br><span class="hljs-params"><span class="hljs-function">            &#123;</span></span><br><span class="hljs-params"><span class="hljs-function">                do_some_task();</span></span><br><span class="hljs-params"><span class="hljs-function">            &#125;)</span></span>;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>启动线程之后，需要明确是要等待线程结束，还是让其自主运行（<strong><code>join</code> 或 <code>detach</code></strong>）</p>
+<ul>
+<li>如果在 <code>std::thread</code> 对象销毁之前还没有做出决定，程序就会调用 <code>std::terminate()</code> 终止</li>
+</ul>
+</li>
+<li><p>如果<strong>不等待线程，就必须保证线程结束之前，可访问数据的有效性</strong></p>
+<ul>
+<li>对象销毁之后再去访问，将产生未定义行为</li>
+<li><p>例如：函数已经结束，线程依旧访问局部变量</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">func</span> &#123;<br>    <span class="hljs-type">int</span> &amp;i_;<br>    <span class="hljs-built_in">func</span>(<span class="hljs-type">int</span> &amp; i) : <span class="hljs-built_in">i_</span>(i) &#123; &#125;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">unsigned</span> j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">100000</span>; ++j)<br>            <span class="hljs-comment">// do something</span><br>            ++i_;       <span class="hljs-comment">// 潜在访问隐患：悬空引用</span><br>    &#125;<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">oops</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-type">int</span> some_local_state = <span class="hljs-number">0</span>;<br>    <span class="hljs-function">func <span class="hljs-title">my_func</span><span class="hljs-params">(some_local_state)</span></span>;<br>    <span class="hljs-function">std::thread <span class="hljs-title">my_thread</span><span class="hljs-params">(my_func)</span></span>; <br>    my_thread.<span class="hljs-built_in">detach</span>();     <span class="hljs-comment">// 不等线程结束</span><br>&#125;                           <span class="hljs-comment">// 新线程可能还在运行</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>处理这种问题的常规方法是：<strong>使得线程功能齐全，将数据拷贝到线程中，而并非拷贝到共享数据（主线程栈空间）中</strong></p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="等待线程完成-join"><a href="#等待线程完成-join" class="headerlink" title="等待线程完成(join)"></a>等待线程完成(<code>join</code>)</h2><ul>
+<li>对于上面例子中的问题，可以<strong>使用 <code>join</code> 等待线程完成，就可以确保局部变量在线程完成后，才被销毁</strong></li>
+<li>在上面例子中，原始线程什么都没做，但是实际编程中，原始线程要么有自己的工作，要么开启多个子线程进行一些工作，然后等待这些线程的结束</li>
+<li><code>join()</code> 是简单粗暴的等待线程完成或者不等待，如果想要更灵活的处理，需要其他机制来完成，如条件变量、<code>futures</code></li>
+<li><strong>调用 join() 的行为，还清理了线程相关的存储部分。</strong><ul>
+<li>意味着只能对一个线程使用一次 <code>join</code> ；一旦使用过 <code>join()</code>, <code>std::thread</code> 对象将不能再次使用 <code>join()</code>，当对其调用 <code>joinable()</code> 时，返回 <code>false</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="特殊情况下的等待"><a href="#特殊情况下的等待" class="headerlink" title="特殊情况下的等待"></a>特殊情况下的等待</h2><ul>
+<li>如果<strong>线程运行之后发生异常，并在 <code>join</code> 调用之前抛出</strong>，就意味着这次调用会被跳过</li>
+<li><p>通常，为避免程序被异常所终止需要<strong>在异常处理过程中调用 <code>join()</code>, 从而避免生命周期问题</strong></p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-type">int</span> some_local_state = <span class="hljs-number">0</span>;<br>    <span class="hljs-function">func <span class="hljs-title">my_func</span><span class="hljs-params">(some_local_state)</span></span>;<br>    <span class="hljs-function">std::thread <span class="hljs-title">t</span><span class="hljs-params">(my_func)</span></span>;<br>    <span class="hljs-keyword">try</span> &#123;<br>        <span class="hljs-comment">// do_something</span><br>    &#125;<br>    <span class="hljs-built_in">catch</span> (...)<br>    &#123;<br>        t.<span class="hljs-built_in">join</span>();     <span class="hljs-comment">// 1 当程序抛出异常，会执行到 1 处</span><br>        <span class="hljs-keyword">throw</span>;<br>    &#125;<br>    t.<span class="hljs-built_in">join</span>();       <span class="hljs-comment">// 2 当程序正常执行，会执行到 2 处</span><br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>还有一种方式是使用 <strong>RAII(Resource Acquisition Is Initialization 资源获取及初始化)</strong> 方式，并且提供一个类，并在析构函数中使用 <code>join()</code></p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">thread_guard</span> &#123;<br>    std::thread &amp; t_;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">explicit</span> <span class="hljs-title">thread_guard</span><span class="hljs-params">(std::thread &amp; t)</span> : t_(t) &#123;</span> &#125;<br>    ~<span class="hljs-built_in">thread_guard</span>() &#123;<br>        <span class="hljs-keyword">if</span> (t_.<span class="hljs-built_in">joinable</span>())  <span class="hljs-comment">// 1</span><br>            t_.<span class="hljs-built_in">join</span>();      <span class="hljs-comment">// 2</span><br>    &#125;<br>    <span class="hljs-built_in">thread_guard</span>(<span class="hljs-type">const</span> thread_guard &amp;) = <span class="hljs-keyword">delete</span>;    <span class="hljs-comment">// 3</span><br>    thread_guard &amp; <span class="hljs-keyword">operator</span>=(thread_guard &amp;) = <span class="hljs-keyword">delete</span>;<br>&#125;;<br><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">func</span>;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f2</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-type">int</span> some_local_state = <span class="hljs-number">0</span>;<br>    <span class="hljs-function">func <span class="hljs-title">my_func</span><span class="hljs-params">(some_local_state)</span></span>;<br>    <span class="hljs-function">std::thread <span class="hljs-title">t</span><span class="hljs-params">(my_func)</span></span>;<br>    <span class="hljs-comment">// do something in current threading</span><br>&#125;       <span class="hljs-comment">// 4</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>执行到 4 处时，局部对象就要被逆序销毁， <code>thread_guard</code> 对象 <code>g</code> 是第一个被销毁的，这时线程在析构函数中被 <code>join</code> 到原始线程，<strong>即使原始线程中的 <code>do something in current threading</code> 抛出异常，这个销毁过程依旧存在，抛出异常不会影响线程的执行</strong></li>
+<li>在 1 处，必须判断线程是否是 <strong>joined</strong> ，一个线程只能调用一次 <code>join()</code></li>
+<li>在 3 处，将拷贝构造函数与拷贝赋值运算符定义为 <code>delete</code> ，防止编译器自动生成，因为对 <code>std::thread</code> 的拷贝或赋值是十分危险的，<strong>这可能会弄丢已经调用 <code>join()</code> 的线程</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="后台运行线程-detach"><a href="#后台运行线程-detach" class="headerlink" title="后台运行线程(detach)"></a>后台运行线程(<code>detach</code>)</h2><ul>
+<li>使用 <strong><code>detach()</code></strong> 让线程进入后台运行，主线程不能与之直接交互</li>
+<li>通常称分离线程为<strong>守护线程(daemon threads)</strong></li>
+<li><strong>不能对没有执行线程的 <code>std::thread</code> 对象使用 <code>detach()</code> 或 <code>join()</code></strong>, 若 <code>std::thread</code> 对象调用 <code>joinable()</code> 的结果是 <code>true</code> ，则可以调用 <code>detach()</code> ，<code>join()</code> 同理</li>
+<li><p>例子：使用分离线程处理其他文档</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">edit_document</span><span class="hljs-params">(<span class="hljs-type">const</span> std::string &amp; filename)</span> </span>&#123;<br>    <span class="hljs-built_in">open_document_and_display_gui</span>(filename);<br>    <span class="hljs-keyword">while</span> (!<span class="hljs-built_in">done_editing</span>())&#123;<br>        user_command cmd = <span class="hljs-built_in">get_user_input</span>();<br>        <span class="hljs-keyword">if</span> (cmd.type == open_new_document) &#123;<br>            <span class="hljs-type">const</span> std::string new_name = <span class="hljs-built_in">get_filename_from_user</span>();<br>            <span class="hljs-function">std::thread <span class="hljs-title">t</span><span class="hljs-params">(edit_document, new_name)</span></span>; <span class="hljs-comment">// 1</span><br>            t.<span class="hljs-built_in">detach</span>(); <span class="hljs-comment">// 2</span><br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>          <span class="hljs-built_in">process_user_input</span>(cmd);<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>如果用户选择打开一个新文档，为了让其迅速打开，需要启动一个新线程去打开新文档，并分离线程。</li>
+<li>与当前线程所做工作一样，新线程不过是新打开了一个文档，所以 <code>edit_document</code> 函数可以复用，通过传参形式打开文件</li>
+<li>上述例子也介绍了传参启动线程的方法，<strong>不仅可以向 <code>std::thread</code> 构造函数传递函数名(可调用对象), 还可以传递函数所需实参</strong></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="std-thread-的关键接口"><a href="#std-thread-的关键接口" class="headerlink" title="std::thread 的关键接口"></a><code>std::thread</code> 的关键接口</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::thread::joinable()</code></td>
+<td>检查该 <code>std::thread</code> 对象是否持有一个可被 <code>.join()</code> 或 <code>.detach()</code> 的线程</td>
+</tr>
+<tr>
+<td><code>std::thread::join()</code></td>
+<td>阻塞当前线程直到调用线程函数结束，清理资源</td>
+</tr>
+<tr>
+<td><code>std::thread:::detach()</code></td>
+<td>让目标线程脱离当前 <code>std::thread</code> 对象管理， 成为守护线程，后续无法再 <code>join</code></td>
+</tr>
+<tr>
+<td><code>std::this_thread::get_id()</code></td>
+<td>返回当前线程的唯一 ID</td>
+</tr>
+<tr>
+<td><code>std::this_thread::sleep_for(...)</code> <br> <code>std::this_thread::yield()</code></td>
+<td>用于让当前线程休眠一段时间或主动让出时间片</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="小项目：并发计算斐波那契数列不同区间"><a href="#小项目：并发计算斐波那契数列不同区间" class="headerlink" title="小项目：并发计算斐波那契数列不同区间"></a>小项目：并发计算斐波那契数列不同区间</h2><figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">fib_range</span><span class="hljs-params">(<span class="hljs-type">int</span> start, <span class="hljs-type">int</span> count)</span> </span>&#123;<br>    <span class="hljs-type">long</span> <span class="hljs-type">long</span> a = <span class="hljs-number">0</span>, b = <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; start + count; ++i) &#123;<br>        <span class="hljs-type">long</span> <span class="hljs-type">long</span> next = a + b;<br>        a = b;<br>        b = next;<br>        <span class="hljs-keyword">if</span> (i &gt;= start)<br>            std::cout &lt;&lt; <span class="hljs-string">&quot;Thread &quot;</span> &lt;&lt; std::this_thread::<span class="hljs-built_in">get_id</span>()<br>                      &lt;&lt; <span class="hljs-string">&quot; computes Fib(&quot;</span> &lt;&lt; i &lt;&lt; <span class="hljs-string">&quot;) = &quot;</span> &lt;&lt; a &lt;&lt; std::endl;<br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-type">const</span> <span class="hljs-type">int</span> num_threads = <span class="hljs-number">4</span>;<br>    <span class="hljs-type">const</span> <span class="hljs-type">int</span> per_thread = <span class="hljs-number">5</span>;<br>    std::vector&lt;std::thread&gt; threads;<br><br>    <span class="hljs-comment">// 启动 4 个线程，分别计算不同区间</span><br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; num_threads; ++i) &#123;<br>        <span class="hljs-type">int</span> start_index = i * per_thread;<br>        threads.<span class="hljs-built_in">emplace_back</span>(fib_range, start_index, per_thread);<br>    &#125;<br><br>    <span class="hljs-comment">// 等待所有线程执行结束</span><br>    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> &amp; t : threads) &#123;<br>        <span class="hljs-keyword">if</span> (t.<span class="hljs-built_in">joinable</span>()) &#123;<br>            t.<span class="hljs-built_in">join</span>();<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><code>fib_range</code> 函数负责计算区间内的斐波那契数，参数 start <code>是开始位置，count</code> 表示要连续计算多少个数</li>
+<li>因为所有的线程同时打印到标准输出，因此打印顺序会交错</li>
+</ul>
+<h2 id="join-VS-detach"><a href="#join-VS-detach" class="headerlink" title="join() VS detach()"></a><code>join()</code> VS <code>detach()</code></h2><ul>
+<li><strong>什么时候用 <code>join</code></strong><ul>
+<li>如果子线程执行的任务必须在主线程或另一个线程做出下一步动作之前完成，必须使用 <code>join</code> 来同步</li>
+<li>典型场景：在程序退出前需要确保所有子线程已经完成自己的工作，防止数据不一致，资源泄漏</li>
+</ul>
+</li>
+<li><strong>什么时候用 <code>detach</code></strong><ul>
+<li>子线程的工作并不影响主线程的后续逻辑，且不用等它结束，只希望它在后台运行</li>
+<li>典型场景：记录日志、后台监控、定时任务等，既希望一启动就 Running， 又不希望堵住主线程</li>
+</ul>
+</li>
+<li><strong>注意:</strong> 如果使用 <code>detach</code>，必须确保:<ul>
+<li>子线程访问的任何数据在子线程整个生命周期中始终有效</li>
+<li>用户不需要关心它的结束状态，也不需要获取它的返回值</li>
+</ul>
+</li>
+</ul>
+<h2 id="小项目：启动守护线程执行后台日志"><a href="#小项目：启动守护线程执行后台日志" class="headerlink" title="小项目：启动守护线程执行后台日志"></a>小项目：启动守护线程执行后台日志</h2><figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 全局原子标志，用于通知守护线程停止</span><br>std::atomic&lt;<span class="hljs-type">bool</span>&gt; stop_flag&#123;<span class="hljs-literal">false</span>&#125;;<br><br><span class="hljs-comment">// 守护日志线程函数</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">logger_thread</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-keyword">while</span> (!stop_flag.<span class="hljs-built_in">load</span>(std::memory_order_relaxed)) &#123;<br>        <span class="hljs-comment">// 获取当前时间戳</span><br>        <span class="hljs-keyword">auto</span> now = std::chrono::system_clock::<span class="hljs-built_in">now</span>();<br>        std::<span class="hljs-type">time_t</span> t = std::chrono::system_clock::<span class="hljs-built_in">to_time_t</span>(now);<br><br>        <span class="hljs-comment">// 打印日志</span><br>        std::cout &lt;&lt; <span class="hljs-string">&quot;[日志线程] &quot;</span> &lt;&lt; std::<span class="hljs-built_in">ctime</span>(&amp;t) &lt;&lt; <span class="hljs-string">&quot; 记录心跳日志&quot;</span> &lt;&lt; std::endl;<br><br>        <span class="hljs-comment">// 等待 1 秒</span><br>        std::this_thread::<span class="hljs-built_in">sleep_for</span>(std::chrono::<span class="hljs-built_in">seconds</span>(<span class="hljs-number">1</span>));<br>    &#125;<br><br>    std::cout &lt;&lt; <span class="hljs-string">&quot;[日志线程] 检测到停止信号，退出线程\n&quot;</span>;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">main_with_logger_thread</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">// 启动守护线程</span><br>    <span class="hljs-function">std::thread <span class="hljs-title">t</span><span class="hljs-params">(logger_thread)</span></span>;<br>    <span class="hljs-keyword">if</span> (t.<span class="hljs-built_in">joinable</span>())<br>        t.<span class="hljs-built_in">detach</span>();<br><br>    <span class="hljs-comment">// 主线程循环读取用户输入</span><br>    std::string line;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;[主线程] 输入文本，输入 \&quot;quit\&quot; 可退出程序\n&quot;</span>;<br>    <span class="hljs-keyword">while</span> (std::<span class="hljs-built_in">getline</span>(std::cin, line)) &#123;<br>        <span class="hljs-keyword">if</span> (line == <span class="hljs-string">&quot;quit&quot;</span>) &#123;<br>            stop_flag.<span class="hljs-built_in">store</span>(<span class="hljs-literal">true</span>, std::memory_order_relaxed);<br>            <span class="hljs-keyword">break</span>;<br>        &#125;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;[主线程] 您输入：&quot;</span> &lt;&lt; line &lt;&lt; std::endl;<br>    &#125;<br><br>    <span class="hljs-comment">// 给守护线程一些退出时间</span><br>    std::this_thread::<span class="hljs-built_in">sleep_for</span>(std::chrono::<span class="hljs-built_in">seconds</span>(<span class="hljs-number">2</span>));<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;[主线程] 已退出，主程序结束\n&quot;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><code>stop_flag</code> 为 <code>std::atomic&lt;bool&gt;</code>, <strong>在多线程场景下保证可见性</strong><ul>
+<li><strong><code>std::atomic&lt;bool&gt;</code> 提供了原子操作，确保所有线程访问时的读写操作是原子性的，不会发生竞态</strong>。它还能保证对该变量的修改对所有线程立即可见，从而确保线程之间正确同步。</li>
+</ul>
+</li>
+<li>主线程在检测到 <code>quit</code> 后等待两秒，让守护线程打印完退出信息</li>
+<li>当主线程返回 <code>main()</code> 并结束时，整个进程都会终止，包括所有的守护线程。操作系统会在进程退出时回收所有线程资源，因此<strong>守护线程无法在进程结束后继续运行</strong></li>
+</ul>
+<hr>
+<h2 id="Questions-And-Answer"><a href="#Questions-And-Answer" class="headerlink" title="Questions And Answer"></a>Questions And Answer</h2><p><strong>问题 1</strong>：C++ 中线程的生命周期如何定义？</p>
+<ul>
+<li><strong>回答</strong>：线程生命周期包括创建、运行、终止三个阶段。创建使用 <code>std::thread</code>，运行时执行传入函数，终止后需 <code>join()</code> 或 <code>detach()</code> 回收资源；否则会调用 <code>std::terminate()</code>。</li>
+</ul>
+<p><strong>问题 2</strong>：如何使用 <code>std::thread</code> 创建线程并输出线程 ID？</p>
+<ul>
+<li><strong>回答</strong>：见示例 1，使用 <code>std::thread t(hello);</code> 创建线程，<code>hello()</code> 内调用 <code>std::this_thread::get_id()</code> 获取 ID，主线程调用 <code>t.join()</code> 等待结束。</li>
+</ul>
+<p><strong>问题 3</strong>：如何启动多个线程并分别计算不同区间的斐波那契数？</p>
+<ul>
+<li><strong>回答</strong>：见示例 2，用 <code>std::vector&lt;std::thread&gt;</code> 存储多个 <code>std::thread</code> 对象，每个线程传入不同 <code>start</code> 值，最后遍历 <code>join</code>。</li>
+</ul>
+<p><strong>问题 4</strong>：<code>std::thread</code> 对象析构时，若未 <code>join()</code> 或 <code>detach()</code> 会发生什么？</p>
+<ul>
+<li><strong>回答</strong>：如果 <code>std::thread</code> 管理的线程仍可 <code>joinable()</code> 且未调用 <code>join()</code> 或 <code>detach()</code>，在析构时会调用 <code>std::terminate()</code>，导致程序异常终止。</li>
+</ul>
+<p><strong>问题 5</strong>：为什么用 <code>std::atomic&lt;bool&gt;</code> 而不是普通 <code>bool</code> 作为停止信号？</p>
+<ul>
+<li><strong>回答</strong>：普通的 <code>bool</code> 在多线程写后，其他线程不一定能立即看到变化，会发生数据竞争。<code>std::atomic&lt;bool&gt;</code> 保证读写原子性，并让修改对所有线程立即可见，从而正确同步。</li>
+</ul>
+<p><strong>问题 6</strong>：守护线程在主线程退出后还能否继续运行？</p>
+<ul>
+<li><strong>回答</strong>：当主线程结束并返回 <code>main()</code> 时，整个进程会终止，包括所有守护线程。操作系统在进程退出时回收所有线程资源，守护线程无法在进程已终止后继续运行。</li>
+</ul>
+<p><strong>问题 7</strong>：在使用 <code>detach()</code> 分离线程后，如何判断该线程是否已经结束？</p>
+<ul>
+<li><p><strong>回答</strong>：分离后，<code>std::thread</code> 对象不再管理实际线程，无法直接获取其状态。必须自行设计状态通告机制，例如：</p>
+<ol>
+<li>使用共享的 <code>std::atomic&lt;bool&gt;</code> 标志，在子线程结束前将其置为 <code>true</code>，外部循环检查该标志；</li>
+<li>使用 <code>std::condition_variable</code> 和 <code>std::mutex</code>，在线程结束时通知观察者；</li>
+<li>使用 <code>std::promise</code>/<code>std::future</code>，让子线程在结束时设置 <code>promise</code>，外部通过 <code>future.wait_for</code> 或 <code>future.wait</code> 判断。</li>
+</ol>
+</li>
+</ul>
+<h3 id="后续可选问题（待解决）"><a href="#后续可选问题（待解决）" class="headerlink" title="后续可选问题（待解决）"></a>后续可选问题（待解决）</h3><ol>
+<li><p><strong>线程创建与资源管理</strong></p>
+<ul>
+<li><code>std::thread</code> 对象能否拷贝或赋值？</li>
+<li><code>std::thread::hardware_concurrency()</code> 返回的值代表什么？如何让程序根据硬件核心数自动调整线程数？</li>
+<li>如果线程函数抛出异常，程序会发生什么？该如何在多线程里正确捕获和处理异常？</li>
+</ul>
+</li>
+<li><p><strong>参数传递方式</strong></p>
+<ul>
+<li>将一个大型对象按值传给线程性能开销大吗？如何使用移动语义或引用包装来优化？</li>
+<li>什么时候该用 <code>std::ref</code>/<code>std::cref</code> 传递引用给线程？会有哪些潜在风险？</li>
+</ul>
+</li>
+<li><p><strong>线程生命周期与同步</strong></p>
+<ul>
+<li>为什么要先判断 <code>joinable()</code> 再调用 <code>join()</code> 或 <code>detach()</code>？直接调用会怎样？</li>
+<li>如果一个线程在 <code>join()</code> 阻塞期间，主线程怎样做超时检测或取消等待？</li>
+<li><code>detach()</code> 后如果访问本就会被销毁的数据，会产生什么样的错？如何避免这类悬空引用？</li>
+</ul>
+</li>
+<li><p><strong>原子与同步</strong></p>
+<ul>
+<li><code>std::atomic&lt;T&gt;</code> 支持哪些操作？与加锁相比性能如何？</li>
+<li>使用 <code>std::atomic&lt;bool&gt;</code> 以外，还可以用什么方式在两个线程间传递状态变化？</li>
+<li>什么是内存序 (<code>memory_order</code>)？示例说明不同顺序模型对可见性的影响。</li>
+</ul>
+</li>
+</ol>
+
+            </article>
+            
+	<aside class="rightside">
+	
+		<div class="rightside-button" id="js-aside">
+			<span>
+				<img no-lazy src="/images/icon/aside.png" class="rightside-button-icon" alt="Icon">
+			</span>
+		</div>
+		<script>
+			$("#js-aside").click(function () {
+				onShowAsideButton();
+			});
+		</script>
+	
+	<div class="rightside-button" id="js-toggle_theme">
+		<span>
+			<img no-lazy src="/images/icon/toggle_theme.png" class="rightside-button-icon" alt="Icon">
+		</span>
+	</div>
+
+	
+<script src="/js/plugins/goto_position.js"></script>
+
+	
+	<div class="rightside-button" id="js-go_top">
+		<span>
+			<img no-lazy src="/images/icon/go_top.png" class="rightside-button-icon" alt="Icon">
+		</span>
+	</div>
+	<div class="rightside-button" id="js-go_bottom">
+		<span>
+			<img no-lazy src="/images/icon/go_bottom.png" class="rightside-button-icon" alt="Icon">
+		</span>
+	</div>
+
+	<script>
+		setToggleThemeButtonListener();
+	</script>
+	<script>
+		$('#js-go_top')
+		.gotoPosition( {
+			speed: 300,
+			target: 'top',
+		} );
+		$('#js-go_bottom')
+		.gotoPosition( {
+			speed: 300,
+			target: 'bottom',
+		} );
+	</script>
+</aside>
+
+
+<div class="post-bottom">
+    
+        <div class="post-paging">     
+            <div class="post-paging-last">
+                
+                    <a href="/2025/06/05/Chap2-Threading-Management/2.2%20%E5%90%91%E7%BA%BF%E7%A8%8B%E5%87%BD%E6%95%B0%E4%BC%A0%E9%80%92%E5%8F%82%E6%95%B0/">
+                        上一篇：2.2 向线程函数传递参数
+                    </a>
+                
+            </div>
+            <div class="post-paging-next">
+                
+                    <a href="/2025/06/05/Chap2-Threading-Management/2.3%20%E8%BD%AC%E7%A7%BB%E7%BA%BF%E7%A8%8B%E7%9A%84%E6%89%80%E6%9C%89%E6%9D%83/">
+                        下一篇：2.3 转移线程的所有权
+                    </a>
+                
+            </div>
+        </div>
+    
+    
+    
+        
+    
+</div>
+        </div>
+    </main>
+    
+        <aside class="main-aside">
+    
+<script src="/js/widgets/aside.js"></script>
+
+    <script>
+        showAside();
+    </script>
+
+    <div class="aside-top">
+        <div class="aside-top-about aside-card">
+            <a href="/about" class="aside-top-about-portrait">
+                <img no-lazy src="/images/about_icon/about_icon.webp" alt="Q">
+            </a>
+            <div class="aside-top-about-info">
+                <span class="author"> kin12138</span>
+                <span class="description">This is life, it's suck, but i love it</span>
+            </div>              
+            <div class="aside-top-about-site">
+                <a href="/categories" class="aside-top-about-site-item">
+                    <span class="title">类别</span>
+                    <span class="count">5</span>
+                </a>
+                <a href="/tags" class="aside-top-about-site-item">
+                    <span class="title">标签</span>
+                    <span class="count">124</span>
+                </a>
+                <a href="/archives" class="aside-top-about-site-item">
+                    <span class="title">归档</span>
+                    <span class="count">71</span>
+                </a>
+            </div>
+            <div class="aside-top-about-contact">
+                
+                    
+                        <a target="_blank" rel="noopener" href="https://space.bilibili.com/568645801?spm_id_from=333.1007.0.0">
+                            <img no-lazy src="/images/bottom_icon/Bilibili.webp" alt="Quieter">
+                        </a>
+                    
+                        <a target="_blank" rel="noopener" href="https://github.com/kin12138">
+                            <img no-lazy src="/images/bottom_icon/github.webp" alt="Quieter">
+                        </a>
+                    
+                
+            </div>
+        </div> 
+
+        
+    </div>
+
+    <div class="aside-bottom">
+        
+            <script>
+                
+                    const tocCollapsed = true;
+                
+                
+                    const tocDepth = 6;
+                
+                var headerString = '';
+                for (let i = 1; i <= tocDepth; i++) {
+                    if (i === 1) {
+                        headerString += 'h1';
+                    } else {
+                        headerString += ', h' + i;
+                    }
+                }
+                hbeToc();
+            </script>
+            <div class="aside-bottom-toc aside-card">
+                <div class="aside-bottom-toc-title">
+                    <h1>目录</h1>
+                    <span class="toc-percentage"></span>
+                </div>
+                <ol class="aside-bottom-toc-content"></ol>
+            </div>
+        
+    </div>
+</aside>
+    
+</div>
+		<footer>
+	<div class="content">
+		
+			<span>©2025&nbsp;By&nbsp;<a href="/about">kin12138</a>.</span>
+		
+		<span><a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> theme by <a target="_blank" rel="noopener" href="https://github.com/GZ-Metal-Cell/hexo-theme-quieter">Quieter</a>.</span>
+		
+	</div>
+
+	
+<script src="/js/plugins/ref.js"></script>
+
+	
+<script src="/js/plugins/highlight_tools.js"></script>
+
+	<script>
+		var copyIcon = "/images/icon/copy.png";
+		var closeCodeBlockIcon = "/images/icon/close_code_block.png";
+		var highlightShrink = "";
+		var HighlightHeightLimit = "";
+	</script>
+	
+	<!-- Analytics -->
+
+    
+        <!-- Busuanzi Analytics -->
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+
+
+	
+
+	
+
+    
+		
+<script src="/js/plugins/replaceSpacesWithNbsp.js"></script>
+
+	
+
+	
+	
+	
+		<script>
+			if (typeof init === 'function') {
+				init();
+			}
+		</script>
+	
+
+	
+		
+	
+
+	
+
+	<!--
+		
+<script src="/js/plugins/jquery.pjax.min.js"></script>
+
+		<script>
+			$(document).pjax('a[target!=_blank]', 'main', {
+				fragment: 'main',
+				timeout: 8000
+			});
+
+			$(document).on('pjax:complete', function() {
+			});
+		</script> 
+	-->
+	<script>
+		console.log('\n %c Hexo-Quieter 主题 %c https://github.com/GZ-Metal-Cell/hexo-theme-quieter \n', 'color: #fadfa3; background: #030307; padding:5px 0;', 'background: #fadfa3; padding:5px 0;')
+	</script>
+</footer>
+	</body>
+
+	<!-- Hexo-Quieter 主题  https://github.com/GZ-Metal-Cell/hexo-theme-quieter -->
+</html>
+
