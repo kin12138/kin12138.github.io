@@ -255,9 +255,9 @@
             
             <tag> c++ primer </tag>
             
-            <tag> 文本查询程序 </tag>
-            
             <tag> 面向对象编程 </tag>
+            
+            <tag> 文本查询程序 </tag>
             
         </tags>
       
@@ -671,35 +671,6 @@
     
     
     <entry>
-      <title>14.4 赋值运算符</title>
-      <link href="/2025/04/23/14.%20%E9%87%8D%E8%BD%BD%E8%BF%90%E7%AE%97%E5%92%8C%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/14.4%20%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6/"/>
-      <url>/2025/04/23/14.%20%E9%87%8D%E8%BD%BD%E8%BF%90%E7%AE%97%E5%92%8C%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/14.4%20%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6/</url>
-      
-        <content type="html"><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul><li>拷贝赋值和移动赋值运算符将<strong>类的一个对象赋值给该类的另一个对象</strong></li><li>类还可以定义其他赋值运算符，<strong>将其他类型的对象作为右侧运算对象</strong></li><li><p>例如 StrVec 的可以接受 initializer_list 对象的赋值运算符</p>  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">StrVec &amp; StrVec::<span class="hljs-keyword">operator</span>=(std::initializer_list&lt;std::string&gt; il) &#123;<br>    <span class="hljs-keyword">auto</span> data = <span class="hljs-built_in">alloc_n_copy</span>(il.<span class="hljs-built_in">begin</span>(), il.<span class="hljs-built_in">end</span>());<br>    <span class="hljs-built_in">free</span>();<br>    elements = data.first;<br>    first_free = cap = data.second;<br>    <span class="hljs-keyword">return</span> *<span class="hljs-keyword">this</span>;<br>&#125;<br></code></pre></td></tr></table></figure></li><li><p>可以重载赋值运算符。无论形参类型是什么，<strong>赋值运算符都必须被定义为成员函数</strong></p></li></ul><h2 id="复合赋值运算符"><a href="#复合赋值运算符" class="headerlink" title="复合赋值运算符"></a>复合赋值运算符</h2><ul><li>复合赋值运算符不一定非得是类的成员，但一般定义为类成员</li><li><p>Sale_data 的复合赋值运算符</p>  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 作为成员的二元运算符，左侧对象隐式绑定到 this 指针</span><br><span class="hljs-comment">// 假定两个对象表示的是同一本书</span><br>Sale_data &amp; Sale_data::<span class="hljs-keyword">operator</span>+=(<span class="hljs-type">const</span> Sale_data &amp;rhs) &#123;<br>    units_sold += rhs.units_sold;<br>    revenue += rhs.revenue;<br>    <span class="hljs-keyword">return</span> *<span class="hljs-keyword">this</span>;<br>&#125;<br></code></pre></td></tr></table></figure></li><li><p>赋值运算符和复合赋值运算符<strong>都应该返回左侧运算对象的引用</strong></p></li></ul>]]></content>
-      
-      
-      <categories>
-          
-          <category> technology </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> c++ </tag>
-            
-            <tag> c++ primer </tag>
-            
-            <tag> 赋值运算符 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>14.5 下标运算符</title>
       <link href="/2025/04/23/14.%20%E9%87%8D%E8%BD%BD%E8%BF%90%E7%AE%97%E5%92%8C%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/14.5%20%E4%B8%8B%E6%A0%87%E8%BF%90%E7%AE%97%E7%AC%A6/"/>
       <url>/2025/04/23/14.%20%E9%87%8D%E8%BD%BD%E8%BF%90%E7%AE%97%E5%92%8C%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/14.5%20%E4%B8%8B%E6%A0%87%E8%BF%90%E7%AE%97%E7%AC%A6/</url>
@@ -721,6 +692,35 @@
             <tag> c++ primer </tag>
             
             <tag> 下标运算符 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>14.4 赋值运算符</title>
+      <link href="/2025/04/23/14.%20%E9%87%8D%E8%BD%BD%E8%BF%90%E7%AE%97%E5%92%8C%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/14.4%20%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6/"/>
+      <url>/2025/04/23/14.%20%E9%87%8D%E8%BD%BD%E8%BF%90%E7%AE%97%E5%92%8C%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/14.4%20%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6/</url>
+      
+        <content type="html"><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul><li>拷贝赋值和移动赋值运算符将<strong>类的一个对象赋值给该类的另一个对象</strong></li><li>类还可以定义其他赋值运算符，<strong>将其他类型的对象作为右侧运算对象</strong></li><li><p>例如 StrVec 的可以接受 initializer_list 对象的赋值运算符</p>  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">StrVec &amp; StrVec::<span class="hljs-keyword">operator</span>=(std::initializer_list&lt;std::string&gt; il) &#123;<br>    <span class="hljs-keyword">auto</span> data = <span class="hljs-built_in">alloc_n_copy</span>(il.<span class="hljs-built_in">begin</span>(), il.<span class="hljs-built_in">end</span>());<br>    <span class="hljs-built_in">free</span>();<br>    elements = data.first;<br>    first_free = cap = data.second;<br>    <span class="hljs-keyword">return</span> *<span class="hljs-keyword">this</span>;<br>&#125;<br></code></pre></td></tr></table></figure></li><li><p>可以重载赋值运算符。无论形参类型是什么，<strong>赋值运算符都必须被定义为成员函数</strong></p></li></ul><h2 id="复合赋值运算符"><a href="#复合赋值运算符" class="headerlink" title="复合赋值运算符"></a>复合赋值运算符</h2><ul><li>复合赋值运算符不一定非得是类的成员，但一般定义为类成员</li><li><p>Sale_data 的复合赋值运算符</p>  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 作为成员的二元运算符，左侧对象隐式绑定到 this 指针</span><br><span class="hljs-comment">// 假定两个对象表示的是同一本书</span><br>Sale_data &amp; Sale_data::<span class="hljs-keyword">operator</span>+=(<span class="hljs-type">const</span> Sale_data &amp;rhs) &#123;<br>    units_sold += rhs.units_sold;<br>    revenue += rhs.revenue;<br>    <span class="hljs-keyword">return</span> *<span class="hljs-keyword">this</span>;<br>&#125;<br></code></pre></td></tr></table></figure></li><li><p>赋值运算符和复合赋值运算符<strong>都应该返回左侧运算对象的引用</strong></p></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> technology </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> c++ </tag>
+            
+            <tag> c++ primer </tag>
+            
+            <tag> 赋值运算符 </tag>
             
         </tags>
       
@@ -828,39 +828,6 @@
     
     
     <entry>
-      <title>13.2 拷贝控制与资源管理</title>
-      <link href="/2025/04/18/13.%20%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6/13.2%20%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6%E4%B8%8E%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86/"/>
-      <url>/2025/04/18/13.%20%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6/13.2%20%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6%E4%B8%8E%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86/</url>
-      
-        <content type="html"><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul><li>通常，<strong>管理类外资源的类必须定义拷贝控制成员和析构函数</strong></li><li><strong>类外资源</strong>：例如通过 new 分配的动态内存、打开的文件句柄、socket、数据库连接等<ul><li>这些资源不由编译器自动管理，需要显式的申请和释放</li><li>默认的浅拷贝会出问题<ul><li>拷贝构造：新对象会把指针或句柄值直接拷贝过来，使得两个对象指向同一内存区域或同一个文件句柄</li><li>析构：两个对象各自析构都会尝试释放指向的内存区域，<strong>造成重复释放内存</strong>的未定义行为</li></ul></li></ul></li><li><strong>定义拷贝操作</strong>，使<strong>类的行为</strong>看起来<strong>像一个值</strong>或者<strong>像一个指针</strong><ul><li>类的行为<strong>像一个值</strong>：<strong>副本与原对象完全独立</strong>，改变副本不会影响原对象。类似于标准库中的 string</li><li>类的行为<strong>像一个指针</strong>：<strong>副本与原对象共用相同的底层数据</strong>，改变副本也会改变原对象。类似于标准库中的 shared_ptr</li></ul></li></ul><h2 id="定义行为像值的类"><a href="#定义行为像值的类" class="headerlink" title="定义行为像值的类"></a>定义行为像值的类</h2><h3 id="类值拷贝赋值运算符"><a href="#类值拷贝赋值运算符" class="headerlink" title="类值拷贝赋值运算符"></a>类值拷贝赋值运算符</h3><ul><li><strong>拷贝赋值运算符通常组合和析构函数和拷贝构造函数的操作</strong><ul><li>类似析构函数，<strong>赋值操作会销毁左侧运算对象的资源</strong></li><li>类似拷贝构造函数，<strong>赋值操作会从右侧运算对象拷贝数据</strong></li></ul></li><li>编写赋值运算符要注意：<ul><li><strong>如果将一个对象赋予它自身，赋值运算符必须能正常工作</strong></li><li>大多数赋值运算符组合了析构函数和拷贝构造函数的操作</li></ul></li><li>编写赋值运算符时，<strong>先将右侧运算对象拷贝到一个局部临时对象中</strong>，这样当拷贝完成后，<strong>销毁左侧运算对象的现有成员就是安全的</strong>。一旦左侧运算对象的资源被销毁，就可以将临时对象拷贝到左侧运算对象的成员中</li><li><p>下面写法是不安全的：</p>  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">HasPtr &amp; HasPtr::<span class="hljs-keyword">operator</span>=(<span class="hljs-type">const</span> HasPtr&amp; rhs) &#123;<br>    <span class="hljs-keyword">delete</span> ps;<br>    <span class="hljs-comment">// 如果 rhs 对象和 *this 对象是同一对象，下面代码将从已经释放的内存中拷贝数据</span><br>    ps = <span class="hljs-keyword">new</span> std::<span class="hljs-built_in">string</span>(*rhs.ps);<br>    i = rhs.i;<br>    <span class="hljs-keyword">return</span> *<span class="hljs-keyword">this</span>;<br>&#125;<br><br></code></pre></td></tr></table></figure></li></ul><h2 id="定义行为像指针的类"><a href="#定义行为像指针的类" class="headerlink" title="定义行为像指针的类"></a>定义行为像指针的类</h2><ul><li>令一个类展现类似指针行为的最好方法是使用 shared_ptr 管理类中的资源</li><li>如果想要直接管理资源，可以使用<strong>引用计数(reference count)</strong></li></ul><h3 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h3><ul><li>工作方式：<ul><li><strong>每个构造函数（拷贝构造函数除外）：除了初始化对象外，都要创建一个引用计数</strong>，用来记录有多少对象与正在创建的对象共享资源</li><li><strong>拷贝构造函数：不分配新的计数器</strong>，<strong>只拷贝给定对象的数据成员，包括计数器</strong>，拷贝构造函数递增计数器</li><li><strong>析构函数：递减计数器</strong>。如果<strong>计数器值变为 0，析构函数释放资源</strong></li><li><strong>拷贝赋值运算符：递增右侧对象的引用计数，递减左侧对象的引用计数。</strong></li></ul></li><li>如何更新计数器：<ul><li>一种方法是<strong>将计数器保存到动态分配的内存中</strong><ul><li>当<strong>创建一个对象时，分配一个计数器</strong>。</li><li><strong>拷贝或赋值对象时，拷贝指向计数器的指针</strong></li></ul></li></ul></li></ul>]]></content>
-      
-      
-      <categories>
-          
-          <category> technology </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> c++ </tag>
-            
-            <tag> c++ primer </tag>
-            
-            <tag> 引用计数 </tag>
-            
-            <tag> 拷贝控制 </tag>
-            
-            <tag> 资源管理 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>13.3 交换操作</title>
       <link href="/2025/04/18/13.%20%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6/13.3%20%E4%BA%A4%E6%8D%A2%E6%93%8D%E4%BD%9C/"/>
       <url>/2025/04/18/13.%20%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6/13.3%20%E4%BA%A4%E6%8D%A2%E6%93%8D%E4%BD%9C/</url>
@@ -886,6 +853,39 @@
             <tag> 拷贝并交换技术 </tag>
             
             <tag> 定义 swap 函数 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>13.2 拷贝控制与资源管理</title>
+      <link href="/2025/04/18/13.%20%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6/13.2%20%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6%E4%B8%8E%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86/"/>
+      <url>/2025/04/18/13.%20%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6/13.2%20%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6%E4%B8%8E%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86/</url>
+      
+        <content type="html"><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul><li>通常，<strong>管理类外资源的类必须定义拷贝控制成员和析构函数</strong></li><li><strong>类外资源</strong>：例如通过 new 分配的动态内存、打开的文件句柄、socket、数据库连接等<ul><li>这些资源不由编译器自动管理，需要显式的申请和释放</li><li>默认的浅拷贝会出问题<ul><li>拷贝构造：新对象会把指针或句柄值直接拷贝过来，使得两个对象指向同一内存区域或同一个文件句柄</li><li>析构：两个对象各自析构都会尝试释放指向的内存区域，<strong>造成重复释放内存</strong>的未定义行为</li></ul></li></ul></li><li><strong>定义拷贝操作</strong>，使<strong>类的行为</strong>看起来<strong>像一个值</strong>或者<strong>像一个指针</strong><ul><li>类的行为<strong>像一个值</strong>：<strong>副本与原对象完全独立</strong>，改变副本不会影响原对象。类似于标准库中的 string</li><li>类的行为<strong>像一个指针</strong>：<strong>副本与原对象共用相同的底层数据</strong>，改变副本也会改变原对象。类似于标准库中的 shared_ptr</li></ul></li></ul><h2 id="定义行为像值的类"><a href="#定义行为像值的类" class="headerlink" title="定义行为像值的类"></a>定义行为像值的类</h2><h3 id="类值拷贝赋值运算符"><a href="#类值拷贝赋值运算符" class="headerlink" title="类值拷贝赋值运算符"></a>类值拷贝赋值运算符</h3><ul><li><strong>拷贝赋值运算符通常组合和析构函数和拷贝构造函数的操作</strong><ul><li>类似析构函数，<strong>赋值操作会销毁左侧运算对象的资源</strong></li><li>类似拷贝构造函数，<strong>赋值操作会从右侧运算对象拷贝数据</strong></li></ul></li><li>编写赋值运算符要注意：<ul><li><strong>如果将一个对象赋予它自身，赋值运算符必须能正常工作</strong></li><li>大多数赋值运算符组合了析构函数和拷贝构造函数的操作</li></ul></li><li>编写赋值运算符时，<strong>先将右侧运算对象拷贝到一个局部临时对象中</strong>，这样当拷贝完成后，<strong>销毁左侧运算对象的现有成员就是安全的</strong>。一旦左侧运算对象的资源被销毁，就可以将临时对象拷贝到左侧运算对象的成员中</li><li><p>下面写法是不安全的：</p>  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">HasPtr &amp; HasPtr::<span class="hljs-keyword">operator</span>=(<span class="hljs-type">const</span> HasPtr&amp; rhs) &#123;<br>    <span class="hljs-keyword">delete</span> ps;<br>    <span class="hljs-comment">// 如果 rhs 对象和 *this 对象是同一对象，下面代码将从已经释放的内存中拷贝数据</span><br>    ps = <span class="hljs-keyword">new</span> std::<span class="hljs-built_in">string</span>(*rhs.ps);<br>    i = rhs.i;<br>    <span class="hljs-keyword">return</span> *<span class="hljs-keyword">this</span>;<br>&#125;<br><br></code></pre></td></tr></table></figure></li></ul><h2 id="定义行为像指针的类"><a href="#定义行为像指针的类" class="headerlink" title="定义行为像指针的类"></a>定义行为像指针的类</h2><ul><li>令一个类展现类似指针行为的最好方法是使用 shared_ptr 管理类中的资源</li><li>如果想要直接管理资源，可以使用<strong>引用计数(reference count)</strong></li></ul><h3 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h3><ul><li>工作方式：<ul><li><strong>每个构造函数（拷贝构造函数除外）：除了初始化对象外，都要创建一个引用计数</strong>，用来记录有多少对象与正在创建的对象共享资源</li><li><strong>拷贝构造函数：不分配新的计数器</strong>，<strong>只拷贝给定对象的数据成员，包括计数器</strong>，拷贝构造函数递增计数器</li><li><strong>析构函数：递减计数器</strong>。如果<strong>计数器值变为 0，析构函数释放资源</strong></li><li><strong>拷贝赋值运算符：递增右侧对象的引用计数，递减左侧对象的引用计数。</strong></li></ul></li><li>如何更新计数器：<ul><li>一种方法是<strong>将计数器保存到动态分配的内存中</strong><ul><li>当<strong>创建一个对象时，分配一个计数器</strong>。</li><li><strong>拷贝或赋值对象时，拷贝指向计数器的指针</strong></li></ul></li></ul></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> technology </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> c++ </tag>
+            
+            <tag> c++ primer </tag>
+            
+            <tag> 引用计数 </tag>
+            
+            <tag> 拷贝控制 </tag>
+            
+            <tag> 资源管理 </tag>
             
         </tags>
       
@@ -1468,35 +1468,6 @@
     
     
     <entry>
-      <title>8.2 文件输入输出流</title>
-      <link href="/2025/03/28/8.%20IO%E5%BA%93/8.2%20%E6%96%87%E4%BB%B6%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E6%B5%81/"/>
-      <url>/2025/03/28/8.%20IO%E5%BA%93/8.2%20%E6%96%87%E4%BB%B6%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E6%B5%81/</url>
-      
-        <content type="html"><![CDATA[<h2 id="fstream"><a href="#fstream" class="headerlink" title="fstream"></a>fstream</h2><ul><li><p>头文件：fstream.h</p></li><li><p>类型：</p><ul><li>ifstream</li><li>ofstream</li><li>fstream</li></ul></li></ul><hr><h2 id="fstream-特有操作"><a href="#fstream-特有操作" class="headerlink" title="fstream 特有操作"></a>fstream 特有操作</h2><div class="table-container"><table><thead><tr><th style="text-align:left">Operation</th><th style="text-align:left">Implication</th></tr></thead><tbody><tr><td style="text-align:left"><strong>fstream</strong> fstrm</td><td style="text-align:left">创建一个未绑定的文件流，fstream 是头文件 fstream 中定义的类型</td></tr><tr><td style="text-align:left"><strong>fstream</strong> fstrm(s)</td><td style="text-align:left">创建一个fstream object, 并打开名为 s 的文件。s 可以是 <strong>string</strong>，也可以是 <strong>C 风格字符串的指针</strong>，这些构造函数都是 explicit 的。<strong>默认文件 mode 依赖于 fstream 的类型</strong>。</td></tr><tr><td style="text-align:left"><strong>fstream</strong> fstrm(s, mode)</td><td style="text-align:left">按指定 mode 打开文件</td></tr><tr><td style="text-align:left">fstrm.open(s)</td><td style="text-align:left">打开一个名为 s 的文件，并将 s 与 fstrm 绑定。默认文件 mode 依赖于 fstream 的类型。返回 void</td></tr><tr><td style="text-align:left">fstrm.close()</td><td style="text-align:left">关闭与 fstrm 绑定的文件。返回 void</td></tr><tr><td style="text-align:left">fstrm.is_open()</td><td style="text-align:left">返回一个 bool 值，指出与 fstrm 绑定的文件是否成功打开且尚未关闭</td></tr></tbody></table></div><p><strong>NOTE:</strong> 当一个 fstream 对象被销毁时，close() 会自动被调用。</p><hr><h2 id="文件模式"><a href="#文件模式" class="headerlink" title="文件模式"></a>文件模式</h2><div class="table-container"><table><thead><tr><th style="text-align:left">Mode</th><th style="text-align:left">Implication</th></tr></thead><tbody><tr><td style="text-align:left">in</td><td style="text-align:left">以读的方式打开</td></tr><tr><td style="text-align:left">out</td><td style="text-align:left">以写的方式打开</td></tr><tr><td style="text-align:left">app</td><td style="text-align:left">每次写操作之前均定位到文件末尾</td></tr><tr><td style="text-align:left">ate</td><td style="text-align:left">打开文件后立即定位到文件末尾</td></tr><tr><td style="text-align:left">trunc</td><td style="text-align:left">截断文件</td></tr><tr><td style="text-align:left">binary</td><td style="text-align:left">以二进制方式进行 IO</td></tr></tbody></table></div><p><strong>NOTE:</strong> 指定文件模式有以下限制</p><ul><li>只可以对 <strong>ofstream 或 fstream 对象</strong>设定 <strong>out mode</strong></li><li>只可以对 <strong>ifstream 或 fstream 对象</strong>设定 <strong>in mode</strong></li><li>只有当 out 也被设定时，才可以设定 trunc</li><li>只要 trunc 没被设定，就可以设定 app 模式。<strong>app mode 下，默认指定 out mode</strong></li><li><strong>默认情况下</strong>，即使没有指定 trunc mode, 以 out mode 打开的文件也总会被截断。<strong>为了保留 out mode 下文件的内容，必须同时指定 app mode</strong>.</li><li><strong>ate mode 和 binary mode</strong> 可<strong>用于任何类型的文件流对象</strong>，且可以与其他任何文件 mode 组合使用</li><li>与 <strong>ifstream</strong> 关联的文件默认以 <strong>in mode</strong> 打开；与 <strong>ofstream</strong> 关联的文件默认以 <strong>out mode</strong> 打开；与 <strong>fstream</strong> 关联的文件默认以 <strong>in, out mode</strong>打开</li></ul><h3 id="out-mode-打开文件会丢弃已有数据"><a href="#out-mode-打开文件会丢弃已有数据" class="headerlink" title="out mode 打开文件会丢弃已有数据"></a>out mode 打开文件会丢弃已有数据</h3><ul><li>阻止一个 ofstream 清空数据的方法是<strong>显式指定 app mode 或 in mode</strong></li></ul><figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 这几条语句中，file1 都被截断</span><br><span class="hljs-function">ofstream <span class="hljs-title">out</span><span class="hljs-params">(<span class="hljs-string">&quot;file1&quot;</span>)</span></span>;    <span class="hljs-comment">// 隐含以 out mode 打开文件并截断文件</span><br><span class="hljs-function">ofstream <span class="hljs-title">out</span><span class="hljs-params">(<span class="hljs-string">&quot;file1&quot;</span>, ofstream::out)</span></span>; <span class="hljs-comment">// 隐含的截断文件</span><br><span class="hljs-function">ofstream <span class="hljs-title">out</span><span class="hljs-params">(<span class="hljs-string">&quot;file1&quot;</span>, ofstream::out | ofstream::trunc)</span></span>;<br><br><span class="hljs-comment">// 为保留文件内容，显式指定 app mode</span><br><span class="hljs-function">ofstream <span class="hljs-title">out</span><span class="hljs-params">(<span class="hljs-string">&quot;file1&quot;</span>, ofstream::app)</span></span>; <span class="hljs-comment">// 隐含为 out mode</span><br><span class="hljs-function">ofstream <span class="hljs-title">out</span><span class="hljs-params">(<span class="hljs-string">&quot;file1&quot;</span>, ofstream::app | ofstream::out)</span></span>;<br></code></pre></td></tr></table></figure><h3 id="每次调用-open-确定文件模式"><a href="#每次调用-open-确定文件模式" class="headerlink" title="每次调用 open 确定文件模式"></a>每次调用 open 确定文件模式</h3><ul><li>调用 open 打开文件的<strong>默认文件模式</strong>是 <strong>out mode</strong>，而一般 out mode 意味着同时使用 trunc mode.</li><li>调用 open 打开文件，可以显式地指定文件模式</li></ul>]]></content>
-      
-      
-      <categories>
-          
-          <category> technology </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> c++ </tag>
-            
-            <tag> c++ primer </tag>
-            
-            <tag> file stream </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>8.1 IO 类</title>
       <link href="/2025/03/28/8.%20IO%E5%BA%93/8.1%20IO%20class/"/>
       <url>/2025/03/28/8.%20IO%E5%BA%93/8.1%20IO%20class/</url>
@@ -1547,6 +1518,35 @@
             <tag> c++ primer </tag>
             
             <tag> string stream </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>8.2 文件输入输出流</title>
+      <link href="/2025/03/28/8.%20IO%E5%BA%93/8.2%20%E6%96%87%E4%BB%B6%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E6%B5%81/"/>
+      <url>/2025/03/28/8.%20IO%E5%BA%93/8.2%20%E6%96%87%E4%BB%B6%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E6%B5%81/</url>
+      
+        <content type="html"><![CDATA[<h2 id="fstream"><a href="#fstream" class="headerlink" title="fstream"></a>fstream</h2><ul><li><p>头文件：fstream.h</p></li><li><p>类型：</p><ul><li>ifstream</li><li>ofstream</li><li>fstream</li></ul></li></ul><hr><h2 id="fstream-特有操作"><a href="#fstream-特有操作" class="headerlink" title="fstream 特有操作"></a>fstream 特有操作</h2><div class="table-container"><table><thead><tr><th style="text-align:left">Operation</th><th style="text-align:left">Implication</th></tr></thead><tbody><tr><td style="text-align:left"><strong>fstream</strong> fstrm</td><td style="text-align:left">创建一个未绑定的文件流，fstream 是头文件 fstream 中定义的类型</td></tr><tr><td style="text-align:left"><strong>fstream</strong> fstrm(s)</td><td style="text-align:left">创建一个fstream object, 并打开名为 s 的文件。s 可以是 <strong>string</strong>，也可以是 <strong>C 风格字符串的指针</strong>，这些构造函数都是 explicit 的。<strong>默认文件 mode 依赖于 fstream 的类型</strong>。</td></tr><tr><td style="text-align:left"><strong>fstream</strong> fstrm(s, mode)</td><td style="text-align:left">按指定 mode 打开文件</td></tr><tr><td style="text-align:left">fstrm.open(s)</td><td style="text-align:left">打开一个名为 s 的文件，并将 s 与 fstrm 绑定。默认文件 mode 依赖于 fstream 的类型。返回 void</td></tr><tr><td style="text-align:left">fstrm.close()</td><td style="text-align:left">关闭与 fstrm 绑定的文件。返回 void</td></tr><tr><td style="text-align:left">fstrm.is_open()</td><td style="text-align:left">返回一个 bool 值，指出与 fstrm 绑定的文件是否成功打开且尚未关闭</td></tr></tbody></table></div><p><strong>NOTE:</strong> 当一个 fstream 对象被销毁时，close() 会自动被调用。</p><hr><h2 id="文件模式"><a href="#文件模式" class="headerlink" title="文件模式"></a>文件模式</h2><div class="table-container"><table><thead><tr><th style="text-align:left">Mode</th><th style="text-align:left">Implication</th></tr></thead><tbody><tr><td style="text-align:left">in</td><td style="text-align:left">以读的方式打开</td></tr><tr><td style="text-align:left">out</td><td style="text-align:left">以写的方式打开</td></tr><tr><td style="text-align:left">app</td><td style="text-align:left">每次写操作之前均定位到文件末尾</td></tr><tr><td style="text-align:left">ate</td><td style="text-align:left">打开文件后立即定位到文件末尾</td></tr><tr><td style="text-align:left">trunc</td><td style="text-align:left">截断文件</td></tr><tr><td style="text-align:left">binary</td><td style="text-align:left">以二进制方式进行 IO</td></tr></tbody></table></div><p><strong>NOTE:</strong> 指定文件模式有以下限制</p><ul><li>只可以对 <strong>ofstream 或 fstream 对象</strong>设定 <strong>out mode</strong></li><li>只可以对 <strong>ifstream 或 fstream 对象</strong>设定 <strong>in mode</strong></li><li>只有当 out 也被设定时，才可以设定 trunc</li><li>只要 trunc 没被设定，就可以设定 app 模式。<strong>app mode 下，默认指定 out mode</strong></li><li><strong>默认情况下</strong>，即使没有指定 trunc mode, 以 out mode 打开的文件也总会被截断。<strong>为了保留 out mode 下文件的内容，必须同时指定 app mode</strong>.</li><li><strong>ate mode 和 binary mode</strong> 可<strong>用于任何类型的文件流对象</strong>，且可以与其他任何文件 mode 组合使用</li><li>与 <strong>ifstream</strong> 关联的文件默认以 <strong>in mode</strong> 打开；与 <strong>ofstream</strong> 关联的文件默认以 <strong>out mode</strong> 打开；与 <strong>fstream</strong> 关联的文件默认以 <strong>in, out mode</strong>打开</li></ul><h3 id="out-mode-打开文件会丢弃已有数据"><a href="#out-mode-打开文件会丢弃已有数据" class="headerlink" title="out mode 打开文件会丢弃已有数据"></a>out mode 打开文件会丢弃已有数据</h3><ul><li>阻止一个 ofstream 清空数据的方法是<strong>显式指定 app mode 或 in mode</strong></li></ul><figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 这几条语句中，file1 都被截断</span><br><span class="hljs-function">ofstream <span class="hljs-title">out</span><span class="hljs-params">(<span class="hljs-string">&quot;file1&quot;</span>)</span></span>;    <span class="hljs-comment">// 隐含以 out mode 打开文件并截断文件</span><br><span class="hljs-function">ofstream <span class="hljs-title">out</span><span class="hljs-params">(<span class="hljs-string">&quot;file1&quot;</span>, ofstream::out)</span></span>; <span class="hljs-comment">// 隐含的截断文件</span><br><span class="hljs-function">ofstream <span class="hljs-title">out</span><span class="hljs-params">(<span class="hljs-string">&quot;file1&quot;</span>, ofstream::out | ofstream::trunc)</span></span>;<br><br><span class="hljs-comment">// 为保留文件内容，显式指定 app mode</span><br><span class="hljs-function">ofstream <span class="hljs-title">out</span><span class="hljs-params">(<span class="hljs-string">&quot;file1&quot;</span>, ofstream::app)</span></span>; <span class="hljs-comment">// 隐含为 out mode</span><br><span class="hljs-function">ofstream <span class="hljs-title">out</span><span class="hljs-params">(<span class="hljs-string">&quot;file1&quot;</span>, ofstream::app | ofstream::out)</span></span>;<br></code></pre></td></tr></table></figure><h3 id="每次调用-open-确定文件模式"><a href="#每次调用-open-确定文件模式" class="headerlink" title="每次调用 open 确定文件模式"></a>每次调用 open 确定文件模式</h3><ul><li>调用 open 打开文件的<strong>默认文件模式</strong>是 <strong>out mode</strong>，而一般 out mode 意味着同时使用 trunc mode.</li><li>调用 open 打开文件，可以显式地指定文件模式</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> technology </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> c++ </tag>
+            
+            <tag> c++ primer </tag>
+            
+            <tag> file stream </tag>
             
         </tags>
       
