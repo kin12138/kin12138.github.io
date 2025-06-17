@@ -443,13 +443,9 @@ direction TB
     class OrQuery {
     }
 
-    Query_base <|-- WordQuery
-    Query_base <|-- NotQuery
-    Query_base <|-- BinaryQuery
-    BinaryQuery <|-- AndQuery
-    BinaryQuery <|-- OrQuery</pre>
+    Query_base <|-- wordquery query_base <|-- notquery binaryquery andquery orquery< pre>
 
-</li>
+</|--></pre></li>
 </ul>
 </li>
 </ul>
@@ -585,7 +581,7 @@ direction TB
 <li>接着 Query::rep 将调用 q-&gt;rep() ，这是一个通过 Query_base 指针进行的虚调用</li>
 </ul>
 </li>
-<li><strong>~ 运算符动态分配一个新的 NotQuery 对象，其 return 语句隐式的使用一个接受 shared_ptr\<Query_base> 的 Query 构造函数</strong></li>
+<li><strong>~ 运算符动态分配一个新的 NotQuery 对象，其 return 语句隐式的使用一个接受 shared_ptr\<Query_base> 的 Query 构造函数</Query_base></strong></li>
 </ul>
 <h3 id="BinaryQuery-类"><a href="#BinaryQuery-类" class="headerlink" title="BinaryQuery 类"></a>BinaryQuery 类</h3><ul>
 <li>BinaryQuery 类也是一个抽象基类</li>

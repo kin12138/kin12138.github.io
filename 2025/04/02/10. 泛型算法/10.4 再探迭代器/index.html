@@ -428,7 +428,7 @@
 <li>在创建 ostream_iterator 时，可以提供（可选的）第二参数，是字符串，在<strong>输出每个元素后都会打印此字符串</strong>。此字符串必须是一个 <strong>C 风格字符串</strong>，</li>
 <li><p><strong>必须将 ostream_iterator 绑定到一个指定的流</strong>，<strong>不允许</strong>一个<strong>空的</strong>或<strong>表示尾后位置</strong>的 ostream_iterator</p>
 <ul>
-<li>ostream_iterator<T> out(cout);</li>
+<li>ostream_iterator<T> out(cout);</T></li>
 <li><strong><code>out = val;</code></strong>  // 用 &lt;&lt; 运算符将 val 写入到 out 绑定的 ostream 中, val 类型必须与 out 可写类型兼容</li>
 <li><code>*out, out++, ++out</code> 都存在，但不对 out 做任何操作。每个运算符都返回 out</li>
 <li><p>对于一个输出容器元素的循环，可以写为：</p>
@@ -515,15 +515,15 @@
         <div class="post-paging">     
             <div class="post-paging-last">
                 
-                    <a href="/2025/04/05/11.%20%E5%85%B3%E8%81%94%E5%AE%B9%E5%99%A8/11.1%20%E4%BD%BF%E7%94%A8%E5%85%B3%E8%81%94%E5%AE%B9%E5%99%A8/">
-                        上一篇：11.1 使用关联容器
+                    <a href="/2025/04/02/10.%20%E6%B3%9B%E5%9E%8B%E7%AE%97%E6%B3%95/10.5%20%E6%B3%9B%E5%9E%8B%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/">
+                        上一篇：10.5 泛型算法结构
                     </a>
                 
             </div>
             <div class="post-paging-next">
                 
-                    <a href="/2025/04/02/10.%20%E6%B3%9B%E5%9E%8B%E7%AE%97%E6%B3%95/10.5%20%E6%B3%9B%E5%9E%8B%E7%AE%97%E6%B3%95%E7%BB%93%E6%9E%84/">
-                        下一篇：10.5 泛型算法结构
+                    <a href="/2025/04/02/10.%20%E6%B3%9B%E5%9E%8B%E7%AE%97%E6%B3%95/10.6%20%E7%89%B9%E5%AE%9A%E5%AE%B9%E5%99%A8%E7%AE%97%E6%B3%95/">
+                        下一篇：10.6 特定容器算法
                     </a>
                 
             </div>
