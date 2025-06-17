@@ -4,6 +4,41 @@
   
     
     <entry>
+      <title>Hexo 博客图片无法显示排查与解决记录</title>
+      <link href="/2025/06/17/hexo-blog-can&#39;t-display/"/>
+      <url>/2025/06/17/hexo-blog-can&#39;t-display/</url>
+      
+        <content type="html"><![CDATA[<h2 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h2><p>在使用 <a href="https://github.com/GZ-Metal-Cell/hexo-theme-quieter">hexo-theme-quieter</a> 主题时，想在文章中通过 Post Asset Folder 上传并引用图片，使用了：</p><figure class="highlight markdown"><table><tr><td class="code"><pre><code class="hljs markdown">&#123;% asset<span class="hljs-emphasis">_img ATM-logical-state-machine-2025-05-13-0601.png atm state machine %&#125;</span><br></code></pre></td></tr></table></figure><p>图片实际放在：</p><figure class="highlight txt"><table><tr><td class="code"><pre><code class="hljs txt">source/_posts/2025/06/15/4-4-Using-synchronize-operation-to-make-coding-simple/<br>  ATM-logical-state-machine-2025-05-13-0601.png<br></code></pre></td></tr></table></figure><p>文章路径：</p><figure class="highlight txt"><table><tr><td class="code"><pre><code class="hljs txt">source/_posts/2025/06/15/4-4-Using-synchronize-operation-to-make-coding-simple.md<br></code></pre></td></tr></table></figure><h2 id="一、最初排查"><a href="#一、最初排查" class="headerlink" title="一、最初排查"></a>一、最初排查</h2><ol><li><strong>确认 <code>post_asset_folder: true</code> 已启用</strong></li><li><strong>目录与 slug 对应</strong>：<code>slug: 4-4-Using-synchronize-operation-to-make-coding-simple</code></li><li><strong>清理并重建</strong>：<code>hexo clean &amp;&amp; hexo generate</code></li></ol><blockquote><p>但生成后的 <code>&lt;img src&gt;</code> URL 中仍然出现了重复嵌套的日期路径，导致 404。</p></blockquote><h2 id="二、尝试方案"><a href="#二、尝试方案" class="headerlink" title="二、尝试方案"></a>二、尝试方案</h2><h3 id="方案-A：修正前端引用和目录结构"><a href="#方案-A：修正前端引用和目录结构" class="headerlink" title="方案 A：修正前端引用和目录结构"></a>方案 A：修正前端引用和目录结构</h3><ul><li>按照 Hexo 默认 <code>permalink: :year/:month/:day/:slug/</code> 结构，调整 source 目录</li><li>删除 <code>type: categories</code>，使用 <code>type: post</code></li><li>检查并移除多余的日期层级</li></ul><p><strong>结果</strong>：仍旧出现双重嵌套，<code>asset_img</code> 光靠目录与 slug 并不能解决主题内部对路径的二次拼装。</p><h3 id="方案-B：使用主题推荐的-hexo-lazyload-image"><a href="#方案-B：使用主题推荐的-hexo-lazyload-image" class="headerlink" title="方案 B：使用主题推荐的 hexo-lazyload-image"></a>方案 B：使用主题推荐的 <code>hexo-lazyload-image</code></h3><ul><li>安装插件并在根配置中添加 <code>plugins: [hexo-lazyload-image]</code></li><li>尝试 <code>&#123;% lazyload_image ... %&#125;</code> 标签</li></ul><p><strong>问题</strong>：插件并未注册该 Nunjucks tag，报 <code>unknown block tag: lazyload_image</code> 错误。</p><h3 id="方案-C：原生-Markdown-浏览器懒加载-Fancybox"><a href="#方案-C：原生-Markdown-浏览器懒加载-Fancybox" class="headerlink" title="方案 C：原生 Markdown + 浏览器懒加载 + Fancybox"></a>方案 C：原生 Markdown + 浏览器懒加载 + Fancybox</h3><ul><li><p>在文章中使用原生 HTML：</p><figure class="highlight html"><table><tr><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">data-fancybox</span>=<span class="hljs-string">&quot;gallery&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;/2025/06/15/.../ATM-logic...png&quot;</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/2025/06/15/.../ATM-logic...png&quot;</span> <span class="hljs-attr">loading</span>=<span class="hljs-string">&quot;lazy&quot;</span> <span class="hljs-attr">decoding</span>=<span class="hljs-string">&quot;async&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br></code></pre></td></tr></table></figure></li></ul><p><strong>问题</strong>：主题内部依然对 asset 目录做了二次路径拼装，导致仍然无法加载。</p><h2 id="三、最终稳妥方案"><a href="#三、最终稳妥方案" class="headerlink" title="三、最终稳妥方案"></a>三、最终稳妥方案</h2><p>放弃 Post Asset Folder，彻底走 Hexo 的静态资源通道：</p><ol><li><p><strong>统一将图片移至全局目录</strong></p><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">mv</span> <span class="hljs-built_in">source</span>/_posts/.../ATM-logical-state-machine-2025-05-13-0601.png \<br>   <span class="hljs-built_in">source</span>/images/<br></code></pre></td></tr></table></figure></li><li><p><strong>在文章中引用</strong></p><figure class="highlight markdown"><table><tr><td class="code"><pre><code class="hljs markdown">![<span class="hljs-string">atm state machine</span>](<span class="hljs-link">/images/ATM-logical-state-machine-2025-05-13-0601.png</span>)<br></code></pre></td></tr></table></figure></li><li><p><strong>重新生成部署</strong></p><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">hexo clean &amp;&amp; hexo generate &amp;&amp; hexo deploy<br></code></pre></td></tr></table></figure></li><li><p><strong>检查</strong>：打开页面 F12 确认 <code>/images/...png</code> 返回 200，即可正常显示。</p></li></ol><blockquote><p><strong>渲染后插件效果</strong>：</p><figure class="highlight html"><table><tr><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">img</span></span><br><span class="hljs-tag">  <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;lazyload&quot;</span></span><br><span class="hljs-tag">  <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/images/loading.gif&quot;</span></span><br><span class="hljs-tag">  <span class="hljs-attr">data-src</span>=<span class="hljs-string">&quot;/images/ATM-logical-state-machine-2025-05-13-0601.png&quot;</span></span><br><span class="hljs-tag">  <span class="hljs-attr">alt</span>=<span class="hljs-string">&quot;atm state machine&quot;</span>&gt;</span><br></code></pre></td></tr></table></figure></blockquote><h2 id="四、经验与建议"><a href="#四、经验与建议" class="headerlink" title="四、经验与建议"></a>四、经验与建议</h2><ul><li><strong>Post Asset Folder</strong> 虽然方便，但在某些主题下会因 path filter 冲突导致多次拼接路径。</li><li><strong>静态目录 (<code>source/images/</code>)</strong> 是最稳妥的资源管理方式，路径简单明了。</li><li><strong>懒加载</strong> 可依赖浏览器原生 <code>loading=&quot;lazy&quot;</code> 或 <code>hexo-lazyload-image</code> 插件的 after_render 機制。</li><li><strong>Fancybox</strong> 主题自带，无需额外配置，直接在 HTML 中使用 <code>data-fancybox</code> 即可。</li></ul><p>通过以上方法，彻底解决了 Hexo 主题对图片资源路径二次拼装的问题，确保所有图片都能正常展示且支持懒加载与点击放大。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Hexo </category>
+          
+          <category> 排错 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Hexo </tag>
+            
+            <tag> 图片 </tag>
+            
+            <tag> 懒加载 </tag>
+            
+            <tag> 插件 </tag>
+            
+            <tag> 解决方案 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>4.4 使用同步操作简化代码</title>
       <link href="/2025/06/15/Chap4-Synchronize-Concurrent-Operations/4-4-Using-synchronize-operation-to-make-coding-simple/"/>
       <url>/2025/06/15/Chap4-Synchronize-Concurrent-Operations/4-4-Using-synchronize-operation-to-make-coding-simple/</url>
