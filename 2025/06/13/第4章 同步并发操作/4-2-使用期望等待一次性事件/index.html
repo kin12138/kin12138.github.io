@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang=zh-CN data-theme="light">
+	
+<script src="/js/plugins/toggleTheme.js"></script>
+
+	<script>
+		setTheme();
+	</script>
+	<head>
+		
+<title>4.2 使用期望等待一次性事件 | The technology-sea for kin12138</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" type="image/x-icon" href="/images/icon/favicon.ico">
+<link href="/css/plugins/print.css" media="print" rel="stylesheet" />
+
+<link rel="stylesheet" href="/css/index.css">
+
+
+
+<meta name="keywords" content="c++,concurrency,multithreading,std::future,std::shared_future,std::async,std::packaged_task,std::promise,">
+<meta name="description" content="">
+
+
+
+<script src="/js/plugins/jquery.min.js"></script>
+
+
+<script src="/js/plugins/hljs.min.js"></script>
+
+
+<script src="/js/plugins/init.js"></script>
+
+
+<script src="/js/plugins/hide.js"></script>
+
+
+<script src="/js/plugins/tabs.js"></script>
+
+
+
+    
+
+
+
+    <script src='https://cdn.jsdelivr.net/npm/mermaid@11.4.0/dist/mermaid.min.js'></script>
+    <script>mermaid.initialize({startOnLoad:false});</script>
+    
+<link rel="stylesheet" href="/css/plugins/mermaid.css">
+
+    
+<script src="/js/plugins/mermaid.js"></script>
+
+
+
+
+
+
+    
+
+	<meta name="generator" content="Hexo 7.3.0"></head>
+
+	<body>
+		<header class="sticky-header">
+	<nav>
+		<div class="nav-left">
+			<a href="/" class="logo">
+				<img no-lazy src="/images/headers_icon/logo.webp" alt="Quieter">
+			</a>
+			<ul class="breadcrumb" id="breadcrumb"></ul>
+		</div>
+		<div class="nav-right">
+			<ul>
+				
+					<li>
+						<a href="/">
+						  主页
+						</a>
+					</li>
+				
+					<li>
+						<a href="/categories">
+						  类别
+						</a>
+					</li>
+				
+					<li>
+						<a href="/tags">
+						  标签
+						</a>
+					</li>
+				
+					<li>
+						<a href="/archives">
+						  归档
+						</a>
+					</li>
+				
+					<li>
+						<a href="/galleries">
+						  相册
+						</a>
+					</li>
+				
+					<li>
+						<a href="/links">
+						  链接
+						</a>
+					</li>
+				
+					<li>
+						<a href="/about">
+						  关于
+						</a>
+					</li>
+								  
+			</ul>
+		</div>
+		<div class="nav-right-close">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+				<path fill="none" d="M0 0h24v24H0z" />
+				<path d="M3 4h18v2H3V4zm0 7h18v2H3v-2zm0 7h18v2H3v-2z" fill="rgba(68,68,68,1)" />
+			</svg>
+		</div>
+
+		<div class="sidebar">
+    <div class="topo">
+        <p>The technology-sea for kin12138</p>
+    </div>
+    <ul>
+        
+        <li>
+            <a href="/">
+                主页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories">
+                类别
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags">
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives">
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/galleries">
+                相册
+            </a>
+        </li>
+        
+        <li>
+            <a href="/links">
+                链接
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about">
+                关于
+            </a>
+        </li>
+        
+    </ul>
+    <div class="sidebar-footer">
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/Weibo.webp" alt="Quieter">
+        </a>
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/Tieba.webp" alt="Quieter">
+        </a>
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/Bilibili.webp" alt="Quieter">
+        </a>
+        
+        <a href="">
+            <img no-lazy src="/images/bottom_icon/github.webp" alt="Quieter">
+        </a>
+        
+    </div>
+</div>
+<div class='shelter'>
+    <script>
+        $(function() {
+            $('.nav-right-close > svg').click(function() {
+                $('.sidebar').animate({
+                    right: "0"
+                }, 500);
+                $('.shelter').fadeIn("slow");
+            
+                var element = $('.topo');
+                element.addClass('custom-style');
+            
+                var links = null;
+                if ("") {
+                    links = "".split(',');
+                } else {
+                    links = "/images/random_top_img/01.webp,/images/random_top_img/02.webp,/images/random_top_img/03.webp,/images/random_top_img/04.webp,/images/random_top_img/05.webp,/images/random_top_img/06.webp,/images/random_top_img/07.webp".split(',');
+                }
+            
+                var randomLink = links[Math.floor(Math.random() * links.length)];
+                element.css('background-image', "url('" + randomLink + "')");
+            });
+          
+            $('.shelter').click(function(e) {
+                $('.sidebar').animate({
+                    right: "-100%"
+                }, 500);
+                $('.shelter').fadeOut("slow");
+            });
+        });      
+    </script>
+</div>
+	</nav>
+
+	
+		<div class="header-background"></div>
+	
+
+	<script>
+		const name = 'post';
+		const ul = document.querySelectorAll('.nav-right ul')[0];
+		const lis = ul.querySelectorAll('li');
+
+		if (name == 'home') {
+			lis[0].classList.add('select');
+		} else {
+			for (let i = 0; i < lis.length; i++) {
+				const li = lis[i];
+				const a = li.querySelector('a');
+				if (name === a.href.split('/')[3]) {
+					li.classList.add('select');
+				}
+			}
+		}
+	</script>
+	
+	<script>
+		var element = document.querySelector('.header-background');
+		if(element) {
+			element.classList.add('custom-style');
+			var links = null;
+			if("")
+			{
+				links = "".split(',');
+			} else
+			{
+				links = "/images/random_top_img/01.webp,/images/random_top_img/02.webp,/images/random_top_img/03.webp,/images/random_top_img/04.webp,/images/random_top_img/05.webp,/images/random_top_img/06.webp,/images/random_top_img/07.webp".split(',');
+			}
+			var randomLink = links[Math.floor(Math.random() * links.length)];
+			element.style.backgroundImage = "url('" + randomLink + "')";
+		}
+	</script>
+
+	
+<script src="/js/plugins/breadcrumb.js"></script>
+
+	<script>
+		var menus_title = [];
+		
+			menus_title.push({home: '主页'});
+		
+			menus_title.push({categories: '类别'});
+		
+			menus_title.push({tags: '标签'});
+		
+			menus_title.push({archives: '归档'});
+		
+			menus_title.push({galleries: '相册'});
+		
+			menus_title.push({links: '链接'});
+		
+			menus_title.push({about: '关于'});
+		
+		
+			
+				postsBreadcrumb(
+					document.getElementById('breadcrumb'),
+					"类别",
+					"/categories",
+					"C++ concurrency",
+					"/categories/C++ concurrency"
+				);
+			
+		
+	</script>
+</header>
+
+<div class="main-wrapper">
+    <main class="post">
+        <header class="main-header">
+	
+		
+			
+				
+<link rel="stylesheet" href="/css/plugins/fancybox.css">
+
+				
+<script src="/js/plugins/fancybox.umd.js"></script>
+
+				
+<script src="/js/plugins/fancybox.js"></script>
+
+			
+			<div class="post-header-background-content">
+				<ul class="post-header-tag">
+					
+						
+							<li><a href="/tags/c++"><span>c++</span></a></li>
+						
+							<li><a href="/tags/concurrency"><span>concurrency</span></a></li>
+						
+							<li><a href="/tags/multithreading"><span>multithreading</span></a></li>
+						
+							<li><a href="/tags/std::future"><span>std::future</span></a></li>
+						
+							<li><a href="/tags/std::shared_future"><span>std::shared_future</span></a></li>
+						
+							<li><a href="/tags/std::async"><span>std::async</span></a></li>
+						
+							<li><a href="/tags/std::packaged_task"><span>std::packaged_task</span></a></li>
+						
+							<li><a href="/tags/std::promise"><span>std::promise</span></a></li>
+						
+					
+				</ul>
+				
+				<h1>4.2 使用期望等待一次性事件</h1>
+		
+				
+		
+				<div class="post-header-info">
+					<svg t="1604839279282" class="icon" viewBox="0 0 1024 1024" version="1.1"
+					xmlns="http://www.w3.org/2000/svg" p-id="2901" width="20" height="20">
+						<path
+							d="M513 956.3c-247.7 0-448-200.3-448-448S265.3 66.2 513 66.2s448 200.3 448 448-200.3 442.1-448 442.1z m0-830.9c-212.2 0-388.8 170.7-388.8 388.8C124.2 726.3 294.9 903 513 903c212.2 0 388.8-170.7 388.8-388.8S725.2 125.4 513 125.4z m0 430.2c-94.2 0-170.7-76.5-170.7-170.7S418.8 207.8 513 207.8s170.7 76.5 170.7 170.7S607.2 555.6 513 555.6z m0-289.1c-64.6 0-112 52.8-112 112s47.4 117.9 112 117.9 112-52.8 112-112-47.4-117.9-112-117.9z m0 689.8c-135.7 0-259-58.7-341.9-158.9l-11.8-17.8 11.8-17.8c76.5-117.9 206.2-188.5 347.8-188.5 135.7 0 265 64.6 341.9 182.6l11.8 17.8-11.8 17.8C778 897.1 648.7 956.3 513 956.3zM230.3 773.2C300.9 849.7 406.9 897 513 897c112 0 218.1-47.4 288.6-129.8-70.5-88.2-170.7-135.6-282.7-135.6s-218.1 53.3-288.6 141.6z"
+							p-id="2902" fill="#ffffff"></path>
+					</svg>
+					<div class="post-header-info-author">
+						<a href="/about">kin12138</a>
+					</div>
+					
+						<div class="post-header-info-categories">
+							
+								<a href="/categories/C++ concurrency">C++ concurrency</a>
+							
+						</div>
+					
+					<time>2025/06/13 00:00:00</time>
+				</div>
+		
+				
+					<div class="post-header-stat">
+						<svg version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+						viewBox="0 0 200 200" enable-background="new 0 0 200 200" xml:space="preserve" width="20" height="20">
+							<path fill="#FFFFFF" d="M187.2,165.6c0,2.6-2.1,4.7-4.7,4.7H17.5c-2.6,0-4.7-2.1-4.7-4.7s2.1-4.7,4.7-4.7h165.1
+								C185.2,160.9,187.2,163,187.2,165.6z"/>
+							<path fill="#FFFFFF" d="M17.5,29.7c2.6,0,4.7,2.1,4.7,4.7v131.2c0,2.6-2.1,4.7-4.7,4.7s-4.7-2.1-4.7-4.7V34.4
+								C12.8,31.8,14.9,29.7,17.5,29.7z M77.9,91.5c1.8,1.8,1.8,4.8,0,6.6l-39.8,39.8c-1.9,1.8-4.9,1.7-6.6-0.2c-1.7-1.8-1.7-4.6,0-6.4
+								l39.8-39.8C73.1,89.6,76,89.6,77.9,91.5z M169.9,70.2c1.6,2.1,1.1,5-0.9,6.5c0,0,0,0,0,0l-64.2,48.2c-2.1,1.5-5,1.1-6.6-0.9
+								c-1.6-2.1-1.1-5,0.9-6.5c0,0,0,0,0,0l64.2-48.2C165.4,67.7,168.3,68.1,169.9,70.2L169.9,70.2z"/>
+							<path fill="#FFFFFF" d="M104.6,124.5c-1.8,1.8-4.8,1.8-6.6,0L71.6,98.1c-1.8-1.8-1.8-4.8,0-6.6c1.8-1.8,4.8-1.8,6.6,0l26.3,26.3
+								C106.4,119.6,106.4,122.6,104.6,124.5C104.6,124.4,104.6,124.4,104.6,124.5z"/>
+						</svg>
+		
+						
+							
+<script src="/js/plugins/wordCount.js"></script>
+
+							<p class="post-count">文字数：---</p>
+						
+		
+						
+							<p id="busuanzi_container_page_pv" style='display:none;'>阅读数：<span id="busuanzi_value_page_pv"></span></p>
+						
+					</div>
+				
+			</div>
+		
+	
+</header>
+        <div class="post-content article-container">
+            <article class="post-content-info">
+                <p>C++ 标准库模型将<strong>一次项事件</strong>称为 <strong>“期望”(future)</strong></p>
+<ul>
+<li>在标准库中，有两种期望<ul>
+<li><strong>唯一期望(unique futures)</strong>: <code>std::future&lt;&gt;</code><ul>
+<li><code>std::future&lt;&gt;</code> 实例只能与一个指定事件相关联</li>
+</ul>
+</li>
+<li><strong>共享期望(shared futures)</strong>: <code>std::shared_future&lt;&gt;</code><ul>
+<li><code>std::shared_future&lt;&gt;</code> 实例可以与多个事件关联，它的实现中，所有实例在同时变为就绪状态，并且这些实例可以访问与事件关联的任何数据</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>在与数据无关的地方，可以使用 <code>std::future&lt;void&gt;</code> 和 <code>std::shared_future&lt;void&gt;</code> 的特例化模板</li>
+<li><strong>“期望”本身并不提供同步访问</strong>。多个线程需要访问一个独立“期望”对象时它们必须使用互斥量或类似同步机制对访问进行保护</li>
+</ul>
+<h2 id="带返回值的后台任务"><a href="#带返回值的后台任务" class="headerlink" title="带返回值的后台任务"></a>带返回值的后台任务</h2><p>在线程创建中，<code>std::thread</code> 并不提供直接接收返回值的机制。这就需要 <strong><code>std::async</code> 函数模板</strong></p>
+<ul>
+<li><strong><code>std::async</code> 返回一个 <code>std::future</code> 对象，代表异步执行的结果</strong><ul>
+<li>当需要这个结果时，只需要调用这个 <code>std::future</code> 对象的 <code>get()</code> 成员函数；并且直到“期望”状态就绪的情况下，线程才会阻塞。也就是说在<strong>主线程调用 <code>get()</code>，会阻塞当前线程直到结果就绪</strong></li>
+<li>std::async 支持传播异常，如果任务函数抛出异常，get() 会在此重新抛出该异常</li>
+</ul>
+</li>
+<li><p>举个例子：使用 <code>std::future</code> 从异步任务中获取返回值</p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;future&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">find_the_answer_to_ltuae</span><span class="hljs-params">()</span></span>;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">do_other_stuff</span><span class="hljs-params">()</span></span>;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    std::future&lt;<span class="hljs-type">int</span>&gt; the_answer = std::<span class="hljs-built_in">async</span>(find_the_answer_to_ltuae);<br>    <span class="hljs-built_in">do_other_stuff</span>();<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;The answer is &quot;</span> &lt;&lt; the_answer.<span class="hljs-built_in">get</span>() &lt;&lt; std::endl;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>std::async 允许添加额外的参数</p>
+<ul>
+<li>第一个参数可以省略，主要有下面几种策略：<ul>
+<li>std::launch::async ：始终创建一个新线程执行任务</li>
+<li>std::launch::deferred ：延迟执行，直到第一个调用 get() 或 wait() 时在调用线程中执行</li>
+<li>std::launch::async | std::launch::deferred （默认）：由实现决定是异步执行还是延迟执行。常见库会选择异步以利用并行</li>
+</ul>
+</li>
+<li>第二个参数可以是一个指向成员函数的函数指针，此时第三个参数就要提供包含这个成员函数类的对象，可以通过指针，引用，还可以包装在 std::ref 中</li>
+<li>之后的参数就是这个任务函数的参数</li>
+</ul>
+</li>
+<li><p>例如：使用 std::async 向函数传递参数</p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;future&gt;</span></span><br><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">X</span> &#123;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">foo</span><span class="hljs-params">(<span class="hljs-type">int</span> &amp;, std::string <span class="hljs-type">const</span> &amp;)</span></span>;<br>    <span class="hljs-function">std::string <span class="hljs-title">bar</span><span class="hljs-params">(std::string <span class="hljs-type">const</span> &amp;)</span></span>;<br>&#125;;<br><br>X x;<br><span class="hljs-keyword">auto</span> f1 = std::<span class="hljs-built_in">async</span>(&amp;X::foo, &amp;x, <span class="hljs-number">42</span>, <span class="hljs-string">&quot;hello&quot;</span>);     <span class="hljs-comment">// 调用 p-&gt;foo(42, &quot;hello&quot;), p 是指向 x 的指针</span><br><span class="hljs-keyword">auto</span> f2 = std::<span class="hljs-built_in">async</span>(&amp;X::bar, x, <span class="hljs-string">&quot;goodbye&quot;</span>);    <span class="hljs-comment">// 调用 tmpx.bar(&quot;goodbye&quot;), tmpx 是 x 的拷贝副本</span><br><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Y</span> &#123;<br>    <span class="hljs-function"><span class="hljs-type">double</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span> <span class="hljs-params">(<span class="hljs-type">double</span>)</span></span>;<br>&#125;;<br><br>Y y;<br><span class="hljs-keyword">auto</span> f3 = std::<span class="hljs-built_in">async</span>(<span class="hljs-built_in">Y</span>(), <span class="hljs-number">3.141</span>);       <span class="hljs-comment">// 调用 tmpy(3.141), tmpy 通过 Y 的移动构造函数得到</span><br><span class="hljs-keyword">auto</span> f4 = std::<span class="hljs-built_in">async</span>(std::<span class="hljs-built_in">ref</span>(y), <span class="hljs-number">2.718</span>);   <span class="hljs-comment">// 调用 y(2.718)</span><br><br><span class="hljs-function">X <span class="hljs-title">baz</span><span class="hljs-params">(X&amp;)</span></span>;<br>std::<span class="hljs-built_in">async</span>(baz, std::<span class="hljs-built_in">ref</span>(x));   <span class="hljs-comment">// 调用 baz(x)</span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">move_only</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">move_only</span>();<br>    <span class="hljs-built_in">move_only</span>(move_only&amp;&amp;);<br>    <span class="hljs-built_in">move_only</span>(move_only <span class="hljs-type">const</span> &amp;) = <span class="hljs-keyword">delete</span>;<br>    move_only &amp; <span class="hljs-keyword">operator</span>=(move_only &amp;&amp;);<br>    move_only &amp; <span class="hljs-keyword">operator</span>=(<span class="hljs-type">const</span> move_only &amp;) = <span class="hljs-keyword">delete</span>;<br><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">()</span></span>;<br>&#125;;<br><br><span class="hljs-keyword">auto</span> f5 = std::<span class="hljs-built_in">async</span>(<span class="hljs-built_in">move_only</span>());  <span class="hljs-comment">// 调用 tmp() , tmp 是通过 std::move(move_only()) 构造得到</span><br></code></pre></td></tr></table></figure>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">auto</span> f6 = std::<span class="hljs-built_in">async</span>(std::launch::async, <span class="hljs-built_in">Y</span>(), <span class="hljs-number">1.2</span>); <span class="hljs-comment">// 在新线程上执行</span><br><span class="hljs-keyword">auto</span> f7 = std::<span class="hljs-built_in">async</span>(std::launch::deferred, baz, std::<span class="hljs-built_in">ref</span>(x));  <span class="hljs-comment">// 在 wait() 或 get() 调用时执行</span><br><br><span class="hljs-keyword">auto</span> f8 = std::<span class="hljs-built_in">async</span>(<br>            std::launch::async | std::launch::deferred, <br>            baz, std::<span class="hljs-built_in">ref</span>(x) );     <span class="hljs-comment">// 实现时选择执行方式</span><br><span class="hljs-keyword">auto</span> f9 = std::<span class="hljs-built_in">async</span>(baz, std::<span class="hljs-built_in">ref</span>(x));<br>f<span class="hljs-number">7.</span><span class="hljs-built_in">wait</span>();      <span class="hljs-comment">// 调用延迟函数</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="任务与期望"><a href="#任务与期望" class="headerlink" title="任务与期望"></a>任务与期望</h2><p><code>std::async</code> 不是让 <code>std::future</code> 实例与任务关联的唯一方式，也可以将任务包装入一个 <code>std::packaged_task&lt;&gt;</code> 实例中，或通过写代码的方式，使用 <code>std::promise&lt;&gt;</code> 类型模板显式设置值</p>
+<ul>
+<li><code>std::packaged_task&lt;&gt;</code> 是标准库提供的一个模板类，用于将任意<strong>可调用对象包装</strong>成一个可以在未来某时刻执行，并且将其<strong>返回值或异常存放在对应的 <code>std::future</code></strong> 中的任务</li>
+<li><p><strong><code>std::packaged_task&lt;&gt;</code> 的模板参数是一个函数签名</strong>，构造一个 <code>std::packaged_task&lt;&gt;</code> 实例时，必须传入一个函数或一个可调用对象，这个函数或可调用对象需要能接收指定的参数和返回可转换为指定返回类型的值，类型可以隐式转换</p>
+<ul>
+<li>指定函数签名的返回类型可以用来标识从 get_future() 返回的 std::future&lt;&gt; 类型</li>
+<li>函数签名的参数列表，可用来指定“打包任务”的函数调用运算符</li>
+<li><p>例如下面的例子：局部类定义 <code>std::packaged_task&lt;std::string(std::vector&lt;char&gt; *, int)&gt;</code></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">template</span>&lt;&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">packaged_task</span>&lt;std::<span class="hljs-built_in">string</span>(std::vector&lt;<span class="hljs-type">char</span>&gt; *, <span class="hljs-type">int</span>)&gt; &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> Callable&gt;</span><br><span class="hljs-function">    <span class="hljs-keyword">explicit</span> <span class="hljs-title">packaged_task</span><span class="hljs-params">(Callable &amp;&amp; f)</span></span>;<br>    <br>    <span class="hljs-function">std::future&lt;std::string&gt; <span class="hljs-title">get_future</span><span class="hljs-params">()</span></span>;<br><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span> <span class="hljs-params">(std::vvector&lt;<span class="hljs-type">char</span>&gt; *, <span class="hljs-type">int</span>)</span></span>;<br>&#125;;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><code>std::packaged_task</code> 对象是一个可调用对象，可以包含在一个 <code>std::function</code> 对象中，传递到一个 <code>std::thread</code> 对象中，就可作为线程函数；传递到另一个函数中，就可以作为可调用对象，或直接调用</p>
+<ul>
+<li>当 <code>std::packaged_task</code> 作为一个函数调用时，为函数调用运算符提供所需的参数，并将返回值作为异步的结果存储在 <code>std::future</code> 中，通过 <code>get_future()</code> 获取</li>
+</ul>
+</li>
+<li><p>std::packaged_task 本身不会执行，需要显式的调用 operator() (args…) 来启动</p>
+</li>
+<li><p>使用 std::packaged_task 执行一个图形界面程序</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;mutex&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;future&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;deque&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;thread&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;utility&gt;</span></span><br><br>std::mutex m;<br>std::deque&lt;std::packaged_task&lt;<span class="hljs-type">void</span>()&gt; &gt; tasks;<br><br><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">gui_shutdown_message_received</span><span class="hljs-params">()</span></span>;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">get_and_process_gui_message</span><span class="hljs-params">()</span></span>;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">gui_thread</span><span class="hljs-params">()</span> </span>&#123;<br>  <span class="hljs-keyword">while</span>(!<span class="hljs-built_in">gui_shutdown_message_received</span>()) &#123;   <span class="hljs-comment">// 图像界面线程一直循环，直到收到关闭界面的信息后关闭</span><br>    <span class="hljs-built_in">get_and_process_gui_messgae</span>();    <span class="hljs-comment">// 进行轮询界面信息处理</span><br>    std::packaged_task&lt;<span class="hljs-built_in">void</span>()&gt; task;<br><br>    &#123;<br>      <span class="hljs-function">std::lock_guard&lt;std::mutex&gt; <span class="hljs-title">lk</span><span class="hljs-params">(m)</span></span>;<br>      <span class="hljs-keyword">if</span> (tasks.<span class="hljs-built_in">empty</span>())<br>          <span class="hljs-keyword">continue</span>;<br>      task = std::<span class="hljs-built_in">move</span>(tasks.<span class="hljs-built_in">front</span>());    <span class="hljs-comment">// 从队列中提取一个任务</span><br>      tasks.<span class="hljs-built_in">pop_front</span>();<br>    &#125;     <span class="hljs-comment">// 释放队列上的锁</span><br>    <span class="hljs-built_in">task</span>();   <span class="hljs-comment">// 执行任务</span><br>  &#125;<br>&#125;<br><br>std:<span class="hljs-function">thread <span class="hljs-title">gui_bg_thread</span><span class="hljs-params">(gui_thread)</span></span>;<br><br><br><span class="hljs-comment">// 将一个任务传入队列</span><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> Func&gt;<br><span class="hljs-function">std::future&lt;<span class="hljs-type">void</span>&gt; <span class="hljs-title">post_task_for_gui_thread</span><span class="hljs-params">(Func f)</span> </span>&#123;<br>  <span class="hljs-function">std::packaged_task&lt;<span class="hljs-title">void</span><span class="hljs-params">()</span>&gt; <span class="hljs-title">task</span><span class="hljs-params">(f)</span></span>;   <span class="hljs-comment">// 提供一个打包好的任务</span><br>  std::future&lt;<span class="hljs-type">void</span>&gt; res = task.<span class="hljs-built_in">get_future</span>(); <span class="hljs-comment">// 获取一个 future 对象</span><br>  <span class="hljs-function">std::lock_guard&lt;std::mutex&gt; <span class="hljs-title">lk</span><span class="hljs-params">(m)</span></span>;    <span class="hljs-comment">// 将任务推入任务列表</span><br>  tasks.<span class="hljs-built_in">push_back</span>(std::<span class="hljs-built_in">move</span>(task));   <br>  <span class="hljs-keyword">return</span> res;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="使用-std-promise"><a href="#使用-std-promise" class="headerlink" title="使用 std::promise"></a>使用 std::promise</h2><p>当有一个需要处理很多网络连接的应用，它使用不同线程尝试连接每个接口，随着线程数量增长，大量的线程消耗着大量的系统资源，还有可能造成系统上下文的频繁切换（当线程数量超出硬件可接受的并发数时）。这时可以考虑一个线程处理多个连接事件</p>
+<ul>
+<li><code>std::promise&lt;T&gt;</code> 与 <code>std::future&lt;T&gt;</code> 对象相关联。一对 <code>std::promise/std::future</code> 提供一种“生产者-消费者”机制，<code>std::promise</code> 是生产者，<code>std::future</code> 是消费者<ul>
+<li>在处理数据的线程中，<strong><code>std::future</code> 对象可以阻塞等待线程，调用 <code>future.get()</code> 或 <code>future.wait()</code> 来获取结果或异常</strong></li>
+<li>同时，提供数据的线程可以使用组合中的 <strong><code>std::promise</code> 对象来对相关值进行设置，以及将 <code>std::future</code> 对线的状态设置为“就绪”</strong></li>
+</ul>
+</li>
+<li><code>std::promise</code> 的 <code>get_future</code> 成员函数获取一个与之相关联的 <code>std::future</code> 对象<ul>
+<li>当 <code>promise</code> 对象调用 <code>set_value()</code> 将值设置完毕，对应的 <code>std::future</code> 对象状态变为就绪态，并且可用于检索存储的值</li>
+<li>当在设置值之前就销毁了 <code>std::promise</code> 对象，<code>std::future</code> 对象就会存储一个异常值</li>
+</ul>
+</li>
+<li><p>例子：单线程处理多接口的实现：使用一对 <code>std::promise&lt;bool&gt; / std::future&lt;bool&gt;</code> 找出一块传出成功的数据块，与 <code>std::future</code> 相关联的值只是一个简单的 “成功/失败”标志</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;future&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">process_connections</span><span class="hljs-params">(connection_set &amp; connections)</span> </span>&#123;<br>  <span class="hljs-keyword">while</span>(!<span class="hljs-built_in">done</span>(connections)) &#123;<br>    <span class="hljs-keyword">for</span> (connection_iterator connection = connections.<span class="hljs-built_in">begin</span>(), end = connections.<span class="hljs-built_in">end</span>(); <br>            connection != end; ++connectin) &#123;     <span class="hljs-comment">// 每次循环都会依次检查每个接口</span><br>        <span class="hljs-keyword">if</span> (connection-&gt;<span class="hljs-built_in">has_incoming_data</span>()) &#123;    <span class="hljs-comment">// 检查是否有数据</span><br>          data_packet data = connection-&gt;<span class="hljs-built_in">incoming</span>();<br>          std::promise&lt;payload_type&gt; &amp;p = connection-&gt;<span class="hljs-built_in">get_promise</span>(data.id);   <span class="hljs-comment">// 一个 id 映射到一个 std::promise，并且值设置在包的有效负载中</span><br>          p.<span class="hljs-built_in">set_value</span>(data.payload);<br>        &#125;<br><br>        <span class="hljs-keyword">if</span> (connection-&gt;<span class="hljs-built_in">has_outgoing_data</span>()) &#123;    <span class="hljs-comment">// 发送已入队的传出数据</span><br>          outgoing_packet data = connection-&gt;<span class="hljs-built_in">top_of_outgoing_queue</span>();<br>          connection-&gt;<span class="hljs-built_in">send</span>(data.payload); <span class="hljs-comment">// 发送数据</span><br>          data.promise.<span class="hljs-built_in">set_value</span>(<span class="hljs-literal">true</span>);   <span class="hljs-comment">// 发送完成，将传出数据相关的 std::promise 设置为 true，表明传输成功</span><br>        &#125;<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><code>std::promise</code> 是 <strong>moveable aren’t copyable</strong></p>
+</li>
+<li><strong><code>std::promise</code> 只能 <code>get_future()</code> 一次</strong>，多次调用 <code>get_future()</code> 会抛出 <code>std::future_error</code></li>
+<li>必须保证 <code>set_value()</code> 或 <code>set_exception</code> 至少被调用一次，否则 <code>future.get()</code> 会在析构时抛出 <code>std::future_error</code></li>
+</ul>
+<h2 id="std-async、std-packaged-task、std-promise-的区别"><a href="#std-async、std-packaged-task、std-promise-的区别" class="headerlink" title="std::async、std::packaged_task、std::promise 的区别"></a>std::async、std::packaged_task、std::promise 的区别</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>std::async</th>
+<th>std::packaged_task</th>
+<th>std::promise</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>结果设置方式</td>
+<td>自动：内部创建 std::packaged_task + 线程</td>
+<td>自动：调用 operator() 时封装的可调用对象执行并设置</td>
+<td>手动：set_value / set_exception</td>
+</tr>
+<tr>
+<td>任务绑定</td>
+<td>绑定任务并管理线程</td>
+<td>绑定任务（可调用对象）</td>
+<td>不绑定任务，仅提供结果通道</td>
+</tr>
+<tr>
+<td>典型场景</td>
+<td>简单异步调用，最少代码</td>
+<td>自定义线程池或任务队列中封装任务</td>
+<td>复杂异步流程中手动控制何时发值（或多阶段协作）</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="为“期望”存储“异常”"><a href="#为“期望”存储“异常”" class="headerlink" title="为“期望”存储“异常”"></a>为“期望”存储“异常”</h2><ul>
+<li>当函数作为 <code>std::async</code> 的一部分时，在调用时抛出一个异常，这个异常就会存入 <code>std::future</code> 的结果数据中，之后 <code>std::future</code> 对象状态被设置为“就绪”，调用 <code>get()</code> 就会抛出这个异常<ul>
+<li>注意：标准级别没有指定重新抛出的这个异常是原始的异常对象，还是一个拷贝；不同编译器会有不同的处理策略</li>
+</ul>
+</li>
+<li>当函数被打包入 <code>std::packaged_task</code> 任务包中，当这个任务被调用时抛出异常，也会像 <code>std::async</code> 一样处理这个异常</li>
+<li><p><code>std::promise</code> 也有同样的功能，不过需要显式的调用 <code>set_exception()</code> 成员函数，通常将其放在 <code>catch</code> 块中</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">extern</span> std::promise&lt;<span class="hljs-type">double</span>&gt; some_promise;<br><span class="hljs-keyword">try</span>&#123;<br>  some_promise.<span class="hljs-built_in">set_value</span>(<span class="hljs-built_in">calculate_value</span>());<br>&#125;<br><span class="hljs-built_in">catch</span> (...) &#123;<br>  some_promise.<span class="hljs-built_in">set_exception</span>(std::<span class="hljs-built_in">current_exception</span>());<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>这里使用 <code>std::current_exception</code> 来检索抛出的异常。也可以使用 <code>std::copy_exception()</code>, 直接存储一个新的异常而不抛出</li>
+</ul>
+</li>
+<li>在没有调用 <code>std::promise</code> 的任何设置函数之前，或正在调用包装好的任务时，销毁与 <code>std::promise</code> 或 <code>std::packaged_task</code> 关联的 <code>std::future</code> 对象，这时 <code>std::future</code> 对象的状态还不是“就绪”，调用 <code>std::promise</code> 或 <code>std::packaged_task</code> 的析构函数，将会存储一个与 <code>std::future_errc::broken_promise</code> 错误状态相关的 <code>std::future_error</code> 异常</li>
+</ul>
+<h2 id="多个线程的等待"><a href="#多个线程的等待" class="headerlink" title="多个线程的等待"></a>多个线程的等待</h2><p><code>std::future</code> 有局限性，当很多线程在等待时，只有一个线程可以获得等待结果。当多个线程需要等待相同的事件的结果时，就需要用 <code>std::shared_future</code> 来代替 <code>std::future</code>。这是因为 std::future 模型独享同步结果的所有权，并且通过调用 <code>get()</code> 函数，一次性的获得结果——只有一个线程可以获取结果值，因为在第一次调用 <code>get()</code> 后，就没有值可以获取了</p>
+<ul>
+<li><code>std::shared_future</code> 可以解决这种情况<ul>
+<li><strong><code>std::future</code> 是只移动不可拷贝的</strong>，所以其所有权可以在不同实例间传递，但是只有一个实例可以获得结果</li>
+<li><strong>而 <code>std::shared_future</code> 是可拷贝的</strong>，所以多个对象可以引用同一关联“期望”的结果</li>
+</ul>
+</li>
+<li>在每个 <code>std::shared_future</code> 的独立对象上调用成员函数返回的结果还是不同步的，所以为了在多个线程上访问一个独立对象时，避免数据竞争，必须使用锁来对访问进行保护<ul>
+<li>优先使用的方法：<strong>让每个线程都拥有自己对应的拷贝对象</strong>，每个线程都通过自己的 <code>std::shared_future</code> 对象来获取结果，这样多个线程访问同步结果就是安全的</li>
+</ul>
+</li>
+<li>用 <code>std::shared_future</code> 实例同步 <code>std::future</code> 实例的状态，当 <code>std::future</code> 对象没有与其他对象共享同步状态所有权，那么所有权必须通过 <code>std::move</code> 转移到 <code>std::shared_future</code></li>
+<li><strong>所有权的转移可以是隐式的</strong></li>
+<li><p><code>std::future</code> 有一个成员函数 <code>share()</code>，可用来创建新的 <code>std::shared_future</code>，并且可以直接转移“期望”所有权</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">std::promise&lt;std::map&lt;SomeIndexType, SomeDataType, SomeComparator, SomeAllocator&gt;::iterator&gt; p;<br><span class="hljs-keyword">auto</span> sf = p.<span class="hljs-built_in">get_future</span>().<span class="hljs-built_in">share</span>();<br></code></pre></td></tr></table></figure>
+<ul>
+<li>当比较器和分配器有所改动，只需要对 <code>promise</code> 的类型进行修改即可，<code>future</code> 的类型会自动更新</li>
+</ul>
+</li>
+</ul>
+
+            </article>
+            
+	<aside class="rightside">
+	
+		<div class="rightside-button" id="js-aside">
+			<span>
+				<img no-lazy src="/images/icon/aside.png" class="rightside-button-icon" alt="Icon">
+			</span>
+		</div>
+		<script>
+			$("#js-aside").click(function () {
+				onShowAsideButton();
+			});
+		</script>
+	
+	<div class="rightside-button" id="js-toggle_theme">
+		<span>
+			<img no-lazy src="/images/icon/toggle_theme.png" class="rightside-button-icon" alt="Icon">
+		</span>
+	</div>
+
+	
+<script src="/js/plugins/goto_position.js"></script>
+
+	
+	<div class="rightside-button" id="js-go_top">
+		<span>
+			<img no-lazy src="/images/icon/go_top.png" class="rightside-button-icon" alt="Icon">
+		</span>
+	</div>
+	<div class="rightside-button" id="js-go_bottom">
+		<span>
+			<img no-lazy src="/images/icon/go_bottom.png" class="rightside-button-icon" alt="Icon">
+		</span>
+	</div>
+
+	<script>
+		setToggleThemeButtonListener();
+	</script>
+	<script>
+		$('#js-go_top')
+		.gotoPosition( {
+			speed: 300,
+			target: 'top',
+		} );
+		$('#js-go_bottom')
+		.gotoPosition( {
+			speed: 300,
+			target: 'bottom',
+		} );
+	</script>
+</aside>
+
+
+<div class="post-bottom">
+    
+        <div class="post-paging">     
+            <div class="post-paging-last">
+                
+                    <a href="/2025/06/15/%E7%AC%AC4%E7%AB%A0%20%E5%90%8C%E6%AD%A5%E5%B9%B6%E5%8F%91%E6%93%8D%E4%BD%9C/4-4-%E4%BD%BF%E7%94%A8%E5%90%8C%E6%AD%A5%E6%93%8D%E4%BD%9C%E7%AE%80%E5%8C%96%E4%BB%A3%E7%A0%81/">
+                        上一篇：4.4 使用同步操作简化代码
+                    </a>
+                
+            </div>
+            <div class="post-paging-next">
+                
+                    <a href="/2025/06/13/%E7%AC%AC4%E7%AB%A0%20%E5%90%8C%E6%AD%A5%E5%B9%B6%E5%8F%91%E6%93%8D%E4%BD%9C/4-1-%E7%AD%89%E5%BE%85%E4%B8%80%E4%B8%AA%E6%97%B6%E9%97%B4%E6%88%96%E5%85%B6%E4%BB%96%E6%9D%A1%E4%BB%B6/">
+                        下一篇：4.1 等待一个事件或其他条件
+                    </a>
+                
+            </div>
+        </div>
+    
+    
+    
+        
+    
+</div>
+        </div>
+    </main>
+    
+        <aside class="main-aside">
+    
+<script src="/js/widgets/aside.js"></script>
+
+    <script>
+        showAside();
+    </script>
+
+    <div class="aside-top">
+        <div class="aside-top-about aside-card">
+            <a href="/about" class="aside-top-about-portrait">
+                <img no-lazy src="/images/about_icon/about_icon.webp" alt="Q">
+            </a>
+            <div class="aside-top-about-info">
+                <span class="author"> kin12138</span>
+                <span class="description">This is life, it's suck, but i love it</span>
+            </div>              
+            <div class="aside-top-about-site">
+                <a href="/categories" class="aside-top-about-site-item">
+                    <span class="title">类别</span>
+                    <span class="count">4</span>
+                </a>
+                <a href="/tags" class="aside-top-about-site-item">
+                    <span class="title">标签</span>
+                    <span class="count">112</span>
+                </a>
+                <a href="/archives" class="aside-top-about-site-item">
+                    <span class="title">归档</span>
+                    <span class="count">61</span>
+                </a>
+            </div>
+            <div class="aside-top-about-contact">
+                
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/Weibo.webp" alt="Quieter">
+                        </a>
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/Tieba.webp" alt="Quieter">
+                        </a>
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/Bilibili.webp" alt="Quieter">
+                        </a>
+                    
+                        <a href="">
+                            <img no-lazy src="/images/bottom_icon/github.webp" alt="Quieter">
+                        </a>
+                    
+                
+            </div>
+        </div> 
+
+        
+    </div>
+
+    <div class="aside-bottom">
+        
+            <script>
+                
+                    const tocCollapsed = true;
+                
+                
+                    const tocDepth = 6;
+                
+                var headerString = '';
+                for (let i = 1; i <= tocDepth; i++) {
+                    if (i === 1) {
+                        headerString += 'h1';
+                    } else {
+                        headerString += ', h' + i;
+                    }
+                }
+                hbeToc();
+            </script>
+            <div class="aside-bottom-toc aside-card">
+                <div class="aside-bottom-toc-title">
+                    <h1>目录</h1>
+                    <span class="toc-percentage"></span>
+                </div>
+                <ol class="aside-bottom-toc-content"></ol>
+            </div>
+        
+    </div>
+</aside>
+    
+</div>
+		<footer>
+	<div class="content">
+		
+			<span>©2025&nbsp;By&nbsp;<a href="/about">kin12138</a>.</span>
+		
+		<span><a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> theme by <a target="_blank" rel="noopener" href="https://github.com/GZ-Metal-Cell/hexo-theme-quieter">Quieter</a>.</span>
+		
+	</div>
+
+	
+<script src="/js/plugins/ref.js"></script>
+
+	
+<script src="/js/plugins/highlight_tools.js"></script>
+
+	<script>
+		var copyIcon = "/images/icon/copy.png";
+		var closeCodeBlockIcon = "/images/icon/close_code_block.png";
+		var highlightShrink = "";
+		var HighlightHeightLimit = "";
+	</script>
+	
+	<!-- Analytics -->
+
+    
+        <!-- Busuanzi Analytics -->
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+
+
+	
+
+	
+
+    
+		
+<script src="/js/plugins/replaceSpacesWithNbsp.js"></script>
+
+	
+
+	
+	
+	
+		<script>
+			if (typeof init === 'function') {
+				init();
+			}
+		</script>
+	
+
+	
+		
+	
+
+	
+
+	<!--
+		
+<script src="/js/plugins/jquery.pjax.min.js"></script>
+
+		<script>
+			$(document).pjax('a[target!=_blank]', 'main', {
+				fragment: 'main',
+				timeout: 8000
+			});
+
+			$(document).on('pjax:complete', function() {
+			});
+		</script> 
+	-->
+	<script>
+		console.log('\n %c Hexo-Quieter 主题 %c https://github.com/GZ-Metal-Cell/hexo-theme-quieter \n', 'color: #fadfa3; background: #030307; padding:5px 0;', 'background: #fadfa3; padding:5px 0;')
+	</script>
+</footer>
+	</body>
+
+	<!-- Hexo-Quieter 主题  https://github.com/GZ-Metal-Cell/hexo-theme-quieter -->
+</html>
+
