@@ -413,7 +413,7 @@
 <li>每个线程都有一个状态机：当线程收到一条信息，它将会以某种方式更新其状态，并且可能向其他线程发出一条或多条信息，对于消息的处理依赖于线程的初始化状态</li>
 <li>这样，无论采用什么方式去实现每个线程，任务都会分成独立的处理部分，这样会消除潜在的混乱（数据共享并发）</li>
 </ul>
-<h3 id="atm-状态机示意图"><a href="#atm-状态机示意图" class="headerlink" title="atm 状态机示意图"></a>atm 状态机示意图</h3><p><img src="../4-4-使用同步操作简化代码/ATM-logical-状态机-2025-05-13-0601.png" alt="一台 ATM 的状态机模型"></p>
+<h3 id="atm-状态机示意图"><a href="#atm-状态机示意图" class="headerlink" title="atm 状态机示意图"></a>atm 状态机示意图</h3><p><img src="./4-4-使用同步操作简化代码/ATM-logical-状态机-2025-05-13-0601.png" alt="一台 ATM 的状态机模型"></p>
 <h2 id="ATM-示例笔记"><a href="#ATM-示例笔记" class="headerlink" title="ATM 示例笔记"></a>ATM 示例笔记</h2><h3 id="1-项目概述"><a href="#1-项目概述" class="headerlink" title="1. 项目概述"></a>1. 项目概述</h3><ul>
 <li>基于消息传递框架的多线程自动取款机 (ATM) 模拟示例</li>
 <li>展示了 Actor 模型、线程间通信、状态机、类型分发和资源管理等核心概念</li>
