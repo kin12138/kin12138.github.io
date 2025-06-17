@@ -8,7 +8,7 @@
 	</script>
 	<head>
 		
-<title>4.3 限定等待时间 | The technology-sea for kin12138</title>
+<title>4.1 等待一个事件或其他条件 | The technology-sea for kin12138</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -19,7 +19,7 @@
 
 
 
-<meta name="keywords" content="c++,concurrency,multithreading,时钟,时延,时间点,有超时功能的函数,">
+<meta name="keywords" content="c++,concurrency,multithreading,std::condition_variable,线程安全队列,">
 <meta name="description" content="">
 
 
@@ -326,18 +326,14 @@
 						
 							<li><a href="/tags/multithreading"><span>multithreading</span></a></li>
 						
-							<li><a href="/tags/时钟"><span>时钟</span></a></li>
+							<li><a href="/tags/std::condition_variable"><span>std::condition_variable</span></a></li>
 						
-							<li><a href="/tags/时延"><span>时延</span></a></li>
-						
-							<li><a href="/tags/时间点"><span>时间点</span></a></li>
-						
-							<li><a href="/tags/有超时功能的函数"><span>有超时功能的函数</span></a></li>
+							<li><a href="/tags/线程安全队列"><span>线程安全队列</span></a></li>
 						
 					
 				</ul>
 				
-				<h1>4.3 限定等待时间</h1>
+				<h1>4.1 等待一个事件或其他条件</h1>
 		
 				
 		
@@ -358,7 +354,7 @@
 							
 						</div>
 					
-					<time>2025/06/15 00:00:00</time>
+					<time>2025/06/13 00:00:00</time>
 				</div>
 		
 				
@@ -393,161 +389,74 @@
 </header>
         <div class="post-content article-container">
             <article class="post-content-info">
-                <p>有时候需要限定等待一个事件的时间，两种可以指定的超时方式：</p>
+                <p>当一个线程需要等待另一个线程完成任务时，它有很多选择</p>
 <ul>
-<li><strong>“时延”</strong>：需要指定一段时间。处理持续时间的变量以 <code>_for</code> 作为后缀</li>
-<li><strong>“绝对”</strong>：指定一个时间点。处理绝对时间的变量以 <code>_until</code> 作为后缀</li>
+<li>第一个就是它可以持续检查共享数据标志（用于保护工作的互斥量），直到另一个线程完成工作时对这个标志进行重设。线程浪费执行时间去持续的检查标志</li>
+<li>第二个选择是在等待线程的检查间隙，使用 std::this_thread::sleep_for() 进行周期性的休眠。但是这很难确定正确的休眠时间，如果时间过短，就跟没休眠一样，如果时间过长，可能会让任务去等待线程的醒来</li>
+<li>第三个选择（也是最优选择），使用标准库提供的工具去等待时间的发生<ul>
+<li>通过另一个线程触发等待事件的机制是最基本的唤醒方式，这种机制称为 <strong>“条件变量”(condition variable)</strong></li>
+<li>一个条件变量会与多个事件或其他条件相关，并且一个或多个线程会等待条件的达成</li>
 </ul>
-<h2 id="时钟"><a href="#时钟" class="headerlink" title="时钟"></a>时钟</h2><ul>
-<li><p>C++ 标准库中，时钟是一个类，提供了四种不同的信息：</p>
+</li>
+</ul>
+<h2 id="等待条件达成"><a href="#等待条件达成" class="headerlink" title="等待条件达成"></a>等待条件达成</h2><ul>
+<li><p>C++ 对条件变量有两种实现，都包含在头文件 <em>condition_variable</em> 中</p>
 <ul>
-<li>现在时间</li>
-<li>时间类型</li>
-<li>时钟节拍</li>
-<li>通过时钟节拍的分布，判断时钟是否稳定</li>
+<li><code>std::condition_variable</code></li>
+<li><code>std::condition_variable_any</code></li>
 </ul>
 </li>
-<li><p>获取当前时间——调用时钟类的静态成员函数 <code>now()</code></p>
+<li>两者都需要与一个互斥量一起才能进行工作（互斥量是为了同步）<ul>
+<li><code>std::condition_variable</code> 仅限于和 <code>std::mutex</code> 一起工作</li>
+<li><code>std::condition_variable——any</code> 可以和任何满足最低标准的互斥量一起工作</li>
+</ul>
+</li>
+<li><p>使用 <code>std::condition_variable</code> 处理数据等待的例子</p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">std::mutex mut;<br>std::queue&lt;data_chunk&gt; data_queue;  <span class="hljs-comment">// 用来在两个线程间传递数据的队列</span><br>std::condition_variable data_cond;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">data_preparation_thread</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-keyword">while</span>(<span class="hljs-built_in">more_data_to_prepare</span>()) &#123;<br>        data_chunk <span class="hljs-type">const</span> data = <span class="hljs-built_in">prepare_data</span>();<br>        <span class="hljs-function">std::lock_guard&lt;std::mutex&gt; <span class="hljs-title">lk</span><span class="hljs-params">(mut)</span></span>;<br>        data_queue.<span class="hljs-built_in">push</span>(data);<br>        data_cond.<span class="hljs-built_in">notify_one</span>(); <span class="hljs-comment">// 对等待的线程进行通知</span><br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">data_processing_thread</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>) &#123;<br>        <span class="hljs-function">std::unique_lock&lt;std::mutex&gt; <span class="hljs-title">lk</span><span class="hljs-params">(mut)</span></span>;<br>        data_cond.<span class="hljs-built_in">wait</span>(lk, <br>                []&#123; !<span class="hljs-keyword">return</span> !data_queue.<span class="hljs-built_in">empty</span>(); &#125;);    <span class="hljs-comment">// 条件满足时，wait 返回</span><br><br>        data_chunk data = data_queue.<span class="hljs-built_in">front</span>();<br>        data_queue.<span class="hljs-built_in">pop</span>();<br>        lk.<span class="hljs-built_in">unlock</span>();<br>        <span class="hljs-built_in">process</span>(data);<br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">is_last_chunk</span>())<br>            <span class="hljs-keyword">break</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 <ul>
-<li>例如 <code>std::chrono::system_clock::now()</code> 返回系统时钟的当前时间</li>
+<li>在数据准备线程中<ul>
+<li><code>std::lock_guard</code> 将队列上锁，之后线程将准备好的数据压入队列</li>
+<li>调用 <code>std::condition_variable</code> 的 <code>notify_one()</code> 成员函数，对等待线程进行通知（如果有等待线程）</li>
 </ul>
 </li>
-<li>特定时间点类型可以通过 <code>time_point</code> 的数据成员 <code>typedef</code> 来指定</li>
-<li>时钟节拍<ul>
-<li>被指定为 1/x 秒(x 在不同的硬件上有不同的值)，这由时间周期决定<ul>
-<li>一个时钟一秒有 25 个节拍，因此一个周期为 <code>std::ratio&lt;1, 25&gt;</code></li>
-<li>当一个时钟的节拍每 2.5 秒一次，周期就可以表示为 <code>std::ratio&lt;5, 2&gt;</code></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>稳定时钟：<ul>
-<li>当时钟节拍均匀分布，并且不可调整，这种时钟就称为稳定时钟</li>
-<li><code>is_steady</code> 静态数据成员的值为 <code>true</code> 时，表明这个时钟就是稳定的</li>
-<li>通常情况下，<code>std::chrono::system_clock</code> 是不稳定的，它代表系统时钟的“实际时间”，并且提供了函数，可将时间点转换为 <code>time_t</code> 类型的值</li>
-<li>C++ 标准库提供的稳定时钟：<code>std::chrono::steady_clock</code></li>
+<li>在数据处理线程中<ul>
+<li>首先对互斥量上锁</li>
+<li>调用 <code>std::condition_variable</code> 的 <code>wait()</code> 成员函数，传递一个锁和一个 <code>lambda</code> 表达式（作为等待的条件）<ul>
+<li><code>wait()</code> 会去检查条件，<strong>当条件满足</strong>（<code>lambda</code> 表达式返回 <code>true</code> ），<strong><code>wait()</code> 函数返回</strong>，继续向下执行</li>
+<li>当<strong>条件不满足</strong>（<code>lambda</code> 表达式返回 <code>false</code>），<code>wait()</code> 函数解锁互斥量，并且<strong>将这个数据处理线程置于阻塞或等待状态</strong></li>
 </ul>
 </li>
 </ul>
-<h2 id="时延"><a href="#时延" class="headerlink" title="时延"></a>时延</h2><ul>
-<li><p>std::chrono::duration&lt;&gt; 函数模板能够对时延进行处理：</p>
+</li>
+<li>当准备数据的线程调用 <code>notify_one()</code> 通知条件变量时，处理数据的线程从睡眠状态苏醒，重新获取互斥锁，并且对条件进行再次检查，在条件满足的情况下，<code>wait()</code> 返回并持有锁</li>
+<li>使用 <code>std::unique_lock</code> 的原因：线程必须在等待期间解锁互斥量，并在这之后对互斥量再次进行上锁</li>
+</ul>
+</li>
+<li>在调用 <code>wait()</code> 的过程中，一个条件变量可能会去检查给定条件若干次。当等待线程重新获取互斥量并检查条件时，如果它并非直接响应另一个线程的通知，这就是 <strong>“伪唤醒”(spurious wakeup)</strong></li>
+</ul>
+<h3 id="使用条件变量构建线程安全队列"><a href="#使用条件变量构建线程安全队列" class="headerlink" title="使用条件变量构建线程安全队列"></a>使用条件变量构建线程安全队列</h3><ul>
+<li><p>线程安全队列的接口</p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">threadsafe_queue</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">threadsafe_queue</span>();<br>    <span class="hljs-built_in">threadsafe_queue</span>(<span class="hljs-type">const</span> threadsafe_queue &amp;);<br>    threadsafe_queue &amp; <span class="hljs-keyword">operator</span>=(<span class="hljs-type">const</span> threadsafe_queue&amp;) = <span class="hljs-keyword">delete</span>;<br><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">push</span><span class="hljs-params">(T new_value)</span></span>;<br><br>    <span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">try_pop</span><span class="hljs-params">(T &amp; value)</span></span>;<br>    <span class="hljs-function">std::shared_ptr&lt;T&gt; <span class="hljs-title">try_pop</span><span class="hljs-params">()</span></span>;<br><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">wait_for_pop</span><span class="hljs-params">(T &amp; value)</span></span>;<br>    <span class="hljs-function">std::shared_ptr&lt;T&gt; <span class="hljs-title">wait_for_pop</span><span class="hljs-params">()</span> </span>;<br><br>    <span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">empty</span><span class="hljs-params">()</span> <span class="hljs-type">const</span></span>;<br>&#125;;<br></code></pre></td></tr></table></figure>
 <ul>
-<li>第一个模板参数是一个类型，例如 <code>int</code>，<code>double</code> 等</li>
-<li>第二个模板参数是制定部分，表示每一个单元所用的秒数<ul>
-<li>例如，当需要将几分钟的时间存在 <code>short</code> 类型中时，可以写成： <code>std::chrono::duration&lt;short, std::ratio&lt;60, 1&gt;&gt;</code> ，因为 60 秒是 1 分钟</li>
-<li>当需要将毫秒级计数存在 <code>double</code> 类型中时，可以写成：<code>std::chrono::duration&lt;double, std::ratio&lt;1, 1000&gt;&gt;</code> ，因为 1 秒等于 1000 毫秒</li>
+<li>将原来 <code>queue</code> 的很多构造函数砍掉，并禁止对队列的简单赋值</li>
+<li>提供两个版本的 <code>try_pop()</code> 和 <code>wait_for_pop()</code><ul>
+<li>一个版本在引用变量中存储索引值，它可以返回队列中值的状态</li>
+<li>一个版本返回智能指针，指向索引值，没有值可以检索时，返回 <code>NULL</code></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><p>时延的显式转换可以由 std::chrono::duration_cast&lt;&gt; 完成</p>
-  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">std::<span class="hljs-function">chrono::milliseconds <span class="hljs-title">ms</span><span class="hljs-params">(<span class="hljs-number">54802</span>)</span></span>;<br>std::chrono::seconds s = std::chrono::<span class="hljs-built_in">duration_cast</span>&lt;std::chrono::seconds&gt; (ms);<br></code></pre></td></tr></table></figure>
+<li><p>安全队列接口实现</p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;threadsafe_queue.h&quot;</span></span><br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br>threadsafe_queue&lt;T&gt;::<span class="hljs-built_in">threadsafe_queue</span>(<span class="hljs-type">const</span> threadsafe_queue&lt;T&gt; &amp;other) &#123;<br>    <span class="hljs-function">std::lock_guard&lt;std::mutex&gt; <span class="hljs-title">lk</span><span class="hljs-params">(other.mut)</span></span>;<br>    data_queue = other.data_queue;<br>&#125;<br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-type">void</span> threadsafe_queue&lt;T&gt;::<span class="hljs-built_in">push</span>(T new_value) &#123;<br>    <span class="hljs-function">std::lock_guard&lt;std::mutex&gt; <span class="hljs-title">lk</span><span class="hljs-params">(mut)</span></span>;<br>    data_queue.<span class="hljs-built_in">push</span>(new_value);<br>    data_cond.<span class="hljs-built_in">notify_one</span>();<br>&#125;<br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-type">void</span> threadsafe_queue&lt;T&gt;::<span class="hljs-built_in">wait_for_pop</span>(T &amp;value) &#123;<br>    <span class="hljs-function">std::unique_lock&lt;std::mutex&gt; <span class="hljs-title">lk</span><span class="hljs-params">(mut)</span></span>;<br>    data_cond.<span class="hljs-built_in">wait</span>(lk,<br>                [<span class="hljs-keyword">this</span>] &#123; <span class="hljs-keyword">return</span> !data_queue.<span class="hljs-built_in">empty</span>(); &#125;);<br>    value = data_queue.<span class="hljs-built_in">front</span>();<br>    data_queue.<span class="hljs-built_in">pop</span>();<br>&#125;<br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br>std::shared_ptr&lt;T&gt; threadsafe_queue&lt;T&gt;::<span class="hljs-built_in">wait_for_pop</span>() &#123;<br>    <span class="hljs-function">std::unique_lock&lt;std::mutex&gt; <span class="hljs-title">lk</span><span class="hljs-params">(mut)</span></span>;<br>    data_cond.<span class="hljs-built_in">wait</span>(lk,<br>                [<span class="hljs-keyword">this</span>] &#123; <span class="hljs-keyword">return</span> !data_queue.<span class="hljs-built_in">empty</span>(); &#125;);<br>    <span class="hljs-function">std::shared_ptr&lt;T&gt; <span class="hljs-title">res</span><span class="hljs-params">(std::make_shared&lt;T&gt;(data_queue.front()))</span></span>;<br>    data_queue.<span class="hljs-built_in">pop</span>();<br>    <span class="hljs-keyword">return</span> res;<br>&#125;<br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-type">bool</span> threadsafe_queue&lt;T&gt;::<span class="hljs-built_in">try_pop</span>(T &amp;value) &#123;<br>    <span class="hljs-function">std::lock_guard&lt;std::mutex&gt; <span class="hljs-title">lk</span><span class="hljs-params">(mut)</span></span>;<br>    <span class="hljs-keyword">if</span> (data_queue.<span class="hljs-built_in">empty</span>())<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    value = data_queue.<span class="hljs-built_in">front</span>();<br>    data_queue.<span class="hljs-built_in">pop</span>();<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>&#125;<br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br>std::shared_ptr&lt;T&gt; threadsafe_queue&lt;T&gt;::<span class="hljs-built_in">try_pop</span>() &#123;<br>    <span class="hljs-function">std::unique_lock&lt;std::mutex&gt; <span class="hljs-title">lk</span><span class="hljs-params">(mut)</span></span>;<br>    data_cond.<span class="hljs-built_in">wait</span>(lk,<br>                [<span class="hljs-keyword">this</span>] &#123; <span class="hljs-keyword">return</span> !data_queue.<span class="hljs-built_in">empty</span>(); &#125;);<br>    <span class="hljs-function">std::shared_ptr&lt;T&gt; <span class="hljs-title">res</span><span class="hljs-params">(std::make_shared&lt;T&gt;(data_queue.front()))</span></span>;<br>    data_queue.<span class="hljs-built_in">pop</span>();<br>    <span class="hljs-keyword">return</span> res;<br>&#125;<br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-type">bool</span> threadsafe_queue&lt;T&gt;::<span class="hljs-built_in">empty</span>() <span class="hljs-type">const</span> &#123;<br>    <span class="hljs-function">std::lock_guard&lt;std::mutex&gt; <span class="hljs-title">lk</span><span class="hljs-params">(mut)</span></span>;<br>    <span class="hljs-keyword">return</span> data_queue.<span class="hljs-built_in">empty</span>();<br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
-<li><p>时延支持计算</p>
+<li><p>线程安全队列的使用</p>
+  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">threadsafe_queue&lt;data_chunk&gt; data_queue;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">data_preparation_thread</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-keyword">while</span> (<span class="hljs-built_in">more_data_to_prepare</span>()) &#123;<br>        data_chunk <span class="hljs-type">const</span> data = <span class="hljs-built_in">prepare_data</span>();<br>        data_queue.<span class="hljs-built_in">push</span>(data);<br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">data_processing_thread</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>) &#123;<br>        data_chunk data;<br>        data_queue.<span class="hljs-built_in">wait_for_pop</span>(data);<br>        <span class="hljs-built_in">process</span>(data);<br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">is_last_chunk</span>(data))<br>            <span class="hljs-keyword">break</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="notify-all"><a href="#notify-all" class="headerlink" title="notify_all()"></a>notify_all()</h3><p>另一中应用可能是，当很多线程等待同一事件，对于通知，它们都需要做出回应。这可能发生在共享数据初始化的时候，当处理线程可以使用同一数据时，就要等待数据被初始化，或等待共享数据的更新</p>
 <ul>
-<li>可以将两个时延变量加减、或对一个时延变量乘除一个常数</li>
+<li><code>notefy_all()</code> 函数，通知所有线程都去执行 <code>wait()</code>（检查它们等待的条件是否满足</li>
 </ul>
-</li>
-<li><p>时延中可用 count() 成员函数获取单位时间的数量</p>
-</li>
-<li><p>基于时延的等待可由 std::chrono::duration&lt;&gt; 完成：</p>
-  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++">std::future&lt;<span class="hljs-type">int</span>&gt; f = std::<span class="hljs-built_in">async</span>(some_task);<br><span class="hljs-keyword">if</span>(f.<span class="hljs-built_in">wait_for</span>(std::chrono::<span class="hljs-built_in">milliseconds</span>(<span class="hljs-number">35</span>)) == std::future_status::ready)<br>    <span class="hljs-built_in">do_something</span>(f.<span class="hljs-built_in">get</span>());<br></code></pre></td></tr></table></figure>
-<ul>
-<li>等待函数会返回一个状态值，来表示等待是超时，还是继续等待。<ul>
-<li>函数等待超时时，会返回 <code>std::future_status::timeout</code></li>
-<li>当 future 的状态改变，函数会返回 <code>std::future_status::ready</code></li>
-<li>当 future 的任务延迟了，函数会返回 <code>std::future_status::deferred</code></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="时间点"><a href="#时间点" class="headerlink" title="时间点"></a>时间点</h2><ul>
-<li><p>时钟的时间点可以使用 <code>std::chrono::time_point&lt;&gt;</code> 模板实例来表示</p>
-<ul>
-<li>第一个参数用来指定所使用的时钟：<code>std::chrono::system_clock</code> 或 <code>std::chrono::steady_clock</code></li>
-<li>第二个参数用来表示时间的计量单位（特例化的 <code>std::chrono::duration&lt;&gt;</code>）</li>
-</ul>
-</li>
-<li><p>时钟可能共享一个时间戳，或具有独立的时间戳。当两个时钟共享一个时间戳时，其中一个 <code>time_point</code> 类型与另一个时钟类型中的 <code>time_point</code> 类型相关联</p>
-<ul>
-<li>可以通过指定 <code>time_point</code> 类型使用 <code>time_since_epoch()</code> 成员函数来获取一个时间戳，这个成员函数返回一个时延值，这个时延值表示从指定时间点到时钟的 unix 时间戳所用时</li>
-</ul>
-</li>
-<li><p>可以通过 <code>std::chrono::time_point&lt;&gt;</code> 实例加减一个时延，来获得一个新的时间点</p>
-  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">auto</span> new_time_point = std::chrono::high_resolution_clock::<span class="hljs-built_in">now</span>() + std::chrono::<span class="hljs-built_in">nanoseconds</span>(<span class="hljs-number">500</span>);<br></code></pre></td></tr></table></figure>
-</li>
-<li><p>两个 <code>time_point</code> 类型的时间点共享同一个时钟，可以将两者相减，得到两个时间点的时间差</p>
-  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">auto</span> start = std::chrono::high_resolution_clock::<span class="hljs-built_in">now</span>();<br><span class="hljs-built_in">do_something</span>();<br><span class="hljs-keyword">auto</span> stop = std::chrono::high_resolution_clock::<span class="hljs-built_in">now</span>();<br><br>std::cout &lt;&lt; <span class="hljs-string">&quot;do something took &quot;</span><br>        &lt;&lt; std::chrono::<span class="hljs-built_in">duration</span>&lt;<span class="hljs-type">double</span>, std::chrono::seconds&gt; (stop - start).<span class="hljs-built_in">count</span>()<br>        &lt;&lt; <span class="hljs-string">&quot; seconds.&quot;</span> &lt;&lt; std::endl;<br></code></pre></td></tr></table></figure>
-</li>
-<li><p>后缀为 <code>_until</code> 的变量会使用时间点。通常是用某些时钟的 <code>::now()</code> 作为偏移</p>
-</li>
-<li><p>例子：等待一个条件变量——具有超时功能</p>
-  <figure class="highlight c++"><table><tr><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;condition_variable&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;mutex&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;chrono&gt;</span></span><br><br>std::condition_variable cv;<br>std::mutex m;<br><span class="hljs-type">bool</span> done;<br><br><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">wait_loop</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-keyword">auto</span> <span class="hljs-type">const</span> deadline = std::chrono::steady_clock::<span class="hljs-built_in">now</span>() + std::chrono::<span class="hljs-built_in">milliseconds</span>(<span class="hljs-number">500</span>);<br><br>    <span class="hljs-function">std::unique_lock&lt;std::mutex&gt; <span class="hljs-title">lk</span><span class="hljs-params">(m)</span></span>;<br>    <span class="hljs-keyword">while</span>(!done)  &#123;<br>        <span class="hljs-keyword">if</span> (cv.<span class="hljs-built_in">wait_until</span>(lk, deadline) == std::cv_status::time_out)<br>            <span class="hljs-comment">// 超时未就绪</span><br>            <span class="hljs-keyword">break</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> done;<br>&#125;<br></code></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="具有超时功能的函数"><a href="#具有超时功能的函数" class="headerlink" title="具有超时功能的函数"></a>具有超时功能的函数</h2><p>使用超时的最简单方式就是，对一个特定线程添加一个延时处理</p>
-<ul>
-<li>当线程因为指定时延而进入睡眠时，可使用 <code>sleep_for()</code> 唤醒</li>
-<li>当线程因为指定时间点睡眠时，使用 <code>sleep_until()</code> 唤醒</li>
-</ul>
-<p>超时可以配合条件变量和 future 一起使用，甚至可以在尝试获取一个互斥量时使用：</p>
-<ul>
-<li><code>std::mutex</code> 和 <code>std::recursive_mutex</code> 不支持超时锁</li>
-<li><code>std::timed_mutex</code> 和 <code>std::recursive_timed_mutex</code> 支持超时锁<ul>
-<li>这两种类型也有 <code>try_lock_for()</code> 和 <code>try_lock_until()</code> 成员函数</li>
-</ul>
-</li>
-<li>下表是 C++ 中支持超时的函数，参数列表为 duration，参数类型必须是 <code>std::duration&lt;&gt;</code> 实例；参数列表是 time_point，参数类型必须是 <code>std::time_point&lt;&gt;</code> 实例</li>
-</ul>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>类型/命名空间</th>
-<th>函数</th>
-<th>返回值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>std::this_thread[namespace]</code></td>
-<td><code>sleep_for(duration)</code> <br> <code>sleep_until(time_point)</code></td>
-<td>N/A</td>
-</tr>
-<tr>
-<td><code>std::condition_variable</code> 或 <br> <code>std::condition_variable_any</code></td>
-<td><code>wait_for(lock, duration)</code> <br> <code>wait_until(lock, time_point)</code></td>
-<td><code>std::cv_status::time_out</code> 或 <br> <code>std::cv_status::no_timeout</code></td>
-</tr>
-<tr>
-<td></td>
-<td><code>wait_for(lock, duration, predicate)</code> <br> <code>wait_until(lock, duration, predicate)</code></td>
-<td><code>bool</code> —— 当唤醒时，返回谓词的结果</td>
-</tr>
-<tr>
-<td><code>std::timed_mutex</code> 或 <br> <code>std::recursive_timed_mutex</code></td>
-<td><code>try_lock_for(duration)</code> <br> <code>try_lock_until(time_point)</code></td>
-<td><code>bool</code> —— 获取锁时返回 <code>true</code>，否则返回 <code>false</code></td>
-</tr>
-<tr>
-<td><code>std::unique_lock&lt;TimedLockable&gt;</code></td>
-<td>u<code>nique_lock(lockable, duration)</code> <br> <code>unique_lock(lockable, time_point)</code></td>
-<td>N/A —— 对构建的新对象调用 <code>owns_lock()</code> <br> 当获取锁时返回 <code>true</code> ，否则返回 <code>false</code></td>
-</tr>
-<tr>
-<td></td>
-<td><code>try_lock_for(duration)</code> <br> <code>try_lock_until(time_point)</code></td>
-<td><code>bool</code> —— 当获取锁时返回 <code>true</code>，否则返回 <code>false</code></td>
-</tr>
-<tr>
-<td><code>std::future&lt;ValueType&gt;</code> 或 <br> <code>std::shared_future&lt;ValueType&gt;</code></td>
-<td><code>wait_for(duration)</code> <br> <code>wait_until(time_point)</code></td>
-<td>当等待超时，返回 <code>std::future_status::timeout</code> <br> 当期望准备就绪时，返回 <code>std::future_status::ready</code> <br> 当期望持有一个为启动的延迟函数，返回 <code>std::future_status::deferred</code></td>
-</tr>
-</tbody>
-</table>
-</div>
 
             </article>
             
@@ -608,11 +517,15 @@
         <div class="post-paging">     
             <div class="post-paging-last">
                 
+                    <a href="/2025/06/15/Chap4-Synchronize-Concurrent-Operations/4-4-%E4%BD%BF%E7%94%A8%E5%90%8C%E6%AD%A5%E6%93%8D%E4%BD%9C%E7%AE%80%E5%8C%96%E4%BB%A3%E7%A0%81/">
+                        上一篇：4.4 使用同步操作简化代码
+                    </a>
+                
             </div>
             <div class="post-paging-next">
                 
-                    <a href="/2025/06/15/%E7%AC%AC4%E7%AB%A0%20%E5%90%8C%E6%AD%A5%E5%B9%B6%E5%8F%91%E6%93%8D%E4%BD%9C/4-4-%E4%BD%BF%E7%94%A8%E5%90%8C%E6%AD%A5%E6%93%8D%E4%BD%9C%E7%AE%80%E5%8C%96%E4%BB%A3%E7%A0%81/">
-                        下一篇：4.4 使用同步操作简化代码
+                    <a href="/2025/06/13/Chap4-Synchronize-Concurrent-Operations/4-2-%E4%BD%BF%E7%94%A8%E6%9C%9F%E6%9C%9B%E7%AD%89%E5%BE%85%E4%B8%80%E6%AC%A1%E6%80%A7%E4%BA%8B%E4%BB%B6/">
+                        下一篇：4.2 使用期望等待一次性事件
                     </a>
                 
             </div>
